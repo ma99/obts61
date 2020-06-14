@@ -5,6 +5,7 @@ import VueRouter from 'vue-router';
 Vue.use(VueRouter);
 
 import { routes } from './routes';
+import { store } from './store/index';
 
 
 // import { OverlayScrollbarsComponent } from 'overlayscrollbars-vue';
@@ -32,5 +33,6 @@ const router = new VueRouter({
 
 const app = new Vue({
     el: '#app',    
-    router
+    router,
+    store
 });
