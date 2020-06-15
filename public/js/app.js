@@ -4237,12 +4237,12 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     this.fetchAvailableSeatPlans();
     this.enableScroll();
   },
-  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapState"])(['availableBusList', 'availableSeatPlanList', 'types']), {}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])(['typeBy', 'busBy', 'getIndexOf']), {
+  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapState"])('bus', ['availableBusList', 'types']), {}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapState"])('seatplan', ['availableSeatPlanList']), {}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])('bus', ['typeBy', 'busBy', 'getIndexOf']), {
     isValid: function isValid() {
       return this.bus.regNumber != '' && this.bus.numberPlate != '' && this.bus.typeId != '' && this.bus.description != '';
     }
   }),
-  methods: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapActions"])(['addBus', 'updateBus', 'deleteBus', 'getBusTypes', 'getBuses', 'sortByBusId', 'sortByRegNumber', 'getSeatPlans']), {
+  methods: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapActions"])('bus', ['addBus', 'updateBus', 'deleteBus', 'getBusTypes', 'getBuses', 'sortByBusId', 'sortByRegNumber']), {}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapActions"])('seatplan', ['getSeatPlans']), {
     // typeBy(id) {
     //   let type = this.types.find(type => type.id == id);
     //   if(type) {                      
@@ -85815,7 +85815,26 @@ __webpack_require__.r(__webpack_exports__);
     return _api__WEBPACK_IMPORTED_MODULE_0__["default"].patch("buses/".concat(id), data);
   },
   "delete": function _delete(id) {
-    return _api__WEBPACK_IMPORTED_MODULE_0__["default"]["delete"]("buses/".concat(id));
+    return api["delete"]("buses/".concat(id));
+  }
+});
+
+/***/ }),
+
+/***/ "./resources/js/api/seatplan.js":
+/*!**************************************!*\
+  !*** ./resources/js/api/seatplan.js ***!
+  \**************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _api__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./api */ "./resources/js/api/api.js");
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  seatplans: function seatplans() {
+    return _api__WEBPACK_IMPORTED_MODULE_0__["default"].get('api/seatplans');
   }
 });
 
@@ -86871,6 +86890,28 @@ var routes = [{
 
 /***/ }),
 
+/***/ "./resources/js/store/actions.js":
+/*!***************************************!*\
+  !*** ./resources/js/store/actions.js ***!
+  \***************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+
+
+/***/ }),
+
+/***/ "./resources/js/store/getters.js":
+/*!***************************************!*\
+  !*** ./resources/js/store/getters.js ***!
+  \***************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+
+
+/***/ }),
+
 /***/ "./resources/js/store/index.js":
 /*!*************************************!*\
   !*** ./resources/js/store/index.js ***!
@@ -86884,185 +86925,410 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
-/* harmony import */ var _api_bus__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../api/bus */ "./resources/js/api/bus.js");
+/* harmony import */ var _state__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./state */ "./resources/js/store/state.js");
+/* harmony import */ var _state__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_state__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _getters__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./getters */ "./resources/js/store/getters.js");
+/* harmony import */ var _getters__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_getters__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _mutations__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./mutations */ "./resources/js/store/mutations.js");
+/* harmony import */ var _mutations__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_mutations__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var _actions__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./actions */ "./resources/js/store/actions.js");
+/* harmony import */ var _actions__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_actions__WEBPACK_IMPORTED_MODULE_5__);
+/* harmony import */ var _modules_bus__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./modules/bus */ "./resources/js/store/modules/bus/index.js");
+/* harmony import */ var _modules_seatplan__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./modules/seatplan */ "./resources/js/store/modules/seatplan/index.js");
 
 
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__["default"]);
 
+
+
+
+
+
 var store = new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
-  state: {
-    availableBusList: [],
-    availableSeatPlanList: [],
-    types: [] //bustypes
-
-  },
-  getters: {
-    typeBy: function typeBy(state) {
-      return function (id) {
-        var type = state.types.find(function (type) {
-          return type.id == id;
-        });
-
-        if (type) {
-          return type.name;
-        }
-      };
-    },
-    busBy: function busBy(state) {
-      return function (id) {
-        return state.availableBusList.find(function (element) {
-          return element.bus.id == id;
-        });
-      };
-    },
-    getIndexOf: function getIndexOf(state) {
-      return function (bus) {
-        return state.availableBusList.indexOf(bus);
-      };
-    }
-  },
-  mutations: {
-    ADD_BUS: function ADD_BUS(state, data) {
-      state.availableBusList.push({
-        bus: data.bus,
-        total_seats: data.seats
-      });
-    },
-    DELETE_BUS: function DELETE_BUS(state, index) {
-      state.availableBusList.splice(index, 1);
-    },
-    UPDATE_BUS: function UPDATE_BUS(state, data) {
-      var index = data.index;
-      state.availableBusList[index].bus = {
-        reg_no: data.bus.regNumber,
-        number_plate: data.bus.numberPlate,
-        type_id: data.bus.typeId,
-        seat_plan_id: data.bus.seatPlanId,
-        description: data.bus.description
-      };
-    },
-    SET_BUS_TYPES: function SET_BUS_TYPES(state, types) {
-      state.types = types;
-    },
-    SET_BUSES: function SET_BUSES(state, buses) {
-      state.availableBusList = buses;
-    },
-    SORT_BUSES_BY_ID: function SORT_BUSES_BY_ID(state) {
-      var buses = state.availableBusList;
-      buses.sort(function (a, b) {
-        return a.bus.id - b.bus.id;
-      });
-      state.availableBusList = buses;
-    },
-    SORT_BUSES_BY_REG_NUMBER: function SORT_BUSES_BY_REG_NUMBER(state) {
-      var buses = state.availableBusList;
-      buses.sort(function (a, b) {
-        var nameA = a.bus.reg_no;
-        var nameB = b.bus.reg_no;
-
-        if (nameA < nameB) {
-          return -1;
-        }
-
-        if (nameA > nameB) {
-          return 1;
-        }
-
-        return 0;
-      });
-      state.availableBusList = buses;
-    },
-    SET_SEATPLANS: function SET_SEATPLANS(state, seatplans) {
-      state.availableSeatPlanList = seatplans;
-    },
-    SORT_SEATPLANS_BY_ID: function SORT_SEATPLANS_BY_ID(state) {
-      var seatplans = state.availableSeatPlanList;
-      seatplans.sort(function (a, b) {
-        return a.id - b.id;
-      });
-      state.availableSeatPlanList = seatplans;
-    }
-  },
-  actions: {
-    getBusTypes: function getBusTypes(_ref) {
-      var commit = _ref.commit;
-      //axios.get('/api/types').then(response => {
-      _api_bus__WEBPACK_IMPORTED_MODULE_2__["default"].types().then(function (response) {
-        commit('SET_BUS_TYPES', response.data);
-      });
-    },
-    getBuses: function getBuses(_ref2) {
-      var commit = _ref2.commit;
-      _api_bus__WEBPACK_IMPORTED_MODULE_2__["default"].buses().then(function (response) {
-        commit('SET_BUSES', response.data);
-        commit('SORT_BUSES_BY_ID');
-      });
-    },
-    getSeatPlans: function getSeatPlans(_ref3) {
-      var commit = _ref3.commit;
-      _api_bus__WEBPACK_IMPORTED_MODULE_2__["default"].seatplans().then(function (response) {
-        commit('SET_SEATPLANS', response.data);
-        commit('SORT_SEATPLANS_BY_ID');
-      });
-    },
-    sortByBusId: function sortByBusId(_ref4) {
-      var commit = _ref4.commit;
-      commit('SORT_BUSES_BY_ID');
-    },
-    sortByRegNumber: function sortByRegNumber(_ref5) {
-      var commit = _ref5.commit;
-      commit('SORT_BUSES_BY_REG_NUMBER');
-    },
-    addBus: function addBus(_ref6, _ref7) {
-      var commit = _ref6.commit;
-      var busInfo = _ref7.busInfo,
-          numberOfSeat = _ref7.numberOfSeat;
-      var data = {
-        seat_plan_id: busInfo.seatPlanId,
-        reg_no: busInfo.regNumber,
-        number_plate: busInfo.numberPlate,
-        type_id: busInfo.typeId,
-        description: busInfo.description
-      };
-      _api_bus__WEBPACK_IMPORTED_MODULE_2__["default"].store(data).then(function (response) {
-        var data = {
-          bus: response.data,
-          seats: numberOfSeat
-        };
-        commit('ADD_BUS', data);
-      });
-    },
-    updateBus: function updateBus(_ref8, _ref9) {
-      var commit = _ref8.commit;
-      var busInfo = _ref9.busInfo,
-          busToEdit = _ref9.busToEdit;
-      var data = {
-        seat_plan_id: busInfo.seatPlanId,
-        reg_no: busInfo.regNumber,
-        number_plate: busInfo.numberPlate,
-        type_id: busInfo.typeId,
-        description: busInfo.description
-      };
-      _api_bus__WEBPACK_IMPORTED_MODULE_2__["default"].update(data, busToEdit.id).then(function (response) {
-        var data = {
-          bus: busInfo,
-          index: busToEdit.index
-        };
-        commit('UPDATE_BUS', data);
-      });
-    },
-    deleteBus: function deleteBus(_ref10, id) {
-      var commit = _ref10.commit,
-          state = _ref10.state;
-      _api_bus__WEBPACK_IMPORTED_MODULE_2__["default"]["delete"](id).then(function (response) {
-        var index = state.availableBusList.findIndex(function (bus) {
-          return bus.bus.id === id;
-        });
-        commit('DELETE_BUS', index);
-      });
-    }
+  state: _state__WEBPACK_IMPORTED_MODULE_2___default.a,
+  getters: _getters__WEBPACK_IMPORTED_MODULE_3__,
+  mutations: _mutations__WEBPACK_IMPORTED_MODULE_4__,
+  actions: _actions__WEBPACK_IMPORTED_MODULE_5__,
+  modules: {
+    bus: _modules_bus__WEBPACK_IMPORTED_MODULE_6__["default"],
+    seatplan: _modules_seatplan__WEBPACK_IMPORTED_MODULE_7__["default"]
   }
 });
+
+/***/ }),
+
+/***/ "./resources/js/store/modules/bus/actions.js":
+/*!***************************************************!*\
+  !*** ./resources/js/store/modules/bus/actions.js ***!
+  \***************************************************/
+/*! exports provided: getBusTypes, getBuses, sortByBusId, sortByRegNumber, addBus, updateBus, deleteBus */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getBusTypes", function() { return getBusTypes; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getBuses", function() { return getBuses; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "sortByBusId", function() { return sortByBusId; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "sortByRegNumber", function() { return sortByRegNumber; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "addBus", function() { return addBus; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "updateBus", function() { return updateBus; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "deleteBus", function() { return deleteBus; });
+/* harmony import */ var _api_bus__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../api/bus */ "./resources/js/api/bus.js");
+ //axios.get('/api/types').then(response => {
+
+var getBusTypes = function getBusTypes(_ref) {
+  var commit = _ref.commit;
+  _api_bus__WEBPACK_IMPORTED_MODULE_0__["default"].types().then(function (response) {
+    commit('SET_BUS_TYPES', response.data);
+  });
+};
+var getBuses = function getBuses(_ref2) {
+  var commit = _ref2.commit;
+  _api_bus__WEBPACK_IMPORTED_MODULE_0__["default"].buses().then(function (response) {
+    commit('SET_BUSES', response.data);
+    commit('SORT_BUSES_BY_ID');
+  });
+};
+var sortByBusId = function sortByBusId(_ref3) {
+  var commit = _ref3.commit;
+  commit('SORT_BUSES_BY_ID');
+};
+var sortByRegNumber = function sortByRegNumber(_ref4) {
+  var commit = _ref4.commit;
+  commit('SORT_BUSES_BY_REG_NUMBER');
+};
+var addBus = function addBus(_ref5, _ref6) {
+  var commit = _ref5.commit;
+  var bus = _ref6.bus,
+      numberOfSeat = _ref6.numberOfSeat;
+  var data = {
+    seat_plan_id: bus.seatPlanId,
+    reg_no: bus.regNumber,
+    number_plate: bus.numberPlate,
+    type_id: bus.typeId,
+    description: bus.description
+  };
+  _api_bus__WEBPACK_IMPORTED_MODULE_0__["default"].store(data).then(function (response) {
+    var data = {
+      bus: response.data,
+      seats: numberOfSeat
+    };
+    commit('ADD_BUS', data);
+  });
+};
+var updateBus = function updateBus(_ref7, _ref8) {
+  var commit = _ref7.commit;
+  var busInfo = _ref8.busInfo,
+      busToEdit = _ref8.busToEdit;
+  var data = {
+    seat_plan_id: busInfo.seatPlanId,
+    reg_no: busInfo.regNumber,
+    number_plate: busInfo.numberPlate,
+    type_id: busInfo.typeId,
+    description: busInfo.description
+  };
+  _api_bus__WEBPACK_IMPORTED_MODULE_0__["default"].update(data, busToEdit.id).then(function (response) {
+    var data = {
+      bus: busInfo,
+      index: busToEdit.index,
+      id: busToEdit.id
+    };
+    commit('UPDATE_BUS', data);
+  });
+};
+var deleteBus = function deleteBus(_ref9, id) {
+  var commit = _ref9.commit,
+      state = _ref9.state;
+  _api_bus__WEBPACK_IMPORTED_MODULE_0__["default"]["delete"](id).then(function (response) {
+    var index = state.availableBusList.findIndex(function (bus) {
+      return bus.bus.id === id;
+    });
+    commit('DELETE_BUS', index);
+  });
+};
+
+/***/ }),
+
+/***/ "./resources/js/store/modules/bus/getters.js":
+/*!***************************************************!*\
+  !*** ./resources/js/store/modules/bus/getters.js ***!
+  \***************************************************/
+/*! exports provided: typeBy, busBy, getIndexOf */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "typeBy", function() { return typeBy; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "busBy", function() { return busBy; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getIndexOf", function() { return getIndexOf; });
+var typeBy = function typeBy(state) {
+  return function (id) {
+    var type = state.types.find(function (type) {
+      return type.id == id;
+    });
+
+    if (type) {
+      return type.name;
+    }
+  };
+};
+var busBy = function busBy(state) {
+  return function (id) {
+    return state.availableBusList.find(function (element) {
+      return element.bus.id == id;
+    });
+  };
+};
+var getIndexOf = function getIndexOf(state) {
+  return function (bus) {
+    return state.availableBusList.indexOf(bus);
+  };
+};
+
+/***/ }),
+
+/***/ "./resources/js/store/modules/bus/index.js":
+/*!*************************************************!*\
+  !*** ./resources/js/store/modules/bus/index.js ***!
+  \*************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _state__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./state */ "./resources/js/store/modules/bus/state.js");
+/* harmony import */ var _getters__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./getters */ "./resources/js/store/modules/bus/getters.js");
+/* harmony import */ var _mutations__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./mutations */ "./resources/js/store/modules/bus/mutations.js");
+/* harmony import */ var _actions__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./actions */ "./resources/js/store/modules/bus/actions.js");
+
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  namespaced: true,
+  state: _state__WEBPACK_IMPORTED_MODULE_0__["default"],
+  getters: _getters__WEBPACK_IMPORTED_MODULE_1__,
+  mutations: _mutations__WEBPACK_IMPORTED_MODULE_2__,
+  actions: _actions__WEBPACK_IMPORTED_MODULE_3__
+});
+
+/***/ }),
+
+/***/ "./resources/js/store/modules/bus/mutations.js":
+/*!*****************************************************!*\
+  !*** ./resources/js/store/modules/bus/mutations.js ***!
+  \*****************************************************/
+/*! exports provided: ADD_BUS, DELETE_BUS, UPDATE_BUS, SET_BUS_TYPES, SET_BUSES, SORT_BUSES_BY_ID, SORT_BUSES_BY_REG_NUMBER */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ADD_BUS", function() { return ADD_BUS; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DELETE_BUS", function() { return DELETE_BUS; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "UPDATE_BUS", function() { return UPDATE_BUS; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SET_BUS_TYPES", function() { return SET_BUS_TYPES; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SET_BUSES", function() { return SET_BUSES; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SORT_BUSES_BY_ID", function() { return SORT_BUSES_BY_ID; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SORT_BUSES_BY_REG_NUMBER", function() { return SORT_BUSES_BY_REG_NUMBER; });
+var ADD_BUS = function ADD_BUS(state, data) {
+  state.availableBusList.push({
+    bus: data.bus,
+    total_seats: data.seats
+  });
+};
+var DELETE_BUS = function DELETE_BUS(state, index) {
+  state.availableBusList.splice(index, 1);
+};
+var UPDATE_BUS = function UPDATE_BUS(state, data) {
+  var index = data.index;
+  state.availableBusList[index].bus = {
+    id: data.id,
+    reg_no: data.bus.regNumber,
+    number_plate: data.bus.numberPlate,
+    type_id: data.bus.typeId,
+    seat_plan_id: data.bus.seatPlanId,
+    description: data.bus.description
+  };
+};
+var SET_BUS_TYPES = function SET_BUS_TYPES(state, types) {
+  state.types = types;
+};
+var SET_BUSES = function SET_BUSES(state, buses) {
+  state.availableBusList = buses;
+};
+var SORT_BUSES_BY_ID = function SORT_BUSES_BY_ID(state) {
+  var buses = state.availableBusList;
+  buses.sort(function (a, b) {
+    return a.bus.id - b.bus.id;
+  });
+  state.availableBusList = buses;
+};
+var SORT_BUSES_BY_REG_NUMBER = function SORT_BUSES_BY_REG_NUMBER(state) {
+  var buses = state.availableBusList;
+  buses.sort(function (a, b) {
+    var nameA = a.bus.reg_no;
+    var nameB = b.bus.reg_no;
+
+    if (nameA < nameB) {
+      return -1;
+    }
+
+    if (nameA > nameB) {
+      return 1;
+    }
+
+    return 0;
+  });
+  state.availableBusList = buses;
+}; // export const SET_SEATPLANS = (state, seatplans) => {
+//     state.availableSeatPlanList = seatplans;
+// },
+// export const SORT_SEATPLANS_BY_ID = (state) => {
+//     const seatplans = state.availableSeatPlanList;
+//     seatplans.sort((a, b) => {
+//         return a.id - b.id;
+//     });
+//     state.availableSeatPlanList = seatplans;
+// },
+
+/***/ }),
+
+/***/ "./resources/js/store/modules/bus/state.js":
+/*!*************************************************!*\
+  !*** ./resources/js/store/modules/bus/state.js ***!
+  \*************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony default export */ __webpack_exports__["default"] = ({
+  availableBusList: [],
+  types: [] //bustypes
+
+});
+
+/***/ }),
+
+/***/ "./resources/js/store/modules/seatplan/actions.js":
+/*!********************************************************!*\
+  !*** ./resources/js/store/modules/seatplan/actions.js ***!
+  \********************************************************/
+/*! exports provided: getSeatPlans */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getSeatPlans", function() { return getSeatPlans; });
+/* harmony import */ var _api_seatplan__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../api/seatplan */ "./resources/js/api/seatplan.js");
+
+var getSeatPlans = function getSeatPlans(_ref) {
+  var commit = _ref.commit;
+  _api_seatplan__WEBPACK_IMPORTED_MODULE_0__["default"].seatplans().then(function (response) {
+    commit('SET_SEATPLANS', response.data);
+    commit('SORT_SEATPLANS_BY_ID');
+  });
+};
+
+/***/ }),
+
+/***/ "./resources/js/store/modules/seatplan/getters.js":
+/*!********************************************************!*\
+  !*** ./resources/js/store/modules/seatplan/getters.js ***!
+  \********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+
+
+/***/ }),
+
+/***/ "./resources/js/store/modules/seatplan/index.js":
+/*!******************************************************!*\
+  !*** ./resources/js/store/modules/seatplan/index.js ***!
+  \******************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _state__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./state */ "./resources/js/store/modules/seatplan/state.js");
+/* harmony import */ var _getters__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./getters */ "./resources/js/store/modules/seatplan/getters.js");
+/* harmony import */ var _getters__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_getters__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _mutations__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./mutations */ "./resources/js/store/modules/seatplan/mutations.js");
+/* harmony import */ var _actions__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./actions */ "./resources/js/store/modules/seatplan/actions.js");
+
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  namespaced: true,
+  state: _state__WEBPACK_IMPORTED_MODULE_0__["default"],
+  getters: _getters__WEBPACK_IMPORTED_MODULE_1__,
+  mutations: _mutations__WEBPACK_IMPORTED_MODULE_2__,
+  actions: _actions__WEBPACK_IMPORTED_MODULE_3__
+});
+
+/***/ }),
+
+/***/ "./resources/js/store/modules/seatplan/mutations.js":
+/*!**********************************************************!*\
+  !*** ./resources/js/store/modules/seatplan/mutations.js ***!
+  \**********************************************************/
+/*! exports provided: SET_SEATPLANS, SORT_SEATPLANS_BY_ID */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SET_SEATPLANS", function() { return SET_SEATPLANS; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SORT_SEATPLANS_BY_ID", function() { return SORT_SEATPLANS_BY_ID; });
+var SET_SEATPLANS = function SET_SEATPLANS(state, seatplans) {
+  state.availableSeatPlanList = seatplans;
+};
+var SORT_SEATPLANS_BY_ID = function SORT_SEATPLANS_BY_ID(state) {
+  var seatplans = state.availableSeatPlanList;
+  seatplans.sort(function (a, b) {
+    return a.id - b.id;
+  });
+  state.availableSeatPlanList = seatplans;
+};
+
+/***/ }),
+
+/***/ "./resources/js/store/modules/seatplan/state.js":
+/*!******************************************************!*\
+  !*** ./resources/js/store/modules/seatplan/state.js ***!
+  \******************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony default export */ __webpack_exports__["default"] = ({
+  availableSeatPlanList: []
+});
+
+/***/ }),
+
+/***/ "./resources/js/store/mutations.js":
+/*!*****************************************!*\
+  !*** ./resources/js/store/mutations.js ***!
+  \*****************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+
+
+/***/ }),
+
+/***/ "./resources/js/store/state.js":
+/*!*************************************!*\
+  !*** ./resources/js/store/state.js ***!
+  \*************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+
 
 /***/ }),
 

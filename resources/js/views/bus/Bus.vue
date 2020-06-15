@@ -258,12 +258,16 @@
                     this.enableScroll();                
                 },
                 computed: {                   
-                    ...mapState([
-                      'availableBusList',
-                      'availableSeatPlanList',
+                    ...mapState('bus', [
+                      'availableBusList',                   
                       'types'
                     ]),
-                    ...mapGetters([
+
+                    ...mapState('seatplan', [
+                      'availableSeatPlanList',
+                    ]),
+
+                    ...mapGetters('bus', [
                       'typeBy',
                       'busBy',
                       'getIndexOf'
@@ -276,14 +280,17 @@
                      }
                 }, 
                 methods: {
-                  ...mapActions([
+                  ...mapActions('bus', [
                     'addBus',
                     'updateBus',
                     'deleteBus',
                     'getBusTypes', 
                     'getBuses',
                     'sortByBusId',
-                    'sortByRegNumber',
+                    'sortByRegNumber',                    
+                  ]),
+
+                  ...mapActions('seatplan', [
                     'getSeatPlans'
                   ]),  
                   // typeBy(id) {

@@ -1,24 +1,24 @@
-import api from './api';
+import Api from './api';
 
 export default {
 	types() {
-		return api.get('api/types');
+		return Api.get('api/types');
 	},
 
 	buses() {
-		return api.get('api/buses');
+		return Api.get('api/buses');
 	},
 
 	seatplans() {
-		return api.get('api/seatplans');
+		return Api.get('api/seatplans');
 	},
 
 	store(data) {
-        return api.post('buses', data);
+        return Api.post('buses', data);
     },
 
     update(data, id) {
-        return api.patch(`buses/${id}`, data);
+        return Api.patch(`buses/${id}`, data);
     },
 
     delete(id) {
