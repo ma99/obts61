@@ -21,7 +21,7 @@
     </div>
 
     <section class="content">
-      <div class="container-fluid">
+      <div class="container-fluid">       
         <add-section :show.sync="show">
           <template v-slot:heading>
             Add City
@@ -29,38 +29,15 @@
 
           <form> 
             <div class="form-row justify-content-center">
-              <div class="col-sm-3">
-                <div class="form-group">
-                  <label for="divisionName">Division</label>
-                  <select v-model="selectedDivision" class="form-control" id="divisionName">
-                      <option disabled value="">Please select one</option>
-                      <option v-for="division in divisionList" v-bind:value="{ id: division.id, name: division.name }">
-                        {{ division.name }}
-                      </option>                             
-                  </select>
-                </div>
+              <div class="col-sm-3">               
+                <divisions v-model="selectedDivision"> 
+                </divisions>
               </div>
               <div class="col-sm-3">
-                <div class="form-group">
-                  <label for="districtName">District</label>                       
-                  <select v-model="selectedDistrict" class="form-control" id="districtName">
-                      <option disabled value="">Please select one</option>                          
-                      <option v-for="district in districtListByDivision" v-bind:value="{ id: district.id, name: district.name }">
-                        {{ district.name }}
-                      </option> 
-                  </select>
-                </div>
+                  <districts v-model="selectedDistrict" :division="selectedDivision"></districts>
               </div>
               <div class="col-sm-3">
-                <div class="form-group">
-                  <label for="upazilaName">Upazila</label>                       
-                  <select v-model="selectedUpazila" class="form-control" id="upazilaName">
-                      <option disabled value="">Please select one</option>                          
-                      <option v-for="upazila in upazilaListByDistrict" v-bind:value="{ id: upazila.id, name: upazila.name }">
-                        {{ upazila.name }}
-                      </option> 
-                  </select>
-                </div>
+                <upazilas v-model="selectedUpazila" :district="selectedDistrict"></upazilas>
               </div>              
             </div>
             <div class="form-row">
@@ -125,7 +102,7 @@
                             <button v-on:click.prevent="remove(city)" class="btn btn-danger">
                               <i class="fa fa-trash fa-fw"></i>Remove
                             </button>  
-                        </td>                        
+                        </td>                  
                       </tr>                            
                     </tbody>
                 </table>                        
@@ -144,19 +121,30 @@
   </div>      
 </template>
 <script>
+    import Divisions from '../../components/city/Divisions'; 
+    import Districts from '../../components/city/Districts'; 
+    import Upazilas from '../../components/city/Upazilas'; 
+
+    import { mapGetters } from 'vuex';
+
     export default {
+        components: {
+            Divisions,
+            Districts,
+            Upazilas
+        },
         data() {
           return {
             actionStatus: '',
             alertType: '',
-            districtListByDivision: [],
-            upazilaListByDistrict: [],
+            //districtListByDivision: [],
+            //upazilaListByDistrict: [],
             cityName: '',
             district: '',
             busAvailableToCityList: [], //bus service availble to the cities
-            divisionList: [],
-            districtList: [],
-            upazilaList: [],            
+            //divisionList: [],
+            //districtList: [],
+            //upazilaList: [],            
             disableSorting: true,
             error: '',
             loading: false,
@@ -174,18 +162,22 @@
           }
         },
         mounted() {           
-           this.fetchDivisions();
-           this.fetchDistricts();
-           this.fetchUpazilas();
-           this.fetchBusAvailableToCities();           
+           //this.fetchDivisions();
+           //this.fetchDistricts();
+           //this.fetchUpazilas();
+           this.fetchBusAvailableToCities();          
            this.enableScroll();
+           
         },
+        
         watch: {
             selectedDivision() {
-                this.fetchCitiesByDivision(this.selectedDivision.id); // this.selectedDivisionId
+                this.selectedDistrict = '';
+                this.selectedCity.name ='';
             },
             selectedDistrict() {
-                this.fetchCitiesByDistrict(this.selectedDistrict.id);
+               // this.fetchCitiesByDistrict(this.selectedDistrict);
+                this.selectedUpazila = '';
                 this.cityToBeAdded();
             },
             selectedUpazila() {
@@ -193,6 +185,9 @@
             }
         },
         computed: {
+            ...mapGetters('city', [
+                'districtBy'
+            ]),
           isValid() {
             return this.selectedCity != '' &&
               this.selectedDistrict != '' &&
@@ -201,12 +196,17 @@
         },
         methods: {
           cityToBeAdded() {
-            this.selectedCity.districtId = this.selectedDistrict.id;
+            this.selectedCity.districtId = this.selectedDistrict;
             if (this.selectedUpazila != '') {
-              this.selectedCity.name = this.selectedUpazila.name;
+              this.selectedCity.name = this.selectedUpazila;
               return;
             }
-            this.selectedCity.name = this.selectedDistrict.name;
+
+            if (this.selectedDistrict != '') {
+
+            let district = this.districtBy(this.selectedDistrict);            
+            this.selectedCity.name = district.name; 
+            }
           },
           enableScroll() {
             $('#scrollbar').overlayScrollbars({ /* your options */ 
@@ -217,48 +217,48 @@
               }
             });                 
           },                    
-          fetchCitiesByDivision(divisionId) {
-            this.loading = true;
-            this.districtListByDivision= [];     
-            this.districtListByDivision =  this.districtList.filter(district => district.division_id == divisionId);
-            this.loading = false;
-          },
-          fetchCitiesByDistrict(districtId) {
-            this.loading = true;
-            this.upazilaListByDistrict= [];     
-            this.upazilaListByDistrict =  this.upazilaList.filter(upazila => upazila.district_id == districtId);
-            this.loading = false;
-          },
-          fetchDistricts() {
-            this.loading = true;
-            this.districtList= [];            
-            var vm = this;                      
-            axios.get('/api/districts')  
-                .then(function (response) {                  
-                   response.data.error ? vm.error = response.data.error : vm.districtList = response.data;
-                   vm.loading = false;                  
-            });
-          },
-          fetchUpazilas() {
-            this.loading = true;
-            this.upazilaList= [];            
-            var vm = this;                      
-            axios.get('/api/upazilas')  
-                .then(function (response) {                  
-                   response.data.error ? vm.error = response.data.error : vm.upazilaList = response.data;
-                   vm.loading = false;                  
-            });
-          },
-          fetchDivisions() {
-            this.loading = true;
-            this.divisionList= [];            
-            var vm = this;                                  
-            axios.get('/api/divisions')  
-                .then(function (response) {                  
-                   response.data.error ? vm.error = response.data.error : vm.divisionList = response.data;
-                   vm.loading = false;                  
-            });
-          },
+          // fetchCitiesByDivision(divisionId) {
+          //   this.loading = true;
+          //   this.districtListByDivision= [];     
+          //   this.districtListByDivision =  this.districtList.filter(district => district.division_id == divisionId);
+          //   this.loading = false;
+          // },
+          // fetchCitiesByDistrict(districtId) {
+          //   this.loading = true;
+          //   this.upazilaListByDistrict= [];     
+          //   this.upazilaListByDistrict =  this.upazilaList.filter(upazila => upazila.district_id == districtId);
+          //   this.loading = false;
+          // },
+          // fetchDistricts() {
+          //   this.loading = true;
+          //   this.districtList= [];            
+          //   var vm = this;                      
+          //   axios.get('/api/districts')  
+          //       .then(function (response) {                  
+          //          response.data.error ? vm.error = response.data.error : vm.districtList = response.data;
+          //          vm.loading = false;                  
+          //   });
+          // },
+          // fetchUpazilas() {
+          //   this.loading = true;
+          //   this.upazilaList= [];            
+          //   var vm = this;                      
+          //   axios.get('/api/upazilas')  
+          //       .then(function (response) {                  
+          //          response.data.error ? vm.error = response.data.error : vm.upazilaList = response.data;
+          //          vm.loading = false;                  
+          //   });
+          // },
+          // fetchDivisions() {
+          //   this.loading = true;
+          //   this.divisionList= [];            
+          //   var vm = this;                                  
+          //   axios.get('/api/divisions')  
+          //       .then(function (response) {                  
+          //          response.data.error ? vm.error = response.data.error : vm.divisionList = response.data;
+          //          vm.loading = false;                  
+          //   });
+          // },
           fetchBusAvailableToCities() {
             this.loading = true;
             this.busAvailableToCityList= [];            

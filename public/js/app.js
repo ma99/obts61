@@ -3370,6 +3370,209 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/city/Districts.vue?vue&type=script&lang=js&":
+/*!*************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/city/Districts.vue?vue&type=script&lang=js& ***!
+  \*************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  props: ['value', 'division'],
+  data: function data() {
+    return {
+      disable: false
+    };
+  },
+  mounted: function mounted() {
+    //console.log('Component mounted.')
+    this.fetchDistricts();
+    this.disable = true;
+  },
+  watch: {
+    division: function division() {
+      this.getDistrictsByDivision(this.division); //
+    }
+  },
+  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapState"])('city', ['districtListByDivision'])),
+  methods: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapActions"])('city', ['getDistricts', 'getDistrictsByDivision']), {
+    fetchDistricts: function fetchDistricts() {
+      //this.loading = true;
+      //this.divisionList= [];            
+      //var vm = this;                                  
+      this.getDistricts();
+    } // fetchDistrictsByDivision(id) {
+    //     this.getDistrictsByDivision(id);
+    // },
+
+  })
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/city/Divisions.vue?vue&type=script&lang=js&":
+/*!*************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/city/Divisions.vue?vue&type=script&lang=js& ***!
+  \*************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  props: ['value'],
+  // props: {
+  //      value: {
+  //       type: String,
+  //       default: 'Please Select'
+  //     },
+  // },
+  data: function data() {
+    return {
+      disable: false
+    };
+  },
+  mounted: function mounted() {
+    //console.log('Component mounted.')
+    this.fetchDivisions();
+    this.disable = true;
+  },
+  watch: {// value() {
+    //     let div = this.value;
+    //     console.log('dd=', div.name);
+    // }
+  },
+  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapState"])('city', ['divisionList'])),
+  methods: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapActions"])('city', ['getDivisions']), {
+    fetchDivisions: function fetchDivisions() {
+      //this.loading = true;
+      //this.divisionList= [];            
+      //var vm = this;                                  
+      this.getDivisions();
+    }
+  })
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/city/Upazilas.vue?vue&type=script&lang=js&":
+/*!************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/city/Upazilas.vue?vue&type=script&lang=js& ***!
+  \************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  props: ['value', 'district'],
+  data: function data() {
+    return {
+      disable: false
+    };
+  },
+  mounted: function mounted() {
+    //console.log('Component mounted.')
+    this.fetchUpazilas();
+    this.disable = true;
+  },
+  watch: {
+    district: function district() {
+      this.getUpazilasByDistrict(this.district);
+    }
+  },
+  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapState"])('city', ['upazilaListByDistrict'])),
+  methods: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapActions"])('city', ['getUpazilas', 'getUpazilasByDistrict']), {
+    fetchUpazilas: function fetchUpazilas() {
+      //this.loading = true;
+      //this.divisionList= [];            
+      //var vm = this;                                  
+      this.getUpazilas();
+    } // fetchDistrictsByDivision(id) {
+    //     this.getDistrictsByDivision(id);
+    // },
+
+  })
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/About.vue?vue&type=script&lang=js&":
 /*!***********************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/views/About.vue?vue&type=script&lang=js& ***!
@@ -6583,6 +6786,16 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _components_city_Divisions__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../components/city/Divisions */ "./resources/js/components/city/Divisions.vue");
+/* harmony import */ var _components_city_Districts__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../components/city/Districts */ "./resources/js/components/city/Districts.vue");
+/* harmony import */ var _components_city_Upazilas__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../components/city/Upazilas */ "./resources/js/components/city/Upazilas.vue");
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 //
 //
 //
@@ -6705,43 +6918,29 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
+
+
+
+
 /* harmony default export */ __webpack_exports__["default"] = ({
+  components: {
+    Divisions: _components_city_Divisions__WEBPACK_IMPORTED_MODULE_0__["default"],
+    Districts: _components_city_Districts__WEBPACK_IMPORTED_MODULE_1__["default"],
+    Upazilas: _components_city_Upazilas__WEBPACK_IMPORTED_MODULE_2__["default"]
+  },
   data: function data() {
     return {
       actionStatus: '',
       alertType: '',
-      districtListByDivision: [],
-      upazilaListByDistrict: [],
+      //districtListByDivision: [],
+      //upazilaListByDistrict: [],
       cityName: '',
       district: '',
       busAvailableToCityList: [],
       //bus service availble to the cities
-      divisionList: [],
-      districtList: [],
-      upazilaList: [],
+      //divisionList: [],
+      //districtList: [],
+      //upazilaList: [],            
       disableSorting: true,
       error: '',
       loading: false,
@@ -6759,39 +6958,44 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   mounted: function mounted() {
-    this.fetchDivisions();
-    this.fetchDistricts();
-    this.fetchUpazilas();
+    //this.fetchDivisions();
+    //this.fetchDistricts();
+    //this.fetchUpazilas();
     this.fetchBusAvailableToCities();
     this.enableScroll();
   },
   watch: {
     selectedDivision: function selectedDivision() {
-      this.fetchCitiesByDivision(this.selectedDivision.id); // this.selectedDivisionId
+      this.selectedDistrict = '';
+      this.selectedCity.name = '';
     },
     selectedDistrict: function selectedDistrict() {
-      this.fetchCitiesByDistrict(this.selectedDistrict.id);
+      // this.fetchCitiesByDistrict(this.selectedDistrict);
+      this.selectedUpazila = '';
       this.cityToBeAdded();
     },
     selectedUpazila: function selectedUpazila() {
       this.cityToBeAdded();
     }
   },
-  computed: {
+  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_3__["mapGetters"])('city', ['districtBy']), {
     isValid: function isValid() {
       return this.selectedCity != '' && this.selectedDistrict != '' && this.selectedDivision != '';
     }
-  },
+  }),
   methods: {
     cityToBeAdded: function cityToBeAdded() {
-      this.selectedCity.districtId = this.selectedDistrict.id;
+      this.selectedCity.districtId = this.selectedDistrict;
 
       if (this.selectedUpazila != '') {
-        this.selectedCity.name = this.selectedUpazila.name;
+        this.selectedCity.name = this.selectedUpazila;
         return;
       }
 
-      this.selectedCity.name = this.selectedDistrict.name;
+      if (this.selectedDistrict != '') {
+        var district = this.districtBy(this.selectedDistrict);
+        this.selectedCity.name = district.name;
+      }
     },
     enableScroll: function enableScroll() {
       $('#scrollbar').overlayScrollbars({
@@ -6803,49 +7007,48 @@ __webpack_require__.r(__webpack_exports__);
         }
       });
     },
-    fetchCitiesByDivision: function fetchCitiesByDivision(divisionId) {
-      this.loading = true;
-      this.districtListByDivision = [];
-      this.districtListByDivision = this.districtList.filter(function (district) {
-        return district.division_id == divisionId;
-      });
-      this.loading = false;
-    },
-    fetchCitiesByDistrict: function fetchCitiesByDistrict(districtId) {
-      this.loading = true;
-      this.upazilaListByDistrict = [];
-      this.upazilaListByDistrict = this.upazilaList.filter(function (upazila) {
-        return upazila.district_id == districtId;
-      });
-      this.loading = false;
-    },
-    fetchDistricts: function fetchDistricts() {
-      this.loading = true;
-      this.districtList = [];
-      var vm = this;
-      axios.get('/api/districts').then(function (response) {
-        response.data.error ? vm.error = response.data.error : vm.districtList = response.data;
-        vm.loading = false;
-      });
-    },
-    fetchUpazilas: function fetchUpazilas() {
-      this.loading = true;
-      this.upazilaList = [];
-      var vm = this;
-      axios.get('/api/upazilas').then(function (response) {
-        response.data.error ? vm.error = response.data.error : vm.upazilaList = response.data;
-        vm.loading = false;
-      });
-    },
-    fetchDivisions: function fetchDivisions() {
-      this.loading = true;
-      this.divisionList = [];
-      var vm = this;
-      axios.get('/api/divisions').then(function (response) {
-        response.data.error ? vm.error = response.data.error : vm.divisionList = response.data;
-        vm.loading = false;
-      });
-    },
+    // fetchCitiesByDivision(divisionId) {
+    //   this.loading = true;
+    //   this.districtListByDivision= [];     
+    //   this.districtListByDivision =  this.districtList.filter(district => district.division_id == divisionId);
+    //   this.loading = false;
+    // },
+    // fetchCitiesByDistrict(districtId) {
+    //   this.loading = true;
+    //   this.upazilaListByDistrict= [];     
+    //   this.upazilaListByDistrict =  this.upazilaList.filter(upazila => upazila.district_id == districtId);
+    //   this.loading = false;
+    // },
+    // fetchDistricts() {
+    //   this.loading = true;
+    //   this.districtList= [];            
+    //   var vm = this;                      
+    //   axios.get('/api/districts')  
+    //       .then(function (response) {                  
+    //          response.data.error ? vm.error = response.data.error : vm.districtList = response.data;
+    //          vm.loading = false;                  
+    //   });
+    // },
+    // fetchUpazilas() {
+    //   this.loading = true;
+    //   this.upazilaList= [];            
+    //   var vm = this;                      
+    //   axios.get('/api/upazilas')  
+    //       .then(function (response) {                  
+    //          response.data.error ? vm.error = response.data.error : vm.upazilaList = response.data;
+    //          vm.loading = false;                  
+    //   });
+    // },
+    // fetchDivisions() {
+    //   this.loading = true;
+    //   this.divisionList= [];            
+    //   var vm = this;                                  
+    //   axios.get('/api/divisions')  
+    //       .then(function (response) {                  
+    //          response.data.error ? vm.error = response.data.error : vm.divisionList = response.data;
+    //          vm.loading = false;                  
+    //   });
+    // },
     fetchBusAvailableToCities: function fetchBusAvailableToCities() {
       this.loading = true;
       this.busAvailableToCityList = [];
@@ -63299,6 +63502,162 @@ render._withStripped = true
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/city/Districts.vue?vue&type=template&id=1918ed28&":
+/*!*****************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/city/Districts.vue?vue&type=template&id=1918ed28& ***!
+  \*****************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "form-group" }, [
+    _c("label", { attrs: { for: "districtName" } }, [_vm._v("District")]),
+    _vm._v(" "),
+    _c(
+      "select",
+      {
+        staticClass: "form-control",
+        attrs: { id: "districtName" },
+        domProps: { value: _vm.value },
+        on: {
+          input: function($event) {
+            return _vm.$emit("input", $event.target.value)
+          }
+        }
+      },
+      [
+        _c("option", { attrs: { value: "", disabled: _vm.disable } }, [
+          _vm._v("Please select one")
+        ]),
+        _vm._v(" "),
+        _vm._l(_vm.districtListByDivision, function(district) {
+          return _c("option", { domProps: { value: district.id } }, [
+            _vm._v("\n        " + _vm._s(district.name) + "\n        ")
+          ])
+        })
+      ],
+      2
+    )
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/city/Divisions.vue?vue&type=template&id=37cbe7ad&":
+/*!*****************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/city/Divisions.vue?vue&type=template&id=37cbe7ad& ***!
+  \*****************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "form-group" }, [
+    _c("label", { attrs: { for: "divisionName" } }, [_vm._v("Division")]),
+    _vm._v(" "),
+    _c(
+      "select",
+      {
+        staticClass: "form-control",
+        attrs: { id: "divisionName" },
+        domProps: { value: _vm.value },
+        on: {
+          input: function($event) {
+            return _vm.$emit("input", $event.target.value)
+          }
+        }
+      },
+      [
+        _c("option", { attrs: { value: "", disabled: _vm.disable } }, [
+          _vm._v("Please select one")
+        ]),
+        _vm._v(" "),
+        _vm._l(_vm.divisionList, function(division) {
+          return _c("option", { domProps: { value: division.id } }, [
+            _vm._v("\n        " + _vm._s(division.name) + "\n      ")
+          ])
+        })
+      ],
+      2
+    )
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/city/Upazilas.vue?vue&type=template&id=fa99779c&":
+/*!****************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/city/Upazilas.vue?vue&type=template&id=fa99779c& ***!
+  \****************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "form-group" }, [
+    _c("label", { attrs: { for: "upazilaName" } }, [_vm._v("Upazila")]),
+    _vm._v(" "),
+    _c(
+      "select",
+      {
+        staticClass: "form-control",
+        attrs: { id: "upazilaName" },
+        domProps: { value: _vm.value },
+        on: {
+          input: function($event) {
+            return _vm.$emit("input", $event.target.value)
+          }
+        }
+      },
+      [
+        _c("option", { attrs: { value: "", disabled: _vm.disable } }, [
+          _vm._v("Please select one")
+        ]),
+        _vm._v(" "),
+        _vm._l(_vm.upazilaListByDistrict, function(upazila) {
+          return _c("option", { domProps: { value: upazila.name } }, [
+            _vm._v("\n        " + _vm._s(upazila.name) + "\n      ")
+          ])
+        })
+      ],
+      2
+    )
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/About.vue?vue&type=template&id=2995bb7e&":
 /*!***************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/views/About.vue?vue&type=template&id=2995bb7e& ***!
@@ -68104,202 +68463,58 @@ var render = function() {
               _vm._v(" "),
               _c("form", [
                 _c("div", { staticClass: "form-row justify-content-center" }, [
-                  _c("div", { staticClass: "col-sm-3" }, [
-                    _c("div", { staticClass: "form-group" }, [
-                      _c("label", { attrs: { for: "divisionName" } }, [
-                        _vm._v("Division")
-                      ]),
-                      _vm._v(" "),
-                      _c(
-                        "select",
-                        {
-                          directives: [
-                            {
-                              name: "model",
-                              rawName: "v-model",
-                              value: _vm.selectedDivision,
-                              expression: "selectedDivision"
-                            }
-                          ],
-                          staticClass: "form-control",
-                          attrs: { id: "divisionName" },
-                          on: {
-                            change: function($event) {
-                              var $$selectedVal = Array.prototype.filter
-                                .call($event.target.options, function(o) {
-                                  return o.selected
-                                })
-                                .map(function(o) {
-                                  var val = "_value" in o ? o._value : o.value
-                                  return val
-                                })
-                              _vm.selectedDivision = $event.target.multiple
-                                ? $$selectedVal
-                                : $$selectedVal[0]
-                            }
-                          }
-                        },
-                        [
-                          _c("option", { attrs: { disabled: "", value: "" } }, [
-                            _vm._v("Please select one")
-                          ]),
-                          _vm._v(" "),
-                          _vm._l(_vm.divisionList, function(division) {
-                            return _c(
-                              "option",
-                              {
-                                domProps: {
-                                  value: {
-                                    id: division.id,
-                                    name: division.name
-                                  }
-                                }
-                              },
-                              [
-                                _vm._v(
-                                  "\n                      " +
-                                    _vm._s(division.name) +
-                                    "\n                    "
-                                )
-                              ]
-                            )
-                          })
-                        ],
-                        2
-                      )
-                    ])
-                  ]),
+                  _c(
+                    "div",
+                    { staticClass: "col-sm-3" },
+                    [
+                      _c("divisions", {
+                        model: {
+                          value: _vm.selectedDivision,
+                          callback: function($$v) {
+                            _vm.selectedDivision = $$v
+                          },
+                          expression: "selectedDivision"
+                        }
+                      })
+                    ],
+                    1
+                  ),
                   _vm._v(" "),
-                  _c("div", { staticClass: "col-sm-3" }, [
-                    _c("div", { staticClass: "form-group" }, [
-                      _c("label", { attrs: { for: "districtName" } }, [
-                        _vm._v("District")
-                      ]),
-                      _vm._v(" "),
-                      _c(
-                        "select",
-                        {
-                          directives: [
-                            {
-                              name: "model",
-                              rawName: "v-model",
-                              value: _vm.selectedDistrict,
-                              expression: "selectedDistrict"
-                            }
-                          ],
-                          staticClass: "form-control",
-                          attrs: { id: "districtName" },
-                          on: {
-                            change: function($event) {
-                              var $$selectedVal = Array.prototype.filter
-                                .call($event.target.options, function(o) {
-                                  return o.selected
-                                })
-                                .map(function(o) {
-                                  var val = "_value" in o ? o._value : o.value
-                                  return val
-                                })
-                              _vm.selectedDistrict = $event.target.multiple
-                                ? $$selectedVal
-                                : $$selectedVal[0]
-                            }
-                          }
-                        },
-                        [
-                          _c("option", { attrs: { disabled: "", value: "" } }, [
-                            _vm._v("Please select one")
-                          ]),
-                          _vm._v(" "),
-                          _vm._l(_vm.districtListByDivision, function(
-                            district
-                          ) {
-                            return _c(
-                              "option",
-                              {
-                                domProps: {
-                                  value: {
-                                    id: district.id,
-                                    name: district.name
-                                  }
-                                }
-                              },
-                              [
-                                _vm._v(
-                                  "\n                      " +
-                                    _vm._s(district.name) +
-                                    "\n                    "
-                                )
-                              ]
-                            )
-                          })
-                        ],
-                        2
-                      )
-                    ])
-                  ]),
+                  _c(
+                    "div",
+                    { staticClass: "col-sm-3" },
+                    [
+                      _c("districts", {
+                        attrs: { division: _vm.selectedDivision },
+                        model: {
+                          value: _vm.selectedDistrict,
+                          callback: function($$v) {
+                            _vm.selectedDistrict = $$v
+                          },
+                          expression: "selectedDistrict"
+                        }
+                      })
+                    ],
+                    1
+                  ),
                   _vm._v(" "),
-                  _c("div", { staticClass: "col-sm-3" }, [
-                    _c("div", { staticClass: "form-group" }, [
-                      _c("label", { attrs: { for: "upazilaName" } }, [
-                        _vm._v("Upazila")
-                      ]),
-                      _vm._v(" "),
-                      _c(
-                        "select",
-                        {
-                          directives: [
-                            {
-                              name: "model",
-                              rawName: "v-model",
-                              value: _vm.selectedUpazila,
-                              expression: "selectedUpazila"
-                            }
-                          ],
-                          staticClass: "form-control",
-                          attrs: { id: "upazilaName" },
-                          on: {
-                            change: function($event) {
-                              var $$selectedVal = Array.prototype.filter
-                                .call($event.target.options, function(o) {
-                                  return o.selected
-                                })
-                                .map(function(o) {
-                                  var val = "_value" in o ? o._value : o.value
-                                  return val
-                                })
-                              _vm.selectedUpazila = $event.target.multiple
-                                ? $$selectedVal
-                                : $$selectedVal[0]
-                            }
-                          }
-                        },
-                        [
-                          _c("option", { attrs: { disabled: "", value: "" } }, [
-                            _vm._v("Please select one")
-                          ]),
-                          _vm._v(" "),
-                          _vm._l(_vm.upazilaListByDistrict, function(upazila) {
-                            return _c(
-                              "option",
-                              {
-                                domProps: {
-                                  value: { id: upazila.id, name: upazila.name }
-                                }
-                              },
-                              [
-                                _vm._v(
-                                  "\n                      " +
-                                    _vm._s(upazila.name) +
-                                    "\n                    "
-                                )
-                              ]
-                            )
-                          })
-                        ],
-                        2
-                      )
-                    ])
-                  ])
+                  _c(
+                    "div",
+                    { staticClass: "col-sm-3" },
+                    [
+                      _c("upazilas", {
+                        attrs: { district: _vm.selectedDistrict },
+                        model: {
+                          value: _vm.selectedUpazila,
+                          callback: function($$v) {
+                            _vm.selectedUpazila = $$v
+                          },
+                          expression: "selectedUpazila"
+                        }
+                      })
+                    ],
+                    1
+                  )
                 ]),
                 _vm._v(" "),
                 _c("div", { staticClass: "form-row" }, [
@@ -85821,6 +86036,31 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/api/city.js":
+/*!**********************************!*\
+  !*** ./resources/js/api/city.js ***!
+  \**********************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _api__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./api */ "./resources/js/api/api.js");
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  divisions: function divisions() {
+    return _api__WEBPACK_IMPORTED_MODULE_0__["default"].get('api/divisions');
+  },
+  districts: function districts() {
+    return _api__WEBPACK_IMPORTED_MODULE_0__["default"].get('api/districts');
+  },
+  upazilas: function upazilas() {
+    return _api__WEBPACK_IMPORTED_MODULE_0__["default"].get('api/upazilas');
+  }
+});
+
+/***/ }),
+
 /***/ "./resources/js/api/seatplan.js":
 /*!**************************************!*\
   !*** ./resources/js/api/seatplan.js ***!
@@ -86823,6 +87063,213 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/components/city/Districts.vue":
+/*!****************************************************!*\
+  !*** ./resources/js/components/city/Districts.vue ***!
+  \****************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _Districts_vue_vue_type_template_id_1918ed28___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Districts.vue?vue&type=template&id=1918ed28& */ "./resources/js/components/city/Districts.vue?vue&type=template&id=1918ed28&");
+/* harmony import */ var _Districts_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Districts.vue?vue&type=script&lang=js& */ "./resources/js/components/city/Districts.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _Districts_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _Districts_vue_vue_type_template_id_1918ed28___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _Districts_vue_vue_type_template_id_1918ed28___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/city/Districts.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/city/Districts.vue?vue&type=script&lang=js&":
+/*!*****************************************************************************!*\
+  !*** ./resources/js/components/city/Districts.vue?vue&type=script&lang=js& ***!
+  \*****************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Districts_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./Districts.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/city/Districts.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Districts_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/city/Districts.vue?vue&type=template&id=1918ed28&":
+/*!***********************************************************************************!*\
+  !*** ./resources/js/components/city/Districts.vue?vue&type=template&id=1918ed28& ***!
+  \***********************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Districts_vue_vue_type_template_id_1918ed28___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./Districts.vue?vue&type=template&id=1918ed28& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/city/Districts.vue?vue&type=template&id=1918ed28&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Districts_vue_vue_type_template_id_1918ed28___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Districts_vue_vue_type_template_id_1918ed28___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/city/Divisions.vue":
+/*!****************************************************!*\
+  !*** ./resources/js/components/city/Divisions.vue ***!
+  \****************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _Divisions_vue_vue_type_template_id_37cbe7ad___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Divisions.vue?vue&type=template&id=37cbe7ad& */ "./resources/js/components/city/Divisions.vue?vue&type=template&id=37cbe7ad&");
+/* harmony import */ var _Divisions_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Divisions.vue?vue&type=script&lang=js& */ "./resources/js/components/city/Divisions.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _Divisions_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _Divisions_vue_vue_type_template_id_37cbe7ad___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _Divisions_vue_vue_type_template_id_37cbe7ad___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/city/Divisions.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/city/Divisions.vue?vue&type=script&lang=js&":
+/*!*****************************************************************************!*\
+  !*** ./resources/js/components/city/Divisions.vue?vue&type=script&lang=js& ***!
+  \*****************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Divisions_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./Divisions.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/city/Divisions.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Divisions_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/city/Divisions.vue?vue&type=template&id=37cbe7ad&":
+/*!***********************************************************************************!*\
+  !*** ./resources/js/components/city/Divisions.vue?vue&type=template&id=37cbe7ad& ***!
+  \***********************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Divisions_vue_vue_type_template_id_37cbe7ad___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./Divisions.vue?vue&type=template&id=37cbe7ad& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/city/Divisions.vue?vue&type=template&id=37cbe7ad&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Divisions_vue_vue_type_template_id_37cbe7ad___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Divisions_vue_vue_type_template_id_37cbe7ad___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/city/Upazilas.vue":
+/*!***************************************************!*\
+  !*** ./resources/js/components/city/Upazilas.vue ***!
+  \***************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _Upazilas_vue_vue_type_template_id_fa99779c___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Upazilas.vue?vue&type=template&id=fa99779c& */ "./resources/js/components/city/Upazilas.vue?vue&type=template&id=fa99779c&");
+/* harmony import */ var _Upazilas_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Upazilas.vue?vue&type=script&lang=js& */ "./resources/js/components/city/Upazilas.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _Upazilas_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _Upazilas_vue_vue_type_template_id_fa99779c___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _Upazilas_vue_vue_type_template_id_fa99779c___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/city/Upazilas.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/city/Upazilas.vue?vue&type=script&lang=js&":
+/*!****************************************************************************!*\
+  !*** ./resources/js/components/city/Upazilas.vue?vue&type=script&lang=js& ***!
+  \****************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Upazilas_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./Upazilas.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/city/Upazilas.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Upazilas_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/city/Upazilas.vue?vue&type=template&id=fa99779c&":
+/*!**********************************************************************************!*\
+  !*** ./resources/js/components/city/Upazilas.vue?vue&type=template&id=fa99779c& ***!
+  \**********************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Upazilas_vue_vue_type_template_id_fa99779c___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./Upazilas.vue?vue&type=template&id=fa99779c& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/city/Upazilas.vue?vue&type=template&id=fa99779c&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Upazilas_vue_vue_type_template_id_fa99779c___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Upazilas_vue_vue_type_template_id_fa99779c___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
 /***/ "./resources/js/routes.js":
 /*!********************************!*\
   !*** ./resources/js/routes.js ***!
@@ -86934,10 +87381,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _actions__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./actions */ "./resources/js/store/actions.js");
 /* harmony import */ var _actions__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_actions__WEBPACK_IMPORTED_MODULE_5__);
 /* harmony import */ var _modules_bus__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./modules/bus */ "./resources/js/store/modules/bus/index.js");
-/* harmony import */ var _modules_seatplan__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./modules/seatplan */ "./resources/js/store/modules/seatplan/index.js");
+/* harmony import */ var _modules_city__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./modules/city */ "./resources/js/store/modules/city/index.js");
+/* harmony import */ var _modules_seatplan__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./modules/seatplan */ "./resources/js/store/modules/seatplan/index.js");
 
 
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__["default"]);
+
 
 
 
@@ -86951,7 +87400,8 @@ var store = new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
   actions: _actions__WEBPACK_IMPORTED_MODULE_5__,
   modules: {
     bus: _modules_bus__WEBPACK_IMPORTED_MODULE_6__["default"],
-    seatplan: _modules_seatplan__WEBPACK_IMPORTED_MODULE_7__["default"]
+    city: _modules_city__WEBPACK_IMPORTED_MODULE_7__["default"],
+    seatplan: _modules_seatplan__WEBPACK_IMPORTED_MODULE_8__["default"]
   }
 });
 
@@ -87206,6 +87656,170 @@ __webpack_require__.r(__webpack_exports__);
   availableBusList: [],
   types: [] //bustypes
 
+});
+
+/***/ }),
+
+/***/ "./resources/js/store/modules/city/actions.js":
+/*!****************************************************!*\
+  !*** ./resources/js/store/modules/city/actions.js ***!
+  \****************************************************/
+/*! exports provided: getDivisions, getDistricts, getDistrictsByDivision, getUpazilas, getUpazilasByDistrict */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getDivisions", function() { return getDivisions; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getDistricts", function() { return getDistricts; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getDistrictsByDivision", function() { return getDistrictsByDivision; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getUpazilas", function() { return getUpazilas; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getUpazilasByDistrict", function() { return getUpazilasByDistrict; });
+/* harmony import */ var _api_city__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../api/city */ "./resources/js/api/city.js");
+
+var getDivisions = function getDivisions(_ref) {
+  var commit = _ref.commit;
+  _api_city__WEBPACK_IMPORTED_MODULE_0__["default"].divisions().then(function (response) {
+    commit('SET_DIVISIONS', response.data); //commit('SORT_SEATPLANS_BY_ID');
+  });
+};
+var getDistricts = function getDistricts(_ref2) {
+  var commit = _ref2.commit;
+  _api_city__WEBPACK_IMPORTED_MODULE_0__["default"].districts().then(function (response) {
+    commit('SET_DISTRICTS', response.data); //commit('SET_DISTRICTS_BY_DIVISION', response.data);
+    //commit('SORT_SEATPLANS_BY_ID');
+  });
+};
+var getDistrictsByDivision = function getDistrictsByDivision(_ref3, id) {
+  var commit = _ref3.commit,
+      getters = _ref3.getters;
+  var districts = getters.districtsByDivision(id);
+  commit('SET_DISTRICTS_BY_DIVISION', districts);
+};
+var getUpazilas = function getUpazilas(_ref4) {
+  var commit = _ref4.commit;
+  _api_city__WEBPACK_IMPORTED_MODULE_0__["default"].upazilas().then(function (response) {
+    commit('SET_UPAZILAS', response.data); //commit('SORT_SEATPLANS_BY_ID');
+  });
+};
+var getUpazilasByDistrict = function getUpazilasByDistrict(_ref5, id) {
+  var commit = _ref5.commit,
+      getters = _ref5.getters;
+  var upazilas = getters.upazilasByDistrict(id);
+  commit('SET_UPAZILAS_BY_DISTRICT', upazilas);
+};
+
+/***/ }),
+
+/***/ "./resources/js/store/modules/city/getters.js":
+/*!****************************************************!*\
+  !*** ./resources/js/store/modules/city/getters.js ***!
+  \****************************************************/
+/*! exports provided: districtsByDivision, districtBy, upazilasByDistrict */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "districtsByDivision", function() { return districtsByDivision; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "districtBy", function() { return districtBy; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "upazilasByDistrict", function() { return upazilasByDistrict; });
+var districtsByDivision = function districtsByDivision(state) {
+  return function (divisionId) {
+    return state.districtList.filter(function (district) {
+      return district.division_id == divisionId;
+    });
+  };
+};
+var districtBy = function districtBy(state) {
+  return function (id) {
+    return state.districtListByDivision.find(function (district) {
+      return district.id == id;
+    });
+  };
+};
+var upazilasByDistrict = function upazilasByDistrict(state) {
+  return function (districtId) {
+    return state.upazilaList.filter(function (upazila) {
+      return upazila.district_id == districtId;
+    });
+  };
+};
+
+/***/ }),
+
+/***/ "./resources/js/store/modules/city/index.js":
+/*!**************************************************!*\
+  !*** ./resources/js/store/modules/city/index.js ***!
+  \**************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _state__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./state */ "./resources/js/store/modules/city/state.js");
+/* harmony import */ var _getters__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./getters */ "./resources/js/store/modules/city/getters.js");
+/* harmony import */ var _mutations__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./mutations */ "./resources/js/store/modules/city/mutations.js");
+/* harmony import */ var _actions__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./actions */ "./resources/js/store/modules/city/actions.js");
+
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  namespaced: true,
+  state: _state__WEBPACK_IMPORTED_MODULE_0__["default"],
+  getters: _getters__WEBPACK_IMPORTED_MODULE_1__,
+  mutations: _mutations__WEBPACK_IMPORTED_MODULE_2__,
+  actions: _actions__WEBPACK_IMPORTED_MODULE_3__
+});
+
+/***/ }),
+
+/***/ "./resources/js/store/modules/city/mutations.js":
+/*!******************************************************!*\
+  !*** ./resources/js/store/modules/city/mutations.js ***!
+  \******************************************************/
+/*! exports provided: SET_DIVISIONS, SET_DISTRICTS, SET_DISTRICTS_BY_DIVISION, SET_UPAZILAS, SET_UPAZILAS_BY_DISTRICT */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SET_DIVISIONS", function() { return SET_DIVISIONS; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SET_DISTRICTS", function() { return SET_DISTRICTS; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SET_DISTRICTS_BY_DIVISION", function() { return SET_DISTRICTS_BY_DIVISION; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SET_UPAZILAS", function() { return SET_UPAZILAS; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SET_UPAZILAS_BY_DISTRICT", function() { return SET_UPAZILAS_BY_DISTRICT; });
+var SET_DIVISIONS = function SET_DIVISIONS(state, divisions) {
+  state.divisionList = divisions;
+};
+var SET_DISTRICTS = function SET_DISTRICTS(state, districts) {
+  state.districtList = districts;
+};
+var SET_DISTRICTS_BY_DIVISION = function SET_DISTRICTS_BY_DIVISION(state, districts) {
+  state.districtListByDivision = districts;
+};
+var SET_UPAZILAS = function SET_UPAZILAS(state, upazilas) {
+  state.upazilaList = upazilas;
+};
+var SET_UPAZILAS_BY_DISTRICT = function SET_UPAZILAS_BY_DISTRICT(state, upazilas) {
+  state.upazilaListByDistrict = upazilas;
+};
+
+/***/ }),
+
+/***/ "./resources/js/store/modules/city/state.js":
+/*!**************************************************!*\
+  !*** ./resources/js/store/modules/city/state.js ***!
+  \**************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony default export */ __webpack_exports__["default"] = ({
+  divisionList: [],
+  districtList: [],
+  districtListByDivision: [],
+  upazilaList: [],
+  upazilaListByDistrict: []
 });
 
 /***/ }),
