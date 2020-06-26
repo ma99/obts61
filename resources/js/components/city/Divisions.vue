@@ -18,29 +18,16 @@
     import { mapState, mapGetters, mapActions } from 'vuex';
     
     export default {
-        props: ['value'],        
-        // props: {
-        //      value: {
-        //       type: String,
-        //       default: 'Please Select'
-        //     },
-        // },
+        props: ['value'],                
         data() {
             return {
                 disable: false 
             }
         },
         mounted() {
-            //console.log('Component mounted.')
             this.fetchDivisions();
             this.disable = true;
-        },
-        watch: {
-            // value() {
-            //     let div = this.value;
-            //     console.log('dd=', div.name);
-            // }
-        },
+        },        
         computed: {                   
             ...mapState('city', [
               'divisionList',              
@@ -53,9 +40,6 @@
             ]),
 
             fetchDivisions() {
-                //this.loading = true;
-                //this.divisionList= [];            
-                //var vm = this;                                  
                 this.getDivisions();           
             },
         },

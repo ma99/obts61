@@ -7,7 +7,7 @@ export const SORT_SEATPLANS_BY_ID = (state) => {
     
     seatplans.sort((a, b) => {
         return a.id - b.id;
-    });
-    
+    });    
+        
     state.availableSeatPlanList = seatplans;
 }

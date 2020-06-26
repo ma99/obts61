@@ -56,6 +56,9 @@ Route::group(['middleware' => ['auth', 'role:super_admin']], function () {
 
 	//bus schedule
 	Route::post('/bus-schedule/{bus}', 'Admin\BusScheduleController@store');
+	//route cities
+	Route::post('/route-cities/{route}', 'Admin\RouteCitiesController@store');
+	Route::delete('/route-cities/{route}/{city}', 'Admin\RouteCitiesController@destroy');
 //});	
 
 Route::group(['middleware' => ['auth', 'role:super_admin,admin,operator']], function () {

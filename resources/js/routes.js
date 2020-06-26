@@ -42,7 +42,15 @@ export const routes = [
     },
     {
         path: '/route',
-        component: require('./views/bus/Route').default
+        component: require('./views/route/Route').default
+    },
+    // {
+    //     path: '/route-buses',
+    //     component: require('./views/route/RouteBuses').default
+    // },
+    {
+        path: '/route-cities',
+        component: require('./views/route/RouteCities').default
     },
     {
         path: '/seat-plan',

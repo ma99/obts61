@@ -24,6 +24,7 @@ class CityController extends Controller
     protected function validateRequest()
     {
         return request()->validate([
+           'division_id' => 'required',
            'district_id' => 'required',
            'name'  => 'required'
         ]);

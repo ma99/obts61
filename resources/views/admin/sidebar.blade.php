@@ -117,6 +117,30 @@
                 </li>  
               </ul>
             </li>          
+            {{-- Route --}}
+             <li class="nav-item has-treeview">
+              <a href="#" class="nav-link">
+                <i class="nav-icon fas fa-bus" aria-hidden="true"></i>
+                <p>ROUTE <i class="fas fa-angle-left right"></i></p>
+              </a>
+              <ul class="nav nav-treeview">
+                <li class="nav-item">
+                  <router-link to="/route" class="nav-link">
+                    <i class="nav-icon fas fa-exchange" aria-hidden="true"></i>Route
+                  </router-link> 
+                </li>
+                {{-- <li class="nav-item">
+                  <router-link to="/route-buses" class="nav-link">
+                      <i class="nav-icon fas fa-bus" aria-hidden="true"></i>Add Buses to Route  
+                  </router-link> 
+                </li>           --}}
+                <li class="nav-item">
+                  <router-link to="/route-cities" class="nav-link">                    
+                      <i class="nav-icon fas fa-money-bill" aria-hidden="true"></i>Add Cities to Route 
+                  </router-link> 
+                </li>                          
+              </ul>
+            </li>          
             <li class="nav-header">MISCELLANEOUS</li>          
           </ul>
         </nav>

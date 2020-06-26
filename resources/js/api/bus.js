@@ -22,6 +22,6 @@ export default {
     },
 
     delete(id) {
-        return api.delete(`buses/${id}`);
+        return Api.delete(`buses/${id}`);
     },
 }

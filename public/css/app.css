@@ -11362,6 +11362,18 @@ a.text-dark:focus {
   background-color: #E1F5FE;
 }
 
+.bg-lightpurple {
+  background-color: #E7E8FF;
+}
+
+.bg-app-purple {
+  background-color: #d3d4ff;
+}
+
+.bg-lightyellow {
+  background-color: #FFFEE7;
+}
+
 body {
   color: #525252;
 }

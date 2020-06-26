@@ -3473,33 +3473,18 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['value'],
-  // props: {
-  //      value: {
-  //       type: String,
-  //       default: 'Please Select'
-  //     },
-  // },
   data: function data() {
     return {
       disable: false
     };
   },
   mounted: function mounted() {
-    //console.log('Component mounted.')
     this.fetchDivisions();
     this.disable = true;
-  },
-  watch: {// value() {
-    //     let div = this.value;
-    //     console.log('dd=', div.name);
-    // }
   },
   computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapState"])('city', ['divisionList'])),
   methods: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapActions"])('city', ['getDivisions']), {
     fetchDivisions: function fetchDivisions() {
-      //this.loading = true;
-      //this.divisionList= [];            
-      //var vm = this;                                  
       this.getDivisions();
     }
   })
@@ -4459,7 +4444,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       });
     },
     save: function save() {
-      var vm = this;
+      //var vm = this;
       this.addBus({
         busInfo: this.bus,
         numberOfSeat: this.numberOfSeat
@@ -5254,416 +5239,6 @@ __webpack_require__.r(__webpack_exports__);
       swal({
         text: text,
         icon: icon
-      });
-    }
-  }
-});
-
-/***/ }),
-
-/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/bus/Route.vue?vue&type=script&lang=js&":
-/*!***************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/views/bus/Route.vue?vue&type=script&lang=js& ***!
-  \***************************************************************************************************************************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-/* harmony default export */ __webpack_exports__["default"] = ({
-  data: function data() {
-    return {
-      actionStatus: '',
-      alertType: '',
-      arrivalCityList: [],
-      availableRouteList: [],
-      departureCityList: [],
-      disableSorting: true,
-      districtList: [],
-      divisionList: [],
-      error: '',
-      loading: false,
-      tempCityList: [],
-      response: '',
-      routeDistance: '',
-      routeId: '',
-      routeName: '',
-      selectedArrivalCity: '',
-      selectedDepartureCity: '',
-      selectedDivisionForArrival: '',
-      selectedDivisionForDeparture: '',
-      show: false,
-      showAlert: false
-    };
-  },
-  mounted: function mounted() {
-    this.fetchDistricts();
-    this.fetchDivisions();
-    this.fetchAvailableRoutes();
-    this.enableScroll();
-  },
-  watch: {
-    selectedDivisionForDeparture: function selectedDivisionForDeparture() {
-      this.fetchCitiesByDivision(this.selectedDivisionForDeparture.id, 'departure');
-    },
-    selectedDivisionForArrival: function selectedDivisionForArrival() {
-      this.fetchCitiesByDivision(this.selectedDivisionForArrival.id, 'arrival');
-    }
-  },
-  computed: {
-    isValid: function isValid() {
-      return this.selectedDepartureCity != '' && this.selectedArrivalCity != '';
-    }
-  },
-  methods: {
-    actionAlert: function actionAlert(routeName) {
-      swal({
-        title: routeName,
-        text: 'Added successfully!',
-        icon: "success",
-        timer: 2000,
-        closeOnClickOutside: false
-      });
-    },
-    setRouteName: function setRouteName() {
-      this.routeName = this.selectedDepartureCity + ' - ' + this.selectedArrivalCity;
-    },
-    save: function save() {
-      this.setRouteName();
-      var vm = this;
-      axios.post('/routes', {
-        departure_city: this.selectedDepartureCity,
-        arrival_city: this.selectedArrivalCity,
-        distance: this.routeDistance
-      }).then(function (response) {
-        //console.log(response.data);
-        response.data.error ? vm.error = response.data.error : vm.response = response.data;
-        vm.availableRouteList.push(vm.response);
-        vm.loading = false;
-        vm.actionAlert(vm.routeName); //vm.actionStatus = 'Added';
-
-        vm.reset(); //vm.alertType = 'success';
-        //vm.showAlert = true;              
-      });
-    },
-    enableScroll: function enableScroll() {
-      $('#scrollbar').overlayScrollbars({
-        /* your options */
-        sizeAutoCapable: true,
-        scrollbars: {
-          autoHide: "never",
-          clickScrolling: true
-        }
-      });
-    },
-    fetchCitiesByDivision: function fetchCitiesByDivision(divisionId, status) {
-      this.loading = true;
-      this.tempCityList = [];
-      this.tempCityList = this.districtList.filter(function (district) {
-        return district.division_id == divisionId;
-      });
-
-      if (status == 'arrival') {
-        this.arrivalCityList = this.tempCityList;
-        this.loading = false;
-        return;
-      }
-
-      this.departureCityList = this.tempCityList;
-      this.loading = false;
-    },
-    fetchDistricts: function fetchDistricts() {
-      this.loading = true;
-      this.districtList = [];
-      var vm = this;
-      axios.get('/api/districts').then(function (response) {
-        response.data.error ? vm.error = response.data.error : vm.districtList = response.data;
-        vm.loading = false;
-      });
-    },
-    fetchDivisions: function fetchDivisions() {
-      this.loading = true;
-      this.divisionList = [];
-      var vm = this;
-      axios.get('/api/divisions') //--> api/bus?q=xyz        (right)
-      .then(function (response) {
-        response.data.error ? vm.error = response.data.error : vm.divisionList = response.data;
-        vm.loading = false;
-      });
-    },
-    fetchAvailableRoutes: function fetchAvailableRoutes() {
-      this.loading = true;
-      this.availableRouteList = [];
-      var vm = this;
-      axios.get('/api/routes').then(function (response) {
-        response.data.error ? vm.error = response.data.error : vm.availableRouteList = response.data;
-        vm.loading = false;
-        vm.sortByCityNameAvailableRouteList(vm.availableRouteList);
-      });
-    },
-    isSortingAvailableBy: function isSortingAvailableBy(val) {
-      if (val == 'name') {
-        this.sortByCityNameAvailableRouteList(this.availableRouteList);
-        this.disableSorting = true;
-        return;
-      }
-
-      this.sortByDistanceAvailableRouteList(this.availableRouteList);
-      this.disableSorting = false;
-    },
-    remove: function remove(route) {
-      // role id of user/staff in roles table
-      var vm = this;
-      this.routeName = route.departure_city + ' to ' + route.arrival_city;
-      swal({
-        title: "Are you sure?",
-        text: "This ROUTE will be Removed!",
-        icon: "error",
-        dangerMode: true,
-        buttons: {
-          cancel: "cancel",
-          confirm: {
-            text: "Remove It!",
-            value: true
-          }
-        }
-      }).then(function (value) {
-        if (value) {
-          vm.loading = true;
-          vm.response = '';
-          vm.showAlert = false;
-          axios["delete"]('/routes/' + route.id).then(function (response) {
-            response.data.error ? vm.error = response.data.error : vm.response = response.data;
-
-            if (vm.response) {
-              vm.removeRouteFromAvailableRouteList(route.id); // update the array after removing
-
-              vm.loading = false;
-              vm.actionStatus = 'Removed';
-              vm.alertType = 'danger';
-              vm.showAlert = true;
-              return;
-            }
-
-            vm.loading = false;
-          });
-        }
-      });
-    },
-    removeRouteFromAvailableRouteList: function removeRouteFromAvailableRouteList(routeId) {
-      var indx = this.availableRouteList.findIndex(function (route) {
-        return route.id == routeId;
-      });
-      this.availableRouteList.splice(indx, 1);
-    },
-    reset: function reset() {
-      this.selectedArrivalCity = '';
-      this.selectedDepartureCity = '';
-      this.selectedDivisionForArrival = '';
-      this.selectedDivisionForDeparture = '';
-      this.routeDistance = '';
-    },
-    sortByCityNameAvailableRouteList: function sortByCityNameAvailableRouteList(arr) {
-      // sort by name            
-      arr.sort(function (a, b) {
-        var nameA = a.departure_city.toUpperCase(); // ignore upper and lowercase
-
-        var nameB = b.departure_city.toUpperCase(); // ignore upper and lowercase
-
-        if (nameA < nameB) {
-          return -1;
-        }
-
-        if (nameA > nameB) {
-          return 1;
-        } // names must be equal
-
-
-        return 0;
-      });
-    },
-    sortByDistanceAvailableRouteList: function sortByDistanceAvailableRouteList(arr) {
-      // sort by distance 
-      arr.sort(function (a, b) {
-        return a.distance - b.distance;
       });
     }
   }
@@ -6936,8 +6511,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       //upazilaListByDistrict: [],
       cityName: '',
       district: '',
-      busAvailableToCityList: [],
-      //bus service availble to the cities
+      //cityList: [], //bus service availble to the cities
       //divisionList: [],
       //districtList: [],
       //upazilaList: [],            
@@ -6947,6 +6521,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       response: '',
       //selectedCityId: '',
       selectedCity: {
+        divisionId: '',
         districtId: '',
         name: ''
       },
@@ -6978,13 +6553,14 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       this.cityToBeAdded();
     }
   },
-  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_3__["mapGetters"])('city', ['districtBy']), {
+  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_3__["mapState"])('city', ['cityList']), {}, Object(vuex__WEBPACK_IMPORTED_MODULE_3__["mapGetters"])('city', ['cityBy', 'districtBy']), {
     isValid: function isValid() {
       return this.selectedCity != '' && this.selectedDistrict != '' && this.selectedDivision != '';
     }
   }),
-  methods: {
+  methods: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_3__["mapActions"])('city', ['addCity', 'deleteCity', 'getBusAvailableToCities', 'sortCitiesByName', 'sortCitiesByDistrict']), {
     cityToBeAdded: function cityToBeAdded() {
+      this.selectedCity.divisionId = this.selectedDivision;
       this.selectedCity.districtId = this.selectedDistrict;
 
       if (this.selectedUpazila != '') {
@@ -7051,27 +6627,29 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     // },
     fetchBusAvailableToCities: function fetchBusAvailableToCities() {
       this.loading = true;
-      this.busAvailableToCityList = [];
-      var vm = this;
-      axios.get('/api/cities').then(function (response) {
-        response.data.error ? vm.error = response.data.error : vm.busAvailableToCityList = response.data;
-        vm.loading = false;
-        vm.sortByCityNameBusAvailableToCityList(vm.busAvailableToCityList);
-      });
+      this.getBusAvailableToCities(); // this.cityList= [];            
+      // var vm = this;                
+      // axios.get('/api/cities')  
+      //     .then(function (response) {                  
+      //        response.data.error ? vm.error = response.data.error : vm.cityList = response.data;
+      //        vm.loading = false;
+      //        vm.sortByCityNamecityList(vm.cityList);
+      // });
+
+      this.loading = false;
     },
     getNameOf: function getNameOf(city) {
-      this.district = this.districtList.find(function (element) {
-        return element.id == city.district_id;
-      });
+      this.district = this.cityBy(city.district_id);
     },
     isSortingAvailableBy: function isSortingAvailableBy(val) {
       if (val == 'name') {
-        this.sortByCityNameBusAvailableToCityList(this.busAvailableToCityList);
+        this.sortCitiesByName();
         this.disableSorting = true;
         return;
-      }
+      } //this.sortByDistrictcityList(this.cityList);
 
-      this.sortByDistrictBusAvailableToCityList(this.busAvailableToCityList);
+
+      this.sortCitiesByDistrict();
       this.disableSorting = false;
     },
     remove: function remove(city) {
@@ -7094,57 +6672,65 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           vm.loading = true;
           vm.response = '';
           vm.showAlert = false;
-          axios["delete"]('/cities/' + city.id).then(function (response) {
-            response.data.error ? vm.error = response.data.error : vm.response = response.data;
+          vm.deleteCity(city.id); // axios.delete('/cities/'+city.id)          
+          // .then(function (response) { 
+          //     response.data.error ? vm.error = response.data.error : vm.response = response.data;
+          //     if (vm.response) {               
+          //         vm.removeCityFromcityList(city.id); // update the array after removing
+          //         vm.loading = false;
+          //         vm.actionStatus = 'Removed';
+          //         vm.alertType = 'danger';
+          //         vm.showAlert= true;
+          //         return;                    
+          //     }                            
+          //     vm.loading = false;
+          // });                       
 
-            if (vm.response) {
-              vm.removeCityFromBusAvailableToCityList(city.id); // update the array after removing
-
-              vm.loading = false;
-              vm.actionStatus = 'Removed';
-              vm.alertType = 'danger';
-              vm.showAlert = true;
-              return;
-            }
-
-            vm.loading = false;
-          });
-        }
-      });
-    },
-    removeCityFromBusAvailableToCityList: function removeCityFromBusAvailableToCityList(cityid) {
-      var indx = this.busAvailableToCityList.findIndex(function (city) {
-        // here 'city' is array object 
-        return city.id == cityid;
-      });
-      this.busAvailableToCityList.splice(indx, 1); //return;
-    },
-    save: function save() {
-      var vm = this; //this.loading = true;            
-
-      axios.post('/cities', {
-        district_id: this.selectedCity.districtId,
-        name: this.selectedCity.name
-      }).then(function (response) {
-        //console.log(response.data);
-        response.data.error ? vm.error = response.data.error : vm.response = response.data;
-
-        if (vm.response) {
-          //console.log(vm.response);
-          //vm.fetchBusAvailableToCities();
-          vm.busAvailableToCityList.push(vm.response);
-          vm.sortByCityNameBusAvailableToCityList(vm.busAvailableToCityList);
           vm.loading = false;
-          vm.actionAlert(vm.selectedCity.name);
-          vm.reset();
-          return;
+          vm.actionStatus = 'Removed';
+          vm.alertType = 'danger';
+          vm.showAlert = true;
         }
-
-        vm.loading = false;
       });
+    },
+    // removeCityFromcityList(cityid) {
+    //   var indx = this.cityList.findIndex(function(city){ 
+    //       // here 'city' is array object 
+    //        return city.id == cityid;
+    //   });        
+    //   this.cityList.splice(indx, 1);
+    //   //return;
+    // },
+    save: function save() {
+      this.loading = true;
+      this.addCity(this.selectedCity); // var vm = this;
+      // //this.loading = true;            
+      // axios.post('/cities', {
+      //     district_id: this.selectedCity.districtId,
+      //     name: this.selectedCity.name,                
+      // })          
+      // .then(function (response) {
+      //     //console.log(response.data);
+      //     response.data.error ? vm.error = response.data.error : vm.response = response.data;
+      //     if (vm.response) {
+      //        //console.log(vm.response);
+      //        //vm.fetchBusAvailableToCities();
+      //        vm.cityList.push(vm.response);
+      //        vm.sortByCityNamecityList(vm.cityList);
+      //        vm.loading = false;
+      //        vm.actionAlert(vm.selectedCity.name);
+      //        vm.reset();
+      //        return;                   
+      //     }                
+      // });
+
+      this.loading = false;
+      this.actionAlert(this.selectedCity.name);
+      this.reset();
     },
     reset: function reset() {
       this.selectedCity = {
+        divisionId: '',
         districtId: '',
         name: ''
       };
@@ -7152,7 +6738,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       this.selectedUpazila = '';
       this.selectedDivision = '';
     },
-    sortByCityNameBusAvailableToCityList: function sortByCityNameBusAvailableToCityList(arr) {
+    sortByCityNamecityList: function sortByCityNamecityList(arr) {
       // sort by name            
       arr.sort(function (a, b) {
         var nameA = a.name.toUpperCase(); // ignore upper and lowercase
@@ -7171,7 +6757,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         return 0;
       });
     },
-    sortByDistrictBusAvailableToCityList: function sortByDistrictBusAvailableToCityList(arr) {
+    sortByDistrictcityList: function sortByDistrictcityList(arr) {
       arr.sort(function (a, b) {
         return a.district_id - b.district_id;
       });
@@ -7185,7 +6771,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         closeOnClickOutside: false
       });
     }
-  }
+  })
 });
 
 /***/ }),
@@ -7621,6 +7207,696 @@ __webpack_require__.r(__webpack_exports__);
       });
     }
   }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/route/Route.vue?vue&type=script&lang=js&":
+/*!*****************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/views/route/Route.vue?vue&type=script&lang=js& ***!
+  \*****************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      actionStatus: '',
+      alertType: '',
+      arrivalCityList: [],
+      availableRouteList: [],
+      departureCityList: [],
+      disableSorting: true,
+      districtList: [],
+      divisionList: [],
+      error: '',
+      loading: false,
+      tempCityList: [],
+      response: '',
+      routeDistance: '',
+      routeId: '',
+      routeName: '',
+      selectedArrivalCity: '',
+      selectedDepartureCity: '',
+      selectedDivisionForArrival: '',
+      selectedDivisionForDeparture: '',
+      show: false,
+      showAlert: false
+    };
+  },
+  mounted: function mounted() {
+    this.fetchDistricts();
+    this.fetchDivisions();
+    this.fetchAvailableRoutes();
+    this.enableScroll();
+  },
+  watch: {
+    selectedDivisionForDeparture: function selectedDivisionForDeparture() {
+      this.fetchCitiesByDivision(this.selectedDivisionForDeparture.id, 'departure');
+    },
+    selectedDivisionForArrival: function selectedDivisionForArrival() {
+      this.fetchCitiesByDivision(this.selectedDivisionForArrival.id, 'arrival');
+    }
+  },
+  computed: {
+    isValid: function isValid() {
+      return this.selectedDepartureCity != '' && this.selectedArrivalCity != '';
+    }
+  },
+  methods: {
+    actionAlert: function actionAlert(routeName) {
+      swal({
+        title: routeName,
+        text: 'Added successfully!',
+        icon: "success",
+        timer: 2000,
+        closeOnClickOutside: false
+      });
+    },
+    setRouteName: function setRouteName() {
+      this.routeName = this.selectedDepartureCity + ' - ' + this.selectedArrivalCity;
+    },
+    save: function save() {
+      this.setRouteName();
+      var vm = this;
+      axios.post('/routes', {
+        departure_city: this.selectedDepartureCity,
+        arrival_city: this.selectedArrivalCity,
+        distance: this.routeDistance
+      }).then(function (response) {
+        //console.log(response.data);
+        response.data.error ? vm.error = response.data.error : vm.response = response.data;
+        vm.availableRouteList.push(vm.response);
+        vm.loading = false;
+        vm.actionAlert(vm.routeName); //vm.actionStatus = 'Added';
+
+        vm.reset(); //vm.alertType = 'success';
+        //vm.showAlert = true;              
+      });
+    },
+    enableScroll: function enableScroll() {
+      $('#scrollbar').overlayScrollbars({
+        /* your options */
+        sizeAutoCapable: true,
+        scrollbars: {
+          autoHide: "never",
+          clickScrolling: true
+        }
+      });
+    },
+    fetchCitiesByDivision: function fetchCitiesByDivision(divisionId, status) {
+      this.loading = true;
+      this.tempCityList = [];
+      this.tempCityList = this.districtList.filter(function (district) {
+        return district.division_id == divisionId;
+      });
+
+      if (status == 'arrival') {
+        this.arrivalCityList = this.tempCityList;
+        this.loading = false;
+        return;
+      }
+
+      this.departureCityList = this.tempCityList;
+      this.loading = false;
+    },
+    fetchDistricts: function fetchDistricts() {
+      this.loading = true;
+      this.districtList = [];
+      var vm = this;
+      axios.get('/api/districts').then(function (response) {
+        response.data.error ? vm.error = response.data.error : vm.districtList = response.data;
+        vm.loading = false;
+      });
+    },
+    fetchDivisions: function fetchDivisions() {
+      this.loading = true;
+      this.divisionList = [];
+      var vm = this;
+      axios.get('/api/divisions') //--> api/bus?q=xyz        (right)
+      .then(function (response) {
+        response.data.error ? vm.error = response.data.error : vm.divisionList = response.data;
+        vm.loading = false;
+      });
+    },
+    fetchAvailableRoutes: function fetchAvailableRoutes() {
+      this.loading = true;
+      this.availableRouteList = [];
+      var vm = this;
+      axios.get('/api/routes').then(function (response) {
+        response.data.error ? vm.error = response.data.error : vm.availableRouteList = response.data;
+        vm.loading = false;
+        vm.sortByCityNameAvailableRouteList(vm.availableRouteList);
+      });
+    },
+    isSortingAvailableBy: function isSortingAvailableBy(val) {
+      if (val == 'name') {
+        this.sortByCityNameAvailableRouteList(this.availableRouteList);
+        this.disableSorting = true;
+        return;
+      }
+
+      this.sortByDistanceAvailableRouteList(this.availableRouteList);
+      this.disableSorting = false;
+    },
+    remove: function remove(route) {
+      // role id of user/staff in roles table
+      var vm = this;
+      this.routeName = route.departure_city + ' to ' + route.arrival_city;
+      swal({
+        title: "Are you sure?",
+        text: "This ROUTE will be Removed!",
+        icon: "error",
+        dangerMode: true,
+        buttons: {
+          cancel: "cancel",
+          confirm: {
+            text: "Remove It!",
+            value: true
+          }
+        }
+      }).then(function (value) {
+        if (value) {
+          vm.loading = true;
+          vm.response = '';
+          vm.showAlert = false;
+          axios["delete"]('/routes/' + route.id).then(function (response) {
+            response.data.error ? vm.error = response.data.error : vm.response = response.data;
+
+            if (vm.response) {
+              vm.removeRouteFromAvailableRouteList(route.id); // update the array after removing
+
+              vm.loading = false;
+              vm.actionStatus = 'Removed';
+              vm.alertType = 'danger';
+              vm.showAlert = true;
+              return;
+            }
+
+            vm.loading = false;
+          });
+        }
+      });
+    },
+    removeRouteFromAvailableRouteList: function removeRouteFromAvailableRouteList(routeId) {
+      var indx = this.availableRouteList.findIndex(function (route) {
+        return route.id == routeId;
+      });
+      this.availableRouteList.splice(indx, 1);
+    },
+    reset: function reset() {
+      this.selectedArrivalCity = '';
+      this.selectedDepartureCity = '';
+      this.selectedDivisionForArrival = '';
+      this.selectedDivisionForDeparture = '';
+      this.routeDistance = '';
+    },
+    sortByCityNameAvailableRouteList: function sortByCityNameAvailableRouteList(arr) {
+      // sort by name            
+      arr.sort(function (a, b) {
+        var nameA = a.departure_city.toUpperCase(); // ignore upper and lowercase
+
+        var nameB = b.departure_city.toUpperCase(); // ignore upper and lowercase
+
+        if (nameA < nameB) {
+          return -1;
+        }
+
+        if (nameA > nameB) {
+          return 1;
+        } // names must be equal
+
+
+        return 0;
+      });
+    },
+    sortByDistanceAvailableRouteList: function sortByDistanceAvailableRouteList(arr) {
+      // sort by distance 
+      arr.sort(function (a, b) {
+        return a.distance - b.distance;
+      });
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/route/RouteCities.vue?vue&type=script&lang=js&":
+/*!***********************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/views/route/RouteCities.vue?vue&type=script&lang=js& ***!
+  \***********************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      actionStatus: '',
+      alertType: '',
+      loading: false,
+      showAlert: false,
+      show: false,
+      modal: false,
+      city: {
+        id: '',
+        name: ''
+      },
+      distance: '',
+      route: {
+        id: '',
+        departure_city: '',
+        arrival_city: ''
+      }
+    };
+  },
+  watch: {
+    'route.id': function routeId(val, oldVal) {
+      if (this.route.id) {
+        this.city = '';
+        this.fetchCitiesByDivisionOfDepartureArrival(this.route);
+      }
+    },
+    'city.name': function cityName(val, oldVal) {
+      this.distance = '';
+    }
+  },
+  mounted: function mounted() {
+    this.fetchCities();
+    this.fetchRoutes();
+    this.enableScroll();
+    this.objectToEmptyString();
+  },
+  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapState"])('route', ['availableRouteList', 'citiesByRoute']), {}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapState"])('city', ['availableCityList']), {}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])('city', ['getCityBy', 'availableCitiesCount']), {
+    isValid: function isValid() {
+      return this.city.id != '' && this.city.name != '' && this.distance != '';
+    }
+  }),
+  methods: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapActions"])('route', ['getRoutes', 'getCitiesFromRoutesBy', 'addCity', 'deleteCityFromRoute', 'emptyCitiesByRoute']), {}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapActions"])('city', {
+    getAvailableCities: 'getBusAvailableToCities',
+    getCitiesByDivisionOf: 'getCitiesByDivisionOfDepartureArrival'
+  }), {
+    objectToEmptyString: function objectToEmptyString() {
+      // To display ('Please select one') first disabled option in SELECT box
+      this.city = '';
+      this.route = '';
+    },
+    save: function save() {
+      this.loading = true;
+      this.addCity({
+        city: this.city,
+        distance: this.distance,
+        id: this.route.id
+      });
+      this.city = '';
+      this.loading = false;
+      this.actionStatus = 'Added';
+      this.alertType = 'success';
+      this.showAlert = true;
+    },
+    enableScroll: function enableScroll() {
+      //initializes the plugin with empty options
+      $('#scrollbar').overlayScrollbars({
+        /* your options */
+        sizeAutoCapable: true,
+        overflowBehavior: {
+          x: "scroll",
+          y: "scroll"
+        },
+        scrollbars: {
+          autoHide: "never",
+          clickScrolling: true
+        }
+      });
+    },
+    fetchCities: function fetchCities() {
+      this.loading = true;
+      this.getAvailableCities();
+      this.loading = false;
+    },
+    fetchRoutes: function fetchRoutes() {
+      this.loading = true;
+      this.getRoutes();
+      this.loading = false;
+    },
+    fetchCitiesByDivisionOfDepartureArrival: function fetchCitiesByDivisionOfDepartureArrival(route) {
+      this.loading = true;
+      var departureCity = this.getCityBy(route.departure_city);
+      var arrivalCity = this.getCityBy(route.arrival_city);
+      this.getCitiesByDivisionOf({
+        departureCityDivId: departureCity.division_id,
+        arrivalCityDivId: arrivalCity.division_id
+      });
+      this.fetchCitiesBy(route.id);
+      this.loading = false;
+    },
+    fetchCitiesBy: function fetchCitiesBy(routeId) {
+      this.getCitiesFromRoutesBy(routeId);
+    },
+    remove: function remove(city) {
+      var vm = this;
+      swal({
+        title: "Are you sure?",
+        text: "This city will be Removed!",
+        icon: "error",
+        dangerMode: true,
+        buttons: {
+          cancel: "cancel",
+          confirm: {
+            text: "Remove It!",
+            value: true
+          }
+        }
+      }).then(function (value) {
+        if (value) {
+          vm.loading = true;
+          vm.showAlert = false;
+          vm.deleteCityFromRoute({
+            city: city.id,
+            route: vm.route.id
+          });
+          vm.loading = false;
+          vm.actionStatus = 'Removed';
+          vm.alertType = 'danger';
+          vm.showAlert = true;
+        }
+      });
+    },
+    reset: function reset() {
+      this.city = '';
+      this.route = '';
+      this.emptyCitiesByRoute();
+    },
+    swAlert: function swAlert(text, icon) {
+      swal({
+        text: text,
+        icon: icon
+      });
+    }
+  })
 });
 
 /***/ }),
@@ -16719,6 +16995,25 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 // module
 exports.push([module.i, ".view-available-info .panel-heading span[data-v-405da552] {\n  background-color: yellow;\n  font-weight: 600;\n  float: right;\n  padding: 2px 6px;\n  color: royalblue;\n}\n#scroll-cities span[data-v-405da552] {\n  cursor: pointer;\n  margin-left: 5px;\n}\n#scroll-cities span[disabled][data-v-405da552] {\n  cursor: not-allowed;\n  opacity: 0.65;\n}", ""]);
+
+// exports
+
+
+/***/ }),
+
+/***/ "./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/sass-loader/dist/cjs.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/route/RouteCities.vue?vue&type=style&index=0&id=593d431d&lang=scss&scoped=true&":
+/*!**********************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--7-2!./node_modules/sass-loader/dist/cjs.js??ref--7-3!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/views/route/RouteCities.vue?vue&type=style&index=0&id=593d431d&lang=scss&scoped=true& ***!
+  \**********************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-loader/lib/css-base.js */ "./node_modules/css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, ".heading[data-v-593d431d] {\n  font-size: 1rem;\n  margin-bottom: 0.75rem;\n  color: black;\n}", ""]);
 
 // exports
 
@@ -62164,6 +62459,36 @@ if(false) {}
 
 /***/ }),
 
+/***/ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/sass-loader/dist/cjs.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/route/RouteCities.vue?vue&type=style&index=0&id=593d431d&lang=scss&scoped=true&":
+/*!**************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/style-loader!./node_modules/css-loader!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--7-2!./node_modules/sass-loader/dist/cjs.js??ref--7-3!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/views/route/RouteCities.vue?vue&type=style&index=0&id=593d431d&lang=scss&scoped=true& ***!
+  \**************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+
+var content = __webpack_require__(/*! !../../../../node_modules/css-loader!../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../node_modules/postcss-loader/src??ref--7-2!../../../../node_modules/sass-loader/dist/cjs.js??ref--7-3!../../../../node_modules/vue-loader/lib??vue-loader-options!./RouteCities.vue?vue&type=style&index=0&id=593d431d&lang=scss&scoped=true& */ "./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/sass-loader/dist/cjs.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/route/RouteCities.vue?vue&type=style&index=0&id=593d431d&lang=scss&scoped=true&");
+
+if(typeof content === 'string') content = [[module.i, content, '']];
+
+var transform;
+var insertInto;
+
+
+
+var options = {"hmr":true}
+
+options.transform = transform
+options.insertInto = undefined;
+
+var update = __webpack_require__(/*! ../../../../node_modules/style-loader/lib/addStyles.js */ "./node_modules/style-loader/lib/addStyles.js")(content, options);
+
+if(content.locals) module.exports = content.locals;
+
+if(false) {}
+
+/***/ }),
+
 /***/ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/sass-loader/dist/cjs.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/staff_management/Staff_list.vue?vue&type=style&index=0&id=8561468a&lang=scss&scoped=true&":
 /*!************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/style-loader!./node_modules/css-loader!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--7-2!./node_modules/sass-loader/dist/cjs.js??ref--7-3!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/views/staff_management/Staff_list.vue?vue&type=style&index=0&id=8561468a&lang=scss&scoped=true& ***!
@@ -66114,730 +66439,6 @@ render._withStripped = true
 
 /***/ }),
 
-/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/bus/Route.vue?vue&type=template&id=0b5bea2a&scoped=true&":
-/*!*******************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/views/bus/Route.vue?vue&type=template&id=0b5bea2a&scoped=true& ***!
-  \*******************************************************************************************************************************************************************************************************************/
-/*! exports provided: render, staticRenderFns */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c("div", [
-    _c("div", { staticClass: "content-header" }, [
-      _c("div", { staticClass: "container-fluid" }, [
-        _c("div", { staticClass: "row mb-2" }, [
-          _vm._m(0),
-          _vm._v(" "),
-          _c("div", { staticClass: "col-sm-6" }, [
-            _c("ol", { staticClass: "breadcrumb float-sm-right" }, [
-              _c(
-                "li",
-                { staticClass: "breadcrumb-item" },
-                [
-                  _c("router-link", { attrs: { to: "/dashboard" } }, [
-                    _c("i", { staticClass: "fa fa-tachometer nav-icon" }),
-                    _vm._v(" Dashboard\n              ")
-                  ])
-                ],
-                1
-              ),
-              _vm._v(" "),
-              _c("li", { staticClass: "breadcrumb-item active" }, [
-                _vm._v("Route")
-              ])
-            ])
-          ])
-        ])
-      ])
-    ]),
-    _vm._v(" "),
-    _c("section", { staticClass: "content" }, [
-      _c(
-        "div",
-        { staticClass: "container-fluid" },
-        [
-          _c(
-            "add-section",
-            {
-              attrs: { show: _vm.show },
-              on: {
-                "update:show": function($event) {
-                  _vm.show = $event
-                }
-              },
-              scopedSlots: _vm._u([
-                {
-                  key: "heading",
-                  fn: function() {
-                    return [_vm._v("Add Route")]
-                  },
-                  proxy: true
-                },
-                {
-                  key: "footer",
-                  fn: function() {
-                    return [
-                      _c(
-                        "show-alert",
-                        {
-                          attrs: { show: _vm.showAlert, type: _vm.alertType },
-                          on: {
-                            "update:show": function($event) {
-                              _vm.showAlert = $event
-                            }
-                          }
-                        },
-                        [
-                          _c("strong", [_vm._v(" Route ")]),
-                          _vm._v(" has been "),
-                          _c("strong", [_vm._v(_vm._s(_vm.actionStatus) + " ")])
-                        ]
-                      )
-                    ]
-                  },
-                  proxy: true
-                }
-              ])
-            },
-            [
-              _vm._v(" "),
-              _c("form", [
-                _c("div", { staticClass: "row" }, [
-                  _c(
-                    "div",
-                    { staticClass: "col" },
-                    [
-                      _c(
-                        "border",
-                        {
-                          attrs: {
-                            color: "navy-blue",
-                            pattern: "dashed",
-                            width: "1",
-                            "heading-background": "#FBDB7B",
-                            "heading-width": "180",
-                            "heading-show": "true"
-                          },
-                          scopedSlots: _vm._u([
-                            {
-                              key: "heading",
-                              fn: function() {
-                                return [_vm._v("Departure City Info")]
-                              },
-                              proxy: true
-                            }
-                          ])
-                        },
-                        [
-                          _vm._v(" "),
-                          _c(
-                            "div",
-                            { staticClass: "form-row justify-content-center" },
-                            [
-                              _c("div", { staticClass: "col-sm-5" }, [
-                                _c("div", { staticClass: "form-group" }, [
-                                  _c(
-                                    "label",
-                                    { attrs: { for: "divisionName" } },
-                                    [_vm._v("Division ")]
-                                  ),
-                                  _vm._v(" "),
-                                  _c(
-                                    "select",
-                                    {
-                                      directives: [
-                                        {
-                                          name: "model",
-                                          rawName: "v-model",
-                                          value:
-                                            _vm.selectedDivisionForDeparture,
-                                          expression:
-                                            "selectedDivisionForDeparture"
-                                        }
-                                      ],
-                                      staticClass: "form-control",
-                                      attrs: { id: "divisionName" },
-                                      on: {
-                                        change: function($event) {
-                                          var $$selectedVal = Array.prototype.filter
-                                            .call(
-                                              $event.target.options,
-                                              function(o) {
-                                                return o.selected
-                                              }
-                                            )
-                                            .map(function(o) {
-                                              var val =
-                                                "_value" in o
-                                                  ? o._value
-                                                  : o.value
-                                              return val
-                                            })
-                                          _vm.selectedDivisionForDeparture = $event
-                                            .target.multiple
-                                            ? $$selectedVal
-                                            : $$selectedVal[0]
-                                        }
-                                      }
-                                    },
-                                    [
-                                      _c(
-                                        "option",
-                                        { attrs: { disabled: "", value: "" } },
-                                        [_vm._v("Please select one")]
-                                      ),
-                                      _vm._v(" "),
-                                      _vm._l(_vm.divisionList, function(
-                                        division
-                                      ) {
-                                        return _c(
-                                          "option",
-                                          {
-                                            domProps: {
-                                              value: {
-                                                id: division.id,
-                                                name: division.name
-                                              }
-                                            }
-                                          },
-                                          [
-                                            _vm._v(
-                                              "\n                            " +
-                                                _vm._s(division.name) +
-                                                "\n                          "
-                                            )
-                                          ]
-                                        )
-                                      })
-                                    ],
-                                    2
-                                  )
-                                ])
-                              ]),
-                              _vm._v(" "),
-                              _c("div", { staticClass: "col-sm-5" }, [
-                                _c("div", { staticClass: "form-group" }, [
-                                  _c(
-                                    "label",
-                                    { attrs: { for: "departureCity" } },
-                                    [_vm._v("City")]
-                                  ),
-                                  _vm._v(" "),
-                                  _c(
-                                    "select",
-                                    {
-                                      directives: [
-                                        {
-                                          name: "model",
-                                          rawName: "v-model",
-                                          value: _vm.selectedDepartureCity,
-                                          expression: "selectedDepartureCity"
-                                        }
-                                      ],
-                                      staticClass: "form-control",
-                                      attrs: { id: "departureCity" },
-                                      on: {
-                                        change: function($event) {
-                                          var $$selectedVal = Array.prototype.filter
-                                            .call(
-                                              $event.target.options,
-                                              function(o) {
-                                                return o.selected
-                                              }
-                                            )
-                                            .map(function(o) {
-                                              var val =
-                                                "_value" in o
-                                                  ? o._value
-                                                  : o.value
-                                              return val
-                                            })
-                                          _vm.selectedDepartureCity = $event
-                                            .target.multiple
-                                            ? $$selectedVal
-                                            : $$selectedVal[0]
-                                        }
-                                      }
-                                    },
-                                    [
-                                      _c(
-                                        "option",
-                                        { attrs: { disabled: "", value: "" } },
-                                        [_vm._v("Please select one")]
-                                      ),
-                                      _vm._v(" "),
-                                      _vm._l(_vm.departureCityList, function(
-                                        city
-                                      ) {
-                                        return _c("option", [
-                                          _vm._v(
-                                            "\n                            " +
-                                              _vm._s(city.name) +
-                                              "\n                          "
-                                          )
-                                        ])
-                                      })
-                                    ],
-                                    2
-                                  )
-                                ])
-                              ])
-                            ]
-                          )
-                        ]
-                      )
-                    ],
-                    1
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "div",
-                    { staticClass: "col" },
-                    [
-                      _c(
-                        "border",
-                        {
-                          attrs: {
-                            color: "eastern-blue",
-                            pattern: "dashed",
-                            width: "1",
-                            "heading-background": "lightgreen",
-                            "heading-width": "180",
-                            "heading-show": "true"
-                          },
-                          scopedSlots: _vm._u([
-                            {
-                              key: "heading",
-                              fn: function() {
-                                return [_vm._v("Arrival City Info")]
-                              },
-                              proxy: true
-                            }
-                          ])
-                        },
-                        [
-                          _vm._v(" "),
-                          _c(
-                            "div",
-                            { staticClass: "form-row justify-content-center" },
-                            [
-                              _c("div", { staticClass: "col-sm-5" }, [
-                                _c("div", { staticClass: "form-group" }, [
-                                  _c(
-                                    "label",
-                                    { attrs: { for: "divisionName" } },
-                                    [_vm._v("Division")]
-                                  ),
-                                  _vm._v(" "),
-                                  _c(
-                                    "select",
-                                    {
-                                      directives: [
-                                        {
-                                          name: "model",
-                                          rawName: "v-model",
-                                          value: _vm.selectedDivisionForArrival,
-                                          expression:
-                                            "selectedDivisionForArrival"
-                                        }
-                                      ],
-                                      staticClass: "form-control",
-                                      attrs: { id: "divisionName" },
-                                      on: {
-                                        change: function($event) {
-                                          var $$selectedVal = Array.prototype.filter
-                                            .call(
-                                              $event.target.options,
-                                              function(o) {
-                                                return o.selected
-                                              }
-                                            )
-                                            .map(function(o) {
-                                              var val =
-                                                "_value" in o
-                                                  ? o._value
-                                                  : o.value
-                                              return val
-                                            })
-                                          _vm.selectedDivisionForArrival = $event
-                                            .target.multiple
-                                            ? $$selectedVal
-                                            : $$selectedVal[0]
-                                        }
-                                      }
-                                    },
-                                    [
-                                      _c(
-                                        "option",
-                                        { attrs: { disabled: "", value: "" } },
-                                        [_vm._v("Please select one")]
-                                      ),
-                                      _vm._v(" "),
-                                      _vm._l(_vm.divisionList, function(
-                                        division
-                                      ) {
-                                        return _c(
-                                          "option",
-                                          {
-                                            domProps: {
-                                              value: {
-                                                id: division.id,
-                                                name: division.name
-                                              }
-                                            }
-                                          },
-                                          [
-                                            _vm._v(
-                                              "\n                            " +
-                                                _vm._s(division.name) +
-                                                "\n                          "
-                                            )
-                                          ]
-                                        )
-                                      })
-                                    ],
-                                    2
-                                  )
-                                ])
-                              ]),
-                              _vm._v(" "),
-                              _c("div", { staticClass: "col-sm-5" }, [
-                                _c("div", { staticClass: "form-group" }, [
-                                  _c(
-                                    "label",
-                                    { attrs: { for: "arrivalCity" } },
-                                    [_vm._v("City")]
-                                  ),
-                                  _vm._v(" "),
-                                  _c(
-                                    "select",
-                                    {
-                                      directives: [
-                                        {
-                                          name: "model",
-                                          rawName: "v-model",
-                                          value: _vm.selectedArrivalCity,
-                                          expression: "selectedArrivalCity"
-                                        }
-                                      ],
-                                      staticClass: "form-control",
-                                      attrs: { id: "arrivalCity" },
-                                      on: {
-                                        change: function($event) {
-                                          var $$selectedVal = Array.prototype.filter
-                                            .call(
-                                              $event.target.options,
-                                              function(o) {
-                                                return o.selected
-                                              }
-                                            )
-                                            .map(function(o) {
-                                              var val =
-                                                "_value" in o
-                                                  ? o._value
-                                                  : o.value
-                                              return val
-                                            })
-                                          _vm.selectedArrivalCity = $event
-                                            .target.multiple
-                                            ? $$selectedVal
-                                            : $$selectedVal[0]
-                                        }
-                                      }
-                                    },
-                                    [
-                                      _c(
-                                        "option",
-                                        { attrs: { disabled: "", value: "" } },
-                                        [_vm._v("Please select one")]
-                                      ),
-                                      _vm._v(" "),
-                                      _vm._l(_vm.arrivalCityList, function(
-                                        city
-                                      ) {
-                                        return _c("option", [
-                                          _vm._v(
-                                            "\n                            " +
-                                              _vm._s(city.name) +
-                                              "\n                          "
-                                          )
-                                        ])
-                                      })
-                                    ],
-                                    2
-                                  )
-                                ])
-                              ])
-                            ]
-                          )
-                        ]
-                      )
-                    ],
-                    1
-                  )
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "form-row" }, [
-                  _c("div", { staticClass: "col-sm-4 offset-sm-3" }, [
-                    _c("div", { staticClass: "form-group" }, [
-                      _c("label", { attrs: { for: "routeDistance" } }, [
-                        _vm._v("Route Distance")
-                      ]),
-                      _vm._v(" "),
-                      _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.routeDistance,
-                            expression: "routeDistance"
-                          }
-                        ],
-                        staticClass: "form-control",
-                        attrs: {
-                          type: "number",
-                          name: "route_distance",
-                          id: "routeDistance",
-                          placeholder: "Distance"
-                        },
-                        domProps: { value: _vm.routeDistance },
-                        on: {
-                          input: function($event) {
-                            if ($event.target.composing) {
-                              return
-                            }
-                            _vm.routeDistance = $event.target.value
-                          }
-                        }
-                      })
-                    ])
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "col-sm-5" }),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "col-sm-4 offset-sm-3" }, [
-                    _c("div", { staticClass: "button-group" }, [
-                      _c(
-                        "button",
-                        {
-                          staticClass: "btn btn-primary",
-                          attrs: { disabled: !_vm.isValid },
-                          on: {
-                            click: function($event) {
-                              $event.preventDefault()
-                              return _vm.save()
-                            }
-                          }
-                        },
-                        [_vm._v("Save")]
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "button",
-                        {
-                          staticClass: "btn btn-primary",
-                          attrs: { disabled: !_vm.isValid },
-                          on: {
-                            click: function($event) {
-                              $event.preventDefault()
-                              return _vm.reset()
-                            }
-                          }
-                        },
-                        [_vm._v("Cancel")]
-                      )
-                    ])
-                  ])
-                ])
-              ])
-            ]
-          ),
-          _vm._v(" "),
-          _c("loader", { attrs: { show: _vm.loading } }),
-          _vm._v(" "),
-          _c("div", { staticClass: "row justify-content-center" }, [
-            _c("div", { staticClass: "card card-info w-100" }, [
-              _c("div", { staticClass: "card-header" }, [
-                _vm._v("Route Info "),
-                _c("span", [
-                  _vm._v(" " + _vm._s(_vm.availableRouteList.length) + " ")
-                ])
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "card-body" }, [
-                _c("div", { attrs: { id: "scrollbar" } }, [
-                  _c(
-                    "table",
-                    { staticClass: "table table-striped table-hover" },
-                    [
-                      _c("thead", [
-                        _c("tr", [
-                          _c("th", [_vm._v("Sl. No.")]),
-                          _vm._v(" "),
-                          _c("th", [
-                            _vm._v("From\n                              "),
-                            _c(
-                              "span",
-                              {
-                                attrs: {
-                                  type: "button",
-                                  disabled: _vm.disableSorting
-                                },
-                                on: {
-                                  click: function($event) {
-                                    return _vm.isSortingAvailableBy("name")
-                                  }
-                                }
-                              },
-                              [
-                                _c("i", {
-                                  staticClass: "fa fa-sort-amount-asc",
-                                  attrs: { "aria-hidden": "true" }
-                                })
-                              ]
-                            )
-                          ]),
-                          _vm._v(" "),
-                          _c("th", [
-                            _vm._v(
-                              "To                      \n                        "
-                            )
-                          ]),
-                          _vm._v(" "),
-                          _c("th", [
-                            _vm._v("Distance\n                          "),
-                            _c(
-                              "span",
-                              {
-                                attrs: {
-                                  type: "button",
-                                  disabled: !_vm.disableSorting
-                                },
-                                on: {
-                                  click: function($event) {
-                                    return _vm.isSortingAvailableBy("distance")
-                                  }
-                                }
-                              },
-                              [
-                                _c("i", {
-                                  staticClass: "fa fa-sort-amount-asc",
-                                  attrs: { "aria-hidden": "true" }
-                                })
-                              ]
-                            )
-                          ]),
-                          _vm._v(" "),
-                          _c("th", [
-                            _vm._v(
-                              "\n                          Route ID\n                        "
-                            )
-                          ]),
-                          _vm._v(" "),
-                          _c("th", [_vm._v("Action")])
-                        ])
-                      ]),
-                      _vm._v(" "),
-                      _c(
-                        "tbody",
-                        _vm._l(_vm.availableRouteList, function(route, index) {
-                          return _c("tr", [
-                            _c("td", [_vm._v(_vm._s(index + 1))]),
-                            _vm._v(" "),
-                            _c("td", [_vm._v(_vm._s(route.departure_city))]),
-                            _vm._v(" "),
-                            _c("td", [_vm._v(_vm._s(route.arrival_city))]),
-                            _vm._v(" "),
-                            _c("td", [_vm._v(_vm._s(route.distance))]),
-                            _vm._v(" "),
-                            _c("td", [
-                              _c("strong", [_vm._v(_vm._s(route.id))])
-                            ]),
-                            _vm._v(" "),
-                            _c("td", [
-                              _c(
-                                "button",
-                                {
-                                  staticClass: "btn btn-danger",
-                                  on: {
-                                    click: function($event) {
-                                      $event.preventDefault()
-                                      return _vm.remove(route)
-                                    }
-                                  }
-                                },
-                                [
-                                  _c("i", { staticClass: "fa fa-trash fa-fw" }),
-                                  _vm._v("Remove\n                            ")
-                                ]
-                              )
-                            ])
-                          ])
-                        }),
-                        0
-                      )
-                    ]
-                  )
-                ])
-              ]),
-              _vm._v(" "),
-              _c(
-                "div",
-                { staticClass: "card-footer" },
-                [
-                  _c(
-                    "show-alert",
-                    {
-                      attrs: { show: _vm.showAlert, type: _vm.alertType },
-                      on: {
-                        "update:show": function($event) {
-                          _vm.showAlert = $event
-                        }
-                      }
-                    },
-                    [
-                      _c("strong", [_vm._v(_vm._s(_vm.routeName) + " ")]),
-                      _vm._v(" has been \n              "),
-                      _c("strong", [
-                        _vm._v(" " + _vm._s(_vm.actionStatus) + " ")
-                      ]),
-                      _vm._v(" successfully!\n            ")
-                    ]
-                  )
-                ],
-                1
-              )
-            ])
-          ])
-        ],
-        1
-      )
-    ])
-  ])
-}
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col-sm-6" }, [
-      _c("h1", { staticClass: "m-0 text-dark" }, [_vm._v("Route")])
-    ])
-  }
-]
-render._withStripped = true
-
-
-
-/***/ }),
-
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/bus/Schedule.vue?vue&type=template&id=3890aae5&scoped=true&":
 /*!**********************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/views/bus/Schedule.vue?vue&type=template&id=3890aae5&scoped=true& ***!
@@ -68604,9 +68205,7 @@ var render = function() {
             _c("div", { staticClass: "card card-info w-100" }, [
               _c("div", { staticClass: "card-header" }, [
                 _vm._v("Service Available City Info"),
-                _c("span", [
-                  _vm._v(" " + _vm._s(_vm.busAvailableToCityList.length) + " ")
-                ])
+                _c("span", [_vm._v(" " + _vm._s(_vm.cityList.length) + " ")])
               ]),
               _vm._v(" "),
               _c("div", { staticClass: "card-body" }, [
@@ -68675,10 +68274,7 @@ var render = function() {
                       _vm._v(" "),
                       _c(
                         "tbody",
-                        _vm._l(_vm.busAvailableToCityList, function(
-                          city,
-                          index
-                        ) {
+                        _vm._l(_vm.cityList, function(city, index) {
                           return _c("tr", [
                             _c("td", [_vm._v(_vm._s(index + 1))]),
                             _vm._v(" "),
@@ -69440,6 +69036,1131 @@ var render = function() {
   ])
 }
 var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/route/Route.vue?vue&type=template&id=6309dd34&scoped=true&":
+/*!*********************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/views/route/Route.vue?vue&type=template&id=6309dd34&scoped=true& ***!
+  \*********************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", [
+    _c("div", { staticClass: "content-header" }, [
+      _c("div", { staticClass: "container-fluid" }, [
+        _c("div", { staticClass: "row mb-2" }, [
+          _vm._m(0),
+          _vm._v(" "),
+          _c("div", { staticClass: "col-sm-6" }, [
+            _c("ol", { staticClass: "breadcrumb float-sm-right" }, [
+              _c(
+                "li",
+                { staticClass: "breadcrumb-item" },
+                [
+                  _c("router-link", { attrs: { to: "/dashboard" } }, [
+                    _c("i", { staticClass: "fa fa-tachometer nav-icon" }),
+                    _vm._v(" Dashboard\n              ")
+                  ])
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c("li", { staticClass: "breadcrumb-item active" }, [
+                _vm._v("Route")
+              ])
+            ])
+          ])
+        ])
+      ])
+    ]),
+    _vm._v(" "),
+    _c("section", { staticClass: "content" }, [
+      _c(
+        "div",
+        { staticClass: "container-fluid" },
+        [
+          _c(
+            "add-section",
+            {
+              attrs: { show: _vm.show },
+              on: {
+                "update:show": function($event) {
+                  _vm.show = $event
+                }
+              },
+              scopedSlots: _vm._u([
+                {
+                  key: "heading",
+                  fn: function() {
+                    return [_vm._v("Add Route")]
+                  },
+                  proxy: true
+                },
+                {
+                  key: "footer",
+                  fn: function() {
+                    return [
+                      _c(
+                        "show-alert",
+                        {
+                          attrs: { show: _vm.showAlert, type: _vm.alertType },
+                          on: {
+                            "update:show": function($event) {
+                              _vm.showAlert = $event
+                            }
+                          }
+                        },
+                        [
+                          _c("strong", [_vm._v(" Route ")]),
+                          _vm._v(" has been "),
+                          _c("strong", [_vm._v(_vm._s(_vm.actionStatus) + " ")])
+                        ]
+                      )
+                    ]
+                  },
+                  proxy: true
+                }
+              ])
+            },
+            [
+              _vm._v(" "),
+              _c("form", [
+                _c("div", { staticClass: "row" }, [
+                  _c(
+                    "div",
+                    { staticClass: "col" },
+                    [
+                      _c(
+                        "border",
+                        {
+                          attrs: {
+                            color: "navy-blue",
+                            pattern: "dashed",
+                            width: "1",
+                            "heading-background": "#FBDB7B",
+                            "heading-width": "180",
+                            "heading-show": "true"
+                          },
+                          scopedSlots: _vm._u([
+                            {
+                              key: "heading",
+                              fn: function() {
+                                return [_vm._v("Departure City Info")]
+                              },
+                              proxy: true
+                            }
+                          ])
+                        },
+                        [
+                          _vm._v(" "),
+                          _c(
+                            "div",
+                            { staticClass: "form-row justify-content-center" },
+                            [
+                              _c("div", { staticClass: "col-sm-5" }, [
+                                _c("div", { staticClass: "form-group" }, [
+                                  _c(
+                                    "label",
+                                    { attrs: { for: "divisionName" } },
+                                    [_vm._v("Division ")]
+                                  ),
+                                  _vm._v(" "),
+                                  _c(
+                                    "select",
+                                    {
+                                      directives: [
+                                        {
+                                          name: "model",
+                                          rawName: "v-model",
+                                          value:
+                                            _vm.selectedDivisionForDeparture,
+                                          expression:
+                                            "selectedDivisionForDeparture"
+                                        }
+                                      ],
+                                      staticClass: "form-control",
+                                      attrs: { id: "divisionName" },
+                                      on: {
+                                        change: function($event) {
+                                          var $$selectedVal = Array.prototype.filter
+                                            .call(
+                                              $event.target.options,
+                                              function(o) {
+                                                return o.selected
+                                              }
+                                            )
+                                            .map(function(o) {
+                                              var val =
+                                                "_value" in o
+                                                  ? o._value
+                                                  : o.value
+                                              return val
+                                            })
+                                          _vm.selectedDivisionForDeparture = $event
+                                            .target.multiple
+                                            ? $$selectedVal
+                                            : $$selectedVal[0]
+                                        }
+                                      }
+                                    },
+                                    [
+                                      _c(
+                                        "option",
+                                        { attrs: { disabled: "", value: "" } },
+                                        [_vm._v("Please select one")]
+                                      ),
+                                      _vm._v(" "),
+                                      _vm._l(_vm.divisionList, function(
+                                        division
+                                      ) {
+                                        return _c(
+                                          "option",
+                                          {
+                                            domProps: {
+                                              value: {
+                                                id: division.id,
+                                                name: division.name
+                                              }
+                                            }
+                                          },
+                                          [
+                                            _vm._v(
+                                              "\n                            " +
+                                                _vm._s(division.name) +
+                                                "\n                          "
+                                            )
+                                          ]
+                                        )
+                                      })
+                                    ],
+                                    2
+                                  )
+                                ])
+                              ]),
+                              _vm._v(" "),
+                              _c("div", { staticClass: "col-sm-5" }, [
+                                _c("div", { staticClass: "form-group" }, [
+                                  _c(
+                                    "label",
+                                    { attrs: { for: "departureCity" } },
+                                    [_vm._v("City")]
+                                  ),
+                                  _vm._v(" "),
+                                  _c(
+                                    "select",
+                                    {
+                                      directives: [
+                                        {
+                                          name: "model",
+                                          rawName: "v-model",
+                                          value: _vm.selectedDepartureCity,
+                                          expression: "selectedDepartureCity"
+                                        }
+                                      ],
+                                      staticClass: "form-control",
+                                      attrs: { id: "departureCity" },
+                                      on: {
+                                        change: function($event) {
+                                          var $$selectedVal = Array.prototype.filter
+                                            .call(
+                                              $event.target.options,
+                                              function(o) {
+                                                return o.selected
+                                              }
+                                            )
+                                            .map(function(o) {
+                                              var val =
+                                                "_value" in o
+                                                  ? o._value
+                                                  : o.value
+                                              return val
+                                            })
+                                          _vm.selectedDepartureCity = $event
+                                            .target.multiple
+                                            ? $$selectedVal
+                                            : $$selectedVal[0]
+                                        }
+                                      }
+                                    },
+                                    [
+                                      _c(
+                                        "option",
+                                        { attrs: { disabled: "", value: "" } },
+                                        [_vm._v("Please select one")]
+                                      ),
+                                      _vm._v(" "),
+                                      _vm._l(_vm.departureCityList, function(
+                                        city
+                                      ) {
+                                        return _c("option", [
+                                          _vm._v(
+                                            "\n                            " +
+                                              _vm._s(city.name) +
+                                              "\n                          "
+                                          )
+                                        ])
+                                      })
+                                    ],
+                                    2
+                                  )
+                                ])
+                              ])
+                            ]
+                          )
+                        ]
+                      )
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    { staticClass: "col" },
+                    [
+                      _c(
+                        "border",
+                        {
+                          attrs: {
+                            color: "eastern-blue",
+                            pattern: "dashed",
+                            width: "1",
+                            "heading-background": "lightgreen",
+                            "heading-width": "180",
+                            "heading-show": "true"
+                          },
+                          scopedSlots: _vm._u([
+                            {
+                              key: "heading",
+                              fn: function() {
+                                return [_vm._v("Arrival City Info")]
+                              },
+                              proxy: true
+                            }
+                          ])
+                        },
+                        [
+                          _vm._v(" "),
+                          _c(
+                            "div",
+                            { staticClass: "form-row justify-content-center" },
+                            [
+                              _c("div", { staticClass: "col-sm-5" }, [
+                                _c("div", { staticClass: "form-group" }, [
+                                  _c(
+                                    "label",
+                                    { attrs: { for: "divisionName" } },
+                                    [_vm._v("Division")]
+                                  ),
+                                  _vm._v(" "),
+                                  _c(
+                                    "select",
+                                    {
+                                      directives: [
+                                        {
+                                          name: "model",
+                                          rawName: "v-model",
+                                          value: _vm.selectedDivisionForArrival,
+                                          expression:
+                                            "selectedDivisionForArrival"
+                                        }
+                                      ],
+                                      staticClass: "form-control",
+                                      attrs: { id: "divisionName" },
+                                      on: {
+                                        change: function($event) {
+                                          var $$selectedVal = Array.prototype.filter
+                                            .call(
+                                              $event.target.options,
+                                              function(o) {
+                                                return o.selected
+                                              }
+                                            )
+                                            .map(function(o) {
+                                              var val =
+                                                "_value" in o
+                                                  ? o._value
+                                                  : o.value
+                                              return val
+                                            })
+                                          _vm.selectedDivisionForArrival = $event
+                                            .target.multiple
+                                            ? $$selectedVal
+                                            : $$selectedVal[0]
+                                        }
+                                      }
+                                    },
+                                    [
+                                      _c(
+                                        "option",
+                                        { attrs: { disabled: "", value: "" } },
+                                        [_vm._v("Please select one")]
+                                      ),
+                                      _vm._v(" "),
+                                      _vm._l(_vm.divisionList, function(
+                                        division
+                                      ) {
+                                        return _c(
+                                          "option",
+                                          {
+                                            domProps: {
+                                              value: {
+                                                id: division.id,
+                                                name: division.name
+                                              }
+                                            }
+                                          },
+                                          [
+                                            _vm._v(
+                                              "\n                            " +
+                                                _vm._s(division.name) +
+                                                "\n                          "
+                                            )
+                                          ]
+                                        )
+                                      })
+                                    ],
+                                    2
+                                  )
+                                ])
+                              ]),
+                              _vm._v(" "),
+                              _c("div", { staticClass: "col-sm-5" }, [
+                                _c("div", { staticClass: "form-group" }, [
+                                  _c(
+                                    "label",
+                                    { attrs: { for: "arrivalCity" } },
+                                    [_vm._v("City")]
+                                  ),
+                                  _vm._v(" "),
+                                  _c(
+                                    "select",
+                                    {
+                                      directives: [
+                                        {
+                                          name: "model",
+                                          rawName: "v-model",
+                                          value: _vm.selectedArrivalCity,
+                                          expression: "selectedArrivalCity"
+                                        }
+                                      ],
+                                      staticClass: "form-control",
+                                      attrs: { id: "arrivalCity" },
+                                      on: {
+                                        change: function($event) {
+                                          var $$selectedVal = Array.prototype.filter
+                                            .call(
+                                              $event.target.options,
+                                              function(o) {
+                                                return o.selected
+                                              }
+                                            )
+                                            .map(function(o) {
+                                              var val =
+                                                "_value" in o
+                                                  ? o._value
+                                                  : o.value
+                                              return val
+                                            })
+                                          _vm.selectedArrivalCity = $event
+                                            .target.multiple
+                                            ? $$selectedVal
+                                            : $$selectedVal[0]
+                                        }
+                                      }
+                                    },
+                                    [
+                                      _c(
+                                        "option",
+                                        { attrs: { disabled: "", value: "" } },
+                                        [_vm._v("Please select one")]
+                                      ),
+                                      _vm._v(" "),
+                                      _vm._l(_vm.arrivalCityList, function(
+                                        city
+                                      ) {
+                                        return _c("option", [
+                                          _vm._v(
+                                            "\n                            " +
+                                              _vm._s(city.name) +
+                                              "\n                          "
+                                          )
+                                        ])
+                                      })
+                                    ],
+                                    2
+                                  )
+                                ])
+                              ])
+                            ]
+                          )
+                        ]
+                      )
+                    ],
+                    1
+                  )
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "form-row" }, [
+                  _c("div", { staticClass: "col-sm-4 offset-sm-3" }, [
+                    _c("div", { staticClass: "form-group" }, [
+                      _c("label", { attrs: { for: "routeDistance" } }, [
+                        _vm._v("Route Distance")
+                      ]),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.routeDistance,
+                            expression: "routeDistance"
+                          }
+                        ],
+                        staticClass: "form-control",
+                        attrs: {
+                          type: "number",
+                          name: "route_distance",
+                          id: "routeDistance",
+                          placeholder: "Distance"
+                        },
+                        domProps: { value: _vm.routeDistance },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.routeDistance = $event.target.value
+                          }
+                        }
+                      })
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "col-sm-5" }),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "col-sm-4 offset-sm-3" }, [
+                    _c("div", { staticClass: "button-group" }, [
+                      _c(
+                        "button",
+                        {
+                          staticClass: "btn btn-primary",
+                          attrs: { disabled: !_vm.isValid },
+                          on: {
+                            click: function($event) {
+                              $event.preventDefault()
+                              return _vm.save()
+                            }
+                          }
+                        },
+                        [_vm._v("Save")]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "button",
+                        {
+                          staticClass: "btn btn-primary",
+                          attrs: { disabled: !_vm.isValid },
+                          on: {
+                            click: function($event) {
+                              $event.preventDefault()
+                              return _vm.reset()
+                            }
+                          }
+                        },
+                        [_vm._v("Cancel")]
+                      )
+                    ])
+                  ])
+                ])
+              ])
+            ]
+          ),
+          _vm._v(" "),
+          _c("loader", { attrs: { show: _vm.loading } }),
+          _vm._v(" "),
+          _c("div", { staticClass: "row justify-content-center" }, [
+            _c("div", { staticClass: "card card-info w-100" }, [
+              _c("div", { staticClass: "card-header" }, [
+                _vm._v("Route Info "),
+                _c("span", [
+                  _vm._v(" " + _vm._s(_vm.availableRouteList.length) + " ")
+                ])
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "card-body" }, [
+                _c("div", { attrs: { id: "scrollbar" } }, [
+                  _c(
+                    "table",
+                    { staticClass: "table table-striped table-hover" },
+                    [
+                      _c("thead", [
+                        _c("tr", [
+                          _c("th", [_vm._v("Sl. No.")]),
+                          _vm._v(" "),
+                          _c("th", [
+                            _vm._v("From\n                              "),
+                            _c(
+                              "span",
+                              {
+                                attrs: {
+                                  type: "button",
+                                  disabled: _vm.disableSorting
+                                },
+                                on: {
+                                  click: function($event) {
+                                    return _vm.isSortingAvailableBy("name")
+                                  }
+                                }
+                              },
+                              [
+                                _c("i", {
+                                  staticClass: "fa fa-sort-amount-asc",
+                                  attrs: { "aria-hidden": "true" }
+                                })
+                              ]
+                            )
+                          ]),
+                          _vm._v(" "),
+                          _c("th", [
+                            _vm._v(
+                              "To                      \n                        "
+                            )
+                          ]),
+                          _vm._v(" "),
+                          _c("th", [
+                            _vm._v("Distance\n                          "),
+                            _c(
+                              "span",
+                              {
+                                attrs: {
+                                  type: "button",
+                                  disabled: !_vm.disableSorting
+                                },
+                                on: {
+                                  click: function($event) {
+                                    return _vm.isSortingAvailableBy("distance")
+                                  }
+                                }
+                              },
+                              [
+                                _c("i", {
+                                  staticClass: "fa fa-sort-amount-asc",
+                                  attrs: { "aria-hidden": "true" }
+                                })
+                              ]
+                            )
+                          ]),
+                          _vm._v(" "),
+                          _c("th", [
+                            _vm._v(
+                              "\n                          Route ID\n                        "
+                            )
+                          ]),
+                          _vm._v(" "),
+                          _c("th", [_vm._v("Action")])
+                        ])
+                      ]),
+                      _vm._v(" "),
+                      _c(
+                        "tbody",
+                        _vm._l(_vm.availableRouteList, function(route, index) {
+                          return _c("tr", [
+                            _c("td", [_vm._v(_vm._s(index + 1))]),
+                            _vm._v(" "),
+                            _c("td", [_vm._v(_vm._s(route.departure_city))]),
+                            _vm._v(" "),
+                            _c("td", [_vm._v(_vm._s(route.arrival_city))]),
+                            _vm._v(" "),
+                            _c("td", [_vm._v(_vm._s(route.distance))]),
+                            _vm._v(" "),
+                            _c("td", [
+                              _c("strong", [_vm._v(_vm._s(route.id))])
+                            ]),
+                            _vm._v(" "),
+                            _c("td", [
+                              _c(
+                                "button",
+                                {
+                                  staticClass: "btn btn-danger",
+                                  on: {
+                                    click: function($event) {
+                                      $event.preventDefault()
+                                      return _vm.remove(route)
+                                    }
+                                  }
+                                },
+                                [
+                                  _c("i", { staticClass: "fa fa-trash fa-fw" }),
+                                  _vm._v("Remove\n                            ")
+                                ]
+                              )
+                            ])
+                          ])
+                        }),
+                        0
+                      )
+                    ]
+                  )
+                ])
+              ]),
+              _vm._v(" "),
+              _c(
+                "div",
+                { staticClass: "card-footer" },
+                [
+                  _c(
+                    "show-alert",
+                    {
+                      attrs: { show: _vm.showAlert, type: _vm.alertType },
+                      on: {
+                        "update:show": function($event) {
+                          _vm.showAlert = $event
+                        }
+                      }
+                    },
+                    [
+                      _c("strong", [_vm._v(_vm._s(_vm.routeName) + " ")]),
+                      _vm._v(" has been \n              "),
+                      _c("strong", [
+                        _vm._v(" " + _vm._s(_vm.actionStatus) + " ")
+                      ]),
+                      _vm._v(" successfully!\n            ")
+                    ]
+                  )
+                ],
+                1
+              )
+            ])
+          ])
+        ],
+        1
+      )
+    ])
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col-sm-6" }, [
+      _c("h1", { staticClass: "m-0 text-dark" }, [_vm._v("Route")])
+    ])
+  }
+]
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/route/RouteCities.vue?vue&type=template&id=593d431d&scoped=true&":
+/*!***************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/views/route/RouteCities.vue?vue&type=template&id=593d431d&scoped=true& ***!
+  \***************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", [
+    _c("div", { staticClass: "content-header" }, [
+      _c("div", { staticClass: "container-fluid" }, [
+        _c("div", { staticClass: "row mb-2" }, [
+          _vm._m(0),
+          _vm._v(" "),
+          _c("div", { staticClass: "col-sm-6" }, [
+            _c("ol", { staticClass: "breadcrumb float-sm-right" }, [
+              _c(
+                "li",
+                { staticClass: "breadcrumb-item" },
+                [
+                  _c("router-link", { attrs: { to: "/dashboard" } }, [
+                    _c("i", { staticClass: "fa fa-tachometer nav-icon" }),
+                    _vm._v(" Dashboard\n              ")
+                  ])
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c("li", { staticClass: "breadcrumb-item active" }, [
+                _vm._v("Route Cities")
+              ])
+            ])
+          ])
+        ])
+      ])
+    ]),
+    _vm._v(" "),
+    _c(
+      "section",
+      { staticClass: "content" },
+      [
+        _c(
+          "show-alert",
+          {
+            attrs: { show: _vm.showAlert, type: _vm.alertType },
+            on: {
+              "update:show": function($event) {
+                _vm.showAlert = $event
+              }
+            }
+          },
+          [
+            _c("strong", [_vm._v(" City ")]),
+            _vm._v(" has been "),
+            _c("strong", [_vm._v(_vm._s(_vm.actionStatus) + " ")])
+          ]
+        ),
+        _vm._v(" "),
+        _c("loader", { attrs: { show: _vm.loading } }),
+        _vm._v(" "),
+        _c("div", { staticClass: "d-md-flex" }, [
+          _c("div", { staticClass: "p-3 bg-lightpurple flex-fill" }, [
+            _c("form", [
+              _c("div", { staticClass: "form-group" }, [
+                _c("label", { attrs: { for: "route" } }, [_vm._v("Route")]),
+                _vm._v(" "),
+                _c(
+                  "select",
+                  {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.route,
+                        expression: "route"
+                      }
+                    ],
+                    staticClass: "form-control custom-select",
+                    attrs: { id: "route" },
+                    on: {
+                      change: function($event) {
+                        var $$selectedVal = Array.prototype.filter
+                          .call($event.target.options, function(o) {
+                            return o.selected
+                          })
+                          .map(function(o) {
+                            var val = "_value" in o ? o._value : o.value
+                            return val
+                          })
+                        _vm.route = $event.target.multiple
+                          ? $$selectedVal
+                          : $$selectedVal[0]
+                      }
+                    }
+                  },
+                  [
+                    _c("option", { attrs: { value: "", disabled: "" } }, [
+                      _vm._v("Please select one")
+                    ]),
+                    _vm._v(" "),
+                    _vm._l(_vm.availableRouteList, function(route) {
+                      return _c(
+                        "option",
+                        {
+                          domProps: {
+                            value: {
+                              id: route.id,
+                              departure_city: route.departure_city,
+                              arrival_city: route.arrival_city
+                            }
+                          }
+                        },
+                        [
+                          _vm._v(
+                            "\n                    " +
+                              _vm._s(route.id) +
+                              "  " +
+                              _vm._s(route.departure_city) +
+                              " --> " +
+                              _vm._s(route.arrival_city) +
+                              " \n                  "
+                          )
+                        ]
+                      )
+                    })
+                  ],
+                  2
+                )
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "form-group" }, [
+                _c("label", { attrs: { for: "city" } }, [_vm._v("City")]),
+                _vm._v(" "),
+                _c(
+                  "select",
+                  {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.city,
+                        expression: "city"
+                      }
+                    ],
+                    staticClass: "form-control custom-select",
+                    on: {
+                      change: function($event) {
+                        var $$selectedVal = Array.prototype.filter
+                          .call($event.target.options, function(o) {
+                            return o.selected
+                          })
+                          .map(function(o) {
+                            var val = "_value" in o ? o._value : o.value
+                            return val
+                          })
+                        _vm.city = $event.target.multiple
+                          ? $$selectedVal
+                          : $$selectedVal[0]
+                      }
+                    }
+                  },
+                  [
+                    _c("option", { attrs: { value: "", disabled: "" } }, [
+                      _vm._v("Please select one")
+                    ]),
+                    _vm._v(" "),
+                    _vm._l(_vm.availableCityList, function(city) {
+                      return _c(
+                        "option",
+                        {
+                          domProps: {
+                            value: {
+                              id: city.id,
+                              name: city.name
+                            }
+                          }
+                        },
+                        [
+                          _vm._v(
+                            "\n                        " +
+                              _vm._s(city.name) +
+                              "\n                    "
+                          )
+                        ]
+                      )
+                    })
+                  ],
+                  2
+                )
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "form-group" }, [
+                _c("label", { attrs: { for: "cityDistance" } }, [
+                  _vm._v("Distance: ")
+                ]),
+                _vm._v(" "),
+                _c(
+                  "small",
+                  {
+                    directives: [
+                      {
+                        name: "show",
+                        rawName: "v-show",
+                        value: _vm.city.name,
+                        expression: "city.name"
+                      }
+                    ],
+                    staticClass: "text-muted font-italic"
+                  },
+                  [
+                    _vm._v(
+                      " " +
+                        _vm._s(_vm.route.departure_city) +
+                        " to " +
+                        _vm._s(_vm.city.name) +
+                        "\n            "
+                    )
+                  ]
+                ),
+                _vm._v(" "),
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.distance,
+                      expression: "distance"
+                    }
+                  ],
+                  staticClass: "form-control",
+                  attrs: {
+                    type: "number",
+                    name: "city_distance",
+                    id: "cityDistance",
+                    placeholder: "Enter distance in Km here"
+                  },
+                  domProps: { value: _vm.distance },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.distance = $event.target.value
+                    }
+                  }
+                })
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "form-group mt-4" }, [
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-primary",
+                    attrs: { type: "button", disabled: !_vm.isValid },
+                    on: {
+                      click: function($event) {
+                        $event.preventDefault()
+                        return _vm.save()
+                      }
+                    }
+                  },
+                  [_vm._v("Add City")]
+                ),
+                _vm._v(" "),
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-warning",
+                    attrs: { type: "button" },
+                    on: {
+                      click: function($event) {
+                        $event.preventDefault()
+                        return _vm.reset()
+                      }
+                    }
+                  },
+                  [_vm._v("Cancel")]
+                )
+              ])
+            ])
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "p-3 bg-app-purple flex-fill" }, [
+            _c(
+              "span",
+              {
+                directives: [
+                  {
+                    name: "show",
+                    rawName: "v-show",
+                    value: _vm.route,
+                    expression: "route"
+                  }
+                ],
+                staticClass: "heading"
+              },
+              [
+                _vm._v(
+                  " Available Cities for " +
+                    _vm._s(_vm.route.departure_city) +
+                    " to " +
+                    _vm._s(_vm.route.arrival_city) +
+                    " "
+                )
+              ]
+            ),
+            _vm._v(" "),
+            _c("div", { staticClass: "card mt-1" }, [
+              _c("div", { staticClass: "card-body" }, [
+                _c("div", { attrs: { id: "scrollbar" } }, [
+                  _c(
+                    "table",
+                    { staticClass: "table table-striped table-hover" },
+                    [
+                      _vm._m(1),
+                      _vm._v(" "),
+                      _c(
+                        "tbody",
+                        _vm._l(_vm.citiesByRoute, function(city, index) {
+                          return _c("tr", [
+                            _c("td", [_vm._v(_vm._s(index + 1))]),
+                            _vm._v(" "),
+                            _c("td", [_vm._v(_vm._s(city.name))]),
+                            _vm._v(" "),
+                            _c("td", [_vm._v(_vm._s(city.pivot.distance))]),
+                            _vm._v(" "),
+                            _c("td", [
+                              _c(
+                                "button",
+                                {
+                                  staticClass: "btn btn-outline-danger",
+                                  on: {
+                                    click: function($event) {
+                                      $event.preventDefault()
+                                      return _vm.remove(city)
+                                    }
+                                  }
+                                },
+                                [
+                                  _c("i", {
+                                    staticClass: "button-icon fas fa-trash"
+                                  }),
+                                  _vm._v("Remove\n                            ")
+                                ]
+                              )
+                            ])
+                          ])
+                        }),
+                        0
+                      )
+                    ]
+                  )
+                ])
+              ])
+            ])
+          ])
+        ])
+      ],
+      1
+    )
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col-sm-6" }, [
+      _c("h1", { staticClass: "m-0 text-dark" }, [_vm._v("Route Cities")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", [
+      _c("tr", [
+        _c("th", [_vm._v("SL.# ")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("CITY")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("DISTANCE (km)")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Action")])
+      ])
+    ])
+  }
+]
 render._withStripped = true
 
 
@@ -86030,7 +86751,7 @@ __webpack_require__.r(__webpack_exports__);
     return _api__WEBPACK_IMPORTED_MODULE_0__["default"].patch("buses/".concat(id), data);
   },
   "delete": function _delete(id) {
-    return api["delete"]("buses/".concat(id));
+    return _api__WEBPACK_IMPORTED_MODULE_0__["default"]["delete"]("buses/".concat(id));
   }
 });
 
@@ -86048,6 +86769,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _api__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./api */ "./resources/js/api/api.js");
 
 /* harmony default export */ __webpack_exports__["default"] = ({
+  cities: function cities() {
+    return _api__WEBPACK_IMPORTED_MODULE_0__["default"].get('api/cities');
+  },
   divisions: function divisions() {
     return _api__WEBPACK_IMPORTED_MODULE_0__["default"].get('api/divisions');
   },
@@ -86056,6 +86780,40 @@ __webpack_require__.r(__webpack_exports__);
   },
   upazilas: function upazilas() {
     return _api__WEBPACK_IMPORTED_MODULE_0__["default"].get('api/upazilas');
+  },
+  store: function store(data) {
+    return _api__WEBPACK_IMPORTED_MODULE_0__["default"].post('cities', data);
+  },
+  "delete": function _delete(id) {
+    return _api__WEBPACK_IMPORTED_MODULE_0__["default"]["delete"]("cities/".concat(id));
+  }
+});
+
+/***/ }),
+
+/***/ "./resources/js/api/route.js":
+/*!***********************************!*\
+  !*** ./resources/js/api/route.js ***!
+  \***********************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _api__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./api */ "./resources/js/api/api.js");
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  routes: function routes() {
+    return _api__WEBPACK_IMPORTED_MODULE_0__["default"].get('api/routes');
+  },
+  cities: function cities(id) {
+    return _api__WEBPACK_IMPORTED_MODULE_0__["default"].get("api/".concat(id, "/cities"));
+  },
+  attach: function attach(data, id) {
+    return _api__WEBPACK_IMPORTED_MODULE_0__["default"].post("route-cities/".concat(id), data);
+  },
+  detach: function detach(city, route) {
+    return _api__WEBPACK_IMPORTED_MODULE_0__["default"]["delete"]("route-cities/".concat(route, "/").concat(city));
   }
 });
 
@@ -87312,7 +88070,14 @@ var routes = [{
   component: __webpack_require__(/*! ./views/bus/BusList */ "./resources/js/views/bus/BusList.vue")["default"]
 }, {
   path: '/route',
-  component: __webpack_require__(/*! ./views/bus/Route */ "./resources/js/views/bus/Route.vue")["default"]
+  component: __webpack_require__(/*! ./views/route/Route */ "./resources/js/views/route/Route.vue")["default"]
+}, // {
+//     path: '/route-buses',
+//     component: require('./views/route/RouteBuses').default
+// },
+{
+  path: '/route-cities',
+  component: __webpack_require__(/*! ./views/route/RouteCities */ "./resources/js/views/route/RouteCities.vue")["default"]
 }, {
   path: '/seat-plan',
   component: __webpack_require__(/*! ./views/bus/SeatPlan */ "./resources/js/views/bus/SeatPlan.vue")["default"]
@@ -87383,9 +88148,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _modules_bus__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./modules/bus */ "./resources/js/store/modules/bus/index.js");
 /* harmony import */ var _modules_city__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./modules/city */ "./resources/js/store/modules/city/index.js");
 /* harmony import */ var _modules_seatplan__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./modules/seatplan */ "./resources/js/store/modules/seatplan/index.js");
+/* harmony import */ var _modules_route__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./modules/route */ "./resources/js/store/modules/route/index.js");
 
 
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__["default"]);
+
 
 
 
@@ -87401,6 +88168,7 @@ var store = new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
   modules: {
     bus: _modules_bus__WEBPACK_IMPORTED_MODULE_6__["default"],
     city: _modules_city__WEBPACK_IMPORTED_MODULE_7__["default"],
+    route: _modules_route__WEBPACK_IMPORTED_MODULE_9__["default"],
     seatplan: _modules_seatplan__WEBPACK_IMPORTED_MODULE_8__["default"]
   }
 });
@@ -87664,7 +88432,7 @@ __webpack_require__.r(__webpack_exports__);
 /*!****************************************************!*\
   !*** ./resources/js/store/modules/city/actions.js ***!
   \****************************************************/
-/*! exports provided: getDivisions, getDistricts, getDistrictsByDivision, getUpazilas, getUpazilasByDistrict */
+/*! exports provided: getDivisions, getDistricts, getDistrictsByDivision, getUpazilas, getUpazilasByDistrict, getBusAvailableToCities, sortCitiesByName, sortCitiesByDistrict, addCity, deleteCity, getCitiesByDivisionOfDepartureArrival */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -87674,19 +88442,24 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getDistrictsByDivision", function() { return getDistrictsByDivision; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getUpazilas", function() { return getUpazilas; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getUpazilasByDistrict", function() { return getUpazilasByDistrict; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getBusAvailableToCities", function() { return getBusAvailableToCities; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "sortCitiesByName", function() { return sortCitiesByName; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "sortCitiesByDistrict", function() { return sortCitiesByDistrict; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "addCity", function() { return addCity; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "deleteCity", function() { return deleteCity; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getCitiesByDivisionOfDepartureArrival", function() { return getCitiesByDivisionOfDepartureArrival; });
 /* harmony import */ var _api_city__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../api/city */ "./resources/js/api/city.js");
 
 var getDivisions = function getDivisions(_ref) {
   var commit = _ref.commit;
   _api_city__WEBPACK_IMPORTED_MODULE_0__["default"].divisions().then(function (response) {
-    commit('SET_DIVISIONS', response.data); //commit('SORT_SEATPLANS_BY_ID');
+    commit('SET_DIVISIONS', response.data);
   });
 };
 var getDistricts = function getDistricts(_ref2) {
   var commit = _ref2.commit;
   _api_city__WEBPACK_IMPORTED_MODULE_0__["default"].districts().then(function (response) {
-    commit('SET_DISTRICTS', response.data); //commit('SET_DISTRICTS_BY_DIVISION', response.data);
-    //commit('SORT_SEATPLANS_BY_ID');
+    commit('SET_DISTRICTS', response.data);
   });
 };
 var getDistrictsByDivision = function getDistrictsByDivision(_ref3, id) {
@@ -87707,6 +88480,48 @@ var getUpazilasByDistrict = function getUpazilasByDistrict(_ref5, id) {
   var upazilas = getters.upazilasByDistrict(id);
   commit('SET_UPAZILAS_BY_DISTRICT', upazilas);
 };
+var getBusAvailableToCities = function getBusAvailableToCities(_ref6) {
+  var commit = _ref6.commit;
+  _api_city__WEBPACK_IMPORTED_MODULE_0__["default"].cities().then(function (response) {
+    commit('SET_CITIES', response.data);
+    commit('SORT_CITIES_BY_NAME');
+  });
+};
+var sortCitiesByName = function sortCitiesByName(_ref7) {
+  var commit = _ref7.commit;
+  commit('SORT_CITIES_BY_NAME');
+};
+var sortCitiesByDistrict = function sortCitiesByDistrict(_ref8) {
+  var commit = _ref8.commit;
+  commit('SORT_CITIES_BY_DISTRICT');
+};
+var addCity = function addCity(_ref9, city) {
+  var commit = _ref9.commit;
+  var data = {
+    division_id: city.divisionId,
+    district_id: city.districtId,
+    name: city.name
+  };
+  _api_city__WEBPACK_IMPORTED_MODULE_0__["default"].store(data).then(function (response) {
+    commit('ADD_CITY', response.data); //commit('SORT_CITIES_BY_NAME');
+  });
+};
+var deleteCity = function deleteCity(_ref10, id) {
+  var commit = _ref10.commit,
+      state = _ref10.state;
+  _api_city__WEBPACK_IMPORTED_MODULE_0__["default"]["delete"](id).then(function (response) {
+    var index = state.cityList.findIndex(function (city) {
+      return city.id === id;
+    });
+    commit('DELETE_CITY', index);
+  });
+};
+var getCitiesByDivisionOfDepartureArrival = function getCitiesByDivisionOfDepartureArrival(_ref11, route) {
+  var commit = _ref11.commit,
+      getters = _ref11.getters;
+  var cities = getters.citiesByDivisionOfDepartureArrival(route);
+  commit('SET_CITIES_BY_DIVISION_OF_ROUTE', cities);
+};
 
 /***/ }),
 
@@ -87714,14 +88529,18 @@ var getUpazilasByDistrict = function getUpazilasByDistrict(_ref5, id) {
 /*!****************************************************!*\
   !*** ./resources/js/store/modules/city/getters.js ***!
   \****************************************************/
-/*! exports provided: districtsByDivision, districtBy, upazilasByDistrict */
+/*! exports provided: districtsByDivision, districtBy, cityBy, upazilasByDistrict, getCityBy, citiesByDivisionOfDepartureArrival, availableCitiesCount */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "districtsByDivision", function() { return districtsByDivision; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "districtBy", function() { return districtBy; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "cityBy", function() { return cityBy; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "upazilasByDistrict", function() { return upazilasByDistrict; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getCityBy", function() { return getCityBy; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "citiesByDivisionOfDepartureArrival", function() { return citiesByDivisionOfDepartureArrival; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "availableCitiesCount", function() { return availableCitiesCount; });
 var districtsByDivision = function districtsByDivision(state) {
   return function (divisionId) {
     return state.districtList.filter(function (district) {
@@ -87736,12 +88555,36 @@ var districtBy = function districtBy(state) {
     });
   };
 };
+var cityBy = function cityBy(state) {
+  return function (id) {
+    return state.districtList.find(function (district) {
+      return district.id == id;
+    });
+  };
+};
 var upazilasByDistrict = function upazilasByDistrict(state) {
   return function (districtId) {
     return state.upazilaList.filter(function (upazila) {
       return upazila.district_id == districtId;
     });
   };
+};
+var getCityBy = function getCityBy(state) {
+  return function (name) {
+    return state.cityList.find(function (city) {
+      return city.name == name;
+    });
+  };
+};
+var citiesByDivisionOfDepartureArrival = function citiesByDivisionOfDepartureArrival(state) {
+  return function (route) {
+    return state.cityList.filter(function (city) {
+      return city.division_id == route.departureCityDivId || city.division_id == route.arrivalCityDivId;
+    });
+  };
+};
+var availableCitiesCount = function availableCitiesCount(state) {
+  return state.availableCityList.length;
 };
 
 /***/ }),
@@ -87777,16 +88620,58 @@ __webpack_require__.r(__webpack_exports__);
 /*!******************************************************!*\
   !*** ./resources/js/store/modules/city/mutations.js ***!
   \******************************************************/
-/*! exports provided: SET_DIVISIONS, SET_DISTRICTS, SET_DISTRICTS_BY_DIVISION, SET_UPAZILAS, SET_UPAZILAS_BY_DISTRICT */
+/*! exports provided: ADD_CITY, DELETE_CITY, SET_CITIES, SORT_CITIES_BY_NAME, SORT_CITIES_BY_DISTRICT, SET_DIVISIONS, SET_DISTRICTS, SET_DISTRICTS_BY_DIVISION, SET_UPAZILAS, SET_UPAZILAS_BY_DISTRICT, SET_CITIES_BY_DIVISION_OF_ROUTE */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ADD_CITY", function() { return ADD_CITY; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DELETE_CITY", function() { return DELETE_CITY; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SET_CITIES", function() { return SET_CITIES; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SORT_CITIES_BY_NAME", function() { return SORT_CITIES_BY_NAME; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SORT_CITIES_BY_DISTRICT", function() { return SORT_CITIES_BY_DISTRICT; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SET_DIVISIONS", function() { return SET_DIVISIONS; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SET_DISTRICTS", function() { return SET_DISTRICTS; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SET_DISTRICTS_BY_DIVISION", function() { return SET_DISTRICTS_BY_DIVISION; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SET_UPAZILAS", function() { return SET_UPAZILAS; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SET_UPAZILAS_BY_DISTRICT", function() { return SET_UPAZILAS_BY_DISTRICT; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SET_CITIES_BY_DIVISION_OF_ROUTE", function() { return SET_CITIES_BY_DIVISION_OF_ROUTE; });
+var ADD_CITY = function ADD_CITY(state, city) {
+  state.cityList.push(city);
+};
+var DELETE_CITY = function DELETE_CITY(state, index) {
+  state.cityList.splice(index, 1);
+};
+var SET_CITIES = function SET_CITIES(state, cities) {
+  state.cityList = cities;
+};
+var SORT_CITIES_BY_NAME = function SORT_CITIES_BY_NAME(state) {
+  var cities = state.cityList;
+  cities.sort(function (a, b) {
+    var nameA = a.name.toUpperCase(); // ignore upper and lowercase
+
+    var nameB = b.name.toUpperCase(); // ignore upper and lowercase
+
+    if (nameA < nameB) {
+      return -1;
+    }
+
+    if (nameA > nameB) {
+      return 1;
+    } // names must be equal
+
+
+    return 0;
+  });
+  state.cityList = cities;
+};
+var SORT_CITIES_BY_DISTRICT = function SORT_CITIES_BY_DISTRICT(state) {
+  var cities = state.cityList;
+  cities.sort(function (a, b) {
+    return a.district_id - b.district_id;
+  });
+  state.cityList = cities;
+};
 var SET_DIVISIONS = function SET_DIVISIONS(state, divisions) {
   state.divisionList = divisions;
 };
@@ -87802,6 +88687,9 @@ var SET_UPAZILAS = function SET_UPAZILAS(state, upazilas) {
 var SET_UPAZILAS_BY_DISTRICT = function SET_UPAZILAS_BY_DISTRICT(state, upazilas) {
   state.upazilaListByDistrict = upazilas;
 };
+var SET_CITIES_BY_DIVISION_OF_ROUTE = function SET_CITIES_BY_DIVISION_OF_ROUTE(state, cities) {
+  state.availableCityList = cities;
+};
 
 /***/ }),
 
@@ -87815,11 +88703,173 @@ var SET_UPAZILAS_BY_DISTRICT = function SET_UPAZILAS_BY_DISTRICT(state, upazilas
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
+  cityList: [],
+  //bus service availble to the cities
+  availableCityList: [],
+  //list by route dep/arr cities  division id;
   divisionList: [],
   districtList: [],
   districtListByDivision: [],
   upazilaList: [],
   upazilaListByDistrict: []
+});
+
+/***/ }),
+
+/***/ "./resources/js/store/modules/route/actions.js":
+/*!*****************************************************!*\
+  !*** ./resources/js/store/modules/route/actions.js ***!
+  \*****************************************************/
+/*! exports provided: getRoutes, getCitiesFromRoutesBy, addCity, deleteCityFromRoute, emptyCitiesByRoute */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getRoutes", function() { return getRoutes; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getCitiesFromRoutesBy", function() { return getCitiesFromRoutesBy; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "addCity", function() { return addCity; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "deleteCityFromRoute", function() { return deleteCityFromRoute; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "emptyCitiesByRoute", function() { return emptyCitiesByRoute; });
+/* harmony import */ var _api_route__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../api/route */ "./resources/js/api/route.js");
+
+var getRoutes = function getRoutes(_ref) {
+  var commit = _ref.commit;
+  _api_route__WEBPACK_IMPORTED_MODULE_0__["default"].routes().then(function (response) {
+    commit('SET_ROUTES', response.data); //commit('SORT_ROUTES_BY_ID');
+  });
+};
+var getCitiesFromRoutesBy = function getCitiesFromRoutesBy(_ref2, id) {
+  var commit = _ref2.commit;
+  _api_route__WEBPACK_IMPORTED_MODULE_0__["default"].cities(id).then(function (response) {
+    commit('SET_CITIES_BY_ROUTE', response.data);
+    commit('SORT_CITIES_BY_DISTANCE_FROM_DEPERTAURE_CITY');
+  });
+};
+var addCity = function addCity(_ref3, _ref4) {
+  var commit = _ref3.commit;
+  var city = _ref4.city,
+      distance = _ref4.distance,
+      id = _ref4.id;
+  var data = {
+    city: city.id,
+    distance: distance
+  };
+  _api_route__WEBPACK_IMPORTED_MODULE_0__["default"].attach(data, id).then(function (response) {
+    // const data = {
+    //     bus: response.data,
+    //     seats: numberOfSeat
+    // }
+    //commit('ADD_BUS', data);
+    commit('SET_CITIES_BY_ROUTE', response.data);
+    commit('SORT_CITIES_BY_DISTANCE_FROM_DEPERTAURE_CITY');
+  });
+};
+var deleteCityFromRoute = function deleteCityFromRoute(_ref5, _ref6) {
+  var commit = _ref5.commit;
+  var city = _ref6.city,
+      route = _ref6.route;
+  _api_route__WEBPACK_IMPORTED_MODULE_0__["default"].detach(city, route).then(function (response) {
+    commit('SET_CITIES_BY_ROUTE', response.data);
+    commit('SORT_CITIES_BY_DISTANCE_FROM_DEPERTAURE_CITY');
+  });
+};
+var emptyCitiesByRoute = function emptyCitiesByRoute(_ref7) {
+  var commit = _ref7.commit;
+  commit('EMPTY_CITIES_BY_ROUTE');
+};
+
+/***/ }),
+
+/***/ "./resources/js/store/modules/route/getters.js":
+/*!*****************************************************!*\
+  !*** ./resources/js/store/modules/route/getters.js ***!
+  \*****************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+
+
+/***/ }),
+
+/***/ "./resources/js/store/modules/route/index.js":
+/*!***************************************************!*\
+  !*** ./resources/js/store/modules/route/index.js ***!
+  \***************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _state__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./state */ "./resources/js/store/modules/route/state.js");
+/* harmony import */ var _getters__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./getters */ "./resources/js/store/modules/route/getters.js");
+/* harmony import */ var _getters__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_getters__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _mutations__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./mutations */ "./resources/js/store/modules/route/mutations.js");
+/* harmony import */ var _actions__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./actions */ "./resources/js/store/modules/route/actions.js");
+
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  namespaced: true,
+  state: _state__WEBPACK_IMPORTED_MODULE_0__["default"],
+  getters: _getters__WEBPACK_IMPORTED_MODULE_1__,
+  mutations: _mutations__WEBPACK_IMPORTED_MODULE_2__,
+  actions: _actions__WEBPACK_IMPORTED_MODULE_3__
+});
+
+/***/ }),
+
+/***/ "./resources/js/store/modules/route/mutations.js":
+/*!*******************************************************!*\
+  !*** ./resources/js/store/modules/route/mutations.js ***!
+  \*******************************************************/
+/*! exports provided: SET_ROUTES, SET_CITIES_BY_ROUTE, SORT_CITIES_BY_DISTANCE_FROM_DEPERTAURE_CITY, EMPTY_CITIES_BY_ROUTE */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SET_ROUTES", function() { return SET_ROUTES; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SET_CITIES_BY_ROUTE", function() { return SET_CITIES_BY_ROUTE; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SORT_CITIES_BY_DISTANCE_FROM_DEPERTAURE_CITY", function() { return SORT_CITIES_BY_DISTANCE_FROM_DEPERTAURE_CITY; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "EMPTY_CITIES_BY_ROUTE", function() { return EMPTY_CITIES_BY_ROUTE; });
+var SET_ROUTES = function SET_ROUTES(state, routes) {
+  state.availableRouteList = routes;
+};
+var SET_CITIES_BY_ROUTE = function SET_CITIES_BY_ROUTE(state, cities) {
+  state.citiesByRoute = cities;
+};
+var SORT_CITIES_BY_DISTANCE_FROM_DEPERTAURE_CITY = function SORT_CITIES_BY_DISTANCE_FROM_DEPERTAURE_CITY(state) {
+  var cities = state.citiesByRoute;
+  cities.sort(function (a, b) {
+    return a.pivot.distance - b.pivot.distance;
+  });
+  state.citiesByRoute = cities;
+};
+var EMPTY_CITIES_BY_ROUTE = function EMPTY_CITIES_BY_ROUTE(state) {
+  state.citiesByRoute = [];
+}; // export const SORT_SEATPLANS_BY_ID = (state) => {
+//     const seatplans = state.availableSeatPlanList;
+//     seatplans.sort((a, b) => {
+//         return a.id - b.id;
+//     });    
+//     state.availableSeatPlanList = seatplans;
+// }
+
+/***/ }),
+
+/***/ "./resources/js/store/modules/route/state.js":
+/*!***************************************************!*\
+  !*** ./resources/js/store/modules/route/state.js ***!
+  \***************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony default export */ __webpack_exports__["default"] = ({
+  // availableCityList: [],
+  availableRouteList: [],
+  citiesByRoute: []
 });
 
 /***/ }),
@@ -89022,75 +90072,6 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./resources/js/views/bus/Route.vue":
-/*!******************************************!*\
-  !*** ./resources/js/views/bus/Route.vue ***!
-  \******************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _Route_vue_vue_type_template_id_0b5bea2a_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Route.vue?vue&type=template&id=0b5bea2a&scoped=true& */ "./resources/js/views/bus/Route.vue?vue&type=template&id=0b5bea2a&scoped=true&");
-/* harmony import */ var _Route_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Route.vue?vue&type=script&lang=js& */ "./resources/js/views/bus/Route.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
-
-
-
-
-
-/* normalize component */
-
-var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
-  _Route_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
-  _Route_vue_vue_type_template_id_0b5bea2a_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"],
-  _Route_vue_vue_type_template_id_0b5bea2a_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
-  false,
-  null,
-  "0b5bea2a",
-  null
-  
-)
-
-/* hot reload */
-if (false) { var api; }
-component.options.__file = "resources/js/views/bus/Route.vue"
-/* harmony default export */ __webpack_exports__["default"] = (component.exports);
-
-/***/ }),
-
-/***/ "./resources/js/views/bus/Route.vue?vue&type=script&lang=js&":
-/*!*******************************************************************!*\
-  !*** ./resources/js/views/bus/Route.vue?vue&type=script&lang=js& ***!
-  \*******************************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Route_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./Route.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/bus/Route.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Route_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
-
-/***/ }),
-
-/***/ "./resources/js/views/bus/Route.vue?vue&type=template&id=0b5bea2a&scoped=true&":
-/*!*************************************************************************************!*\
-  !*** ./resources/js/views/bus/Route.vue?vue&type=template&id=0b5bea2a&scoped=true& ***!
-  \*************************************************************************************/
-/*! exports provided: render, staticRenderFns */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Route_vue_vue_type_template_id_0b5bea2a_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./Route.vue?vue&type=template&id=0b5bea2a&scoped=true& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/bus/Route.vue?vue&type=template&id=0b5bea2a&scoped=true&");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Route_vue_vue_type_template_id_0b5bea2a_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Route_vue_vue_type_template_id_0b5bea2a_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
-
-
-
-/***/ }),
-
 /***/ "./resources/js/views/bus/Schedule.vue":
 /*!*********************************************!*\
   !*** ./resources/js/views/bus/Schedule.vue ***!
@@ -89416,6 +90397,163 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Stop_vue_vue_type_template_id_405da552_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Stop_vue_vue_type_template_id_405da552_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/views/route/Route.vue":
+/*!********************************************!*\
+  !*** ./resources/js/views/route/Route.vue ***!
+  \********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _Route_vue_vue_type_template_id_6309dd34_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Route.vue?vue&type=template&id=6309dd34&scoped=true& */ "./resources/js/views/route/Route.vue?vue&type=template&id=6309dd34&scoped=true&");
+/* harmony import */ var _Route_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Route.vue?vue&type=script&lang=js& */ "./resources/js/views/route/Route.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _Route_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _Route_vue_vue_type_template_id_6309dd34_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _Route_vue_vue_type_template_id_6309dd34_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  "6309dd34",
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/views/route/Route.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/views/route/Route.vue?vue&type=script&lang=js&":
+/*!*********************************************************************!*\
+  !*** ./resources/js/views/route/Route.vue?vue&type=script&lang=js& ***!
+  \*********************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Route_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./Route.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/route/Route.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Route_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/views/route/Route.vue?vue&type=template&id=6309dd34&scoped=true&":
+/*!***************************************************************************************!*\
+  !*** ./resources/js/views/route/Route.vue?vue&type=template&id=6309dd34&scoped=true& ***!
+  \***************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Route_vue_vue_type_template_id_6309dd34_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./Route.vue?vue&type=template&id=6309dd34&scoped=true& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/route/Route.vue?vue&type=template&id=6309dd34&scoped=true&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Route_vue_vue_type_template_id_6309dd34_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Route_vue_vue_type_template_id_6309dd34_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/views/route/RouteCities.vue":
+/*!**************************************************!*\
+  !*** ./resources/js/views/route/RouteCities.vue ***!
+  \**************************************************/
+/*! no static exports found */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _RouteCities_vue_vue_type_template_id_593d431d_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./RouteCities.vue?vue&type=template&id=593d431d&scoped=true& */ "./resources/js/views/route/RouteCities.vue?vue&type=template&id=593d431d&scoped=true&");
+/* harmony import */ var _RouteCities_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./RouteCities.vue?vue&type=script&lang=js& */ "./resources/js/views/route/RouteCities.vue?vue&type=script&lang=js&");
+/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _RouteCities_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _RouteCities_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__[key]; }) }(__WEBPACK_IMPORT_KEY__));
+/* harmony import */ var _RouteCities_vue_vue_type_style_index_0_id_593d431d_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./RouteCities.vue?vue&type=style&index=0&id=593d431d&lang=scss&scoped=true& */ "./resources/js/views/route/RouteCities.vue?vue&type=style&index=0&id=593d431d&lang=scss&scoped=true&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__["default"])(
+  _RouteCities_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _RouteCities_vue_vue_type_template_id_593d431d_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _RouteCities_vue_vue_type_template_id_593d431d_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  "593d431d",
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/views/route/RouteCities.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/views/route/RouteCities.vue?vue&type=script&lang=js&":
+/*!***************************************************************************!*\
+  !*** ./resources/js/views/route/RouteCities.vue?vue&type=script&lang=js& ***!
+  \***************************************************************************/
+/*! no static exports found */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_RouteCities_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./RouteCities.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/route/RouteCities.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_RouteCities_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/views/route/RouteCities.vue?vue&type=style&index=0&id=593d431d&lang=scss&scoped=true&":
+/*!************************************************************************************************************!*\
+  !*** ./resources/js/views/route/RouteCities.vue?vue&type=style&index=0&id=593d431d&lang=scss&scoped=true& ***!
+  \************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_style_loader_index_js_node_modules_css_loader_index_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_7_2_node_modules_sass_loader_dist_cjs_js_ref_7_3_node_modules_vue_loader_lib_index_js_vue_loader_options_RouteCities_vue_vue_type_style_index_0_id_593d431d_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/style-loader!../../../../node_modules/css-loader!../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../node_modules/postcss-loader/src??ref--7-2!../../../../node_modules/sass-loader/dist/cjs.js??ref--7-3!../../../../node_modules/vue-loader/lib??vue-loader-options!./RouteCities.vue?vue&type=style&index=0&id=593d431d&lang=scss&scoped=true& */ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/sass-loader/dist/cjs.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/route/RouteCities.vue?vue&type=style&index=0&id=593d431d&lang=scss&scoped=true&");
+/* harmony import */ var _node_modules_style_loader_index_js_node_modules_css_loader_index_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_7_2_node_modules_sass_loader_dist_cjs_js_ref_7_3_node_modules_vue_loader_lib_index_js_vue_loader_options_RouteCities_vue_vue_type_style_index_0_id_593d431d_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_index_js_node_modules_css_loader_index_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_7_2_node_modules_sass_loader_dist_cjs_js_ref_7_3_node_modules_vue_loader_lib_index_js_vue_loader_options_RouteCities_vue_vue_type_style_index_0_id_593d431d_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_0__);
+/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _node_modules_style_loader_index_js_node_modules_css_loader_index_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_7_2_node_modules_sass_loader_dist_cjs_js_ref_7_3_node_modules_vue_loader_lib_index_js_vue_loader_options_RouteCities_vue_vue_type_style_index_0_id_593d431d_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_0__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _node_modules_style_loader_index_js_node_modules_css_loader_index_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_7_2_node_modules_sass_loader_dist_cjs_js_ref_7_3_node_modules_vue_loader_lib_index_js_vue_loader_options_RouteCities_vue_vue_type_style_index_0_id_593d431d_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_0__[key]; }) }(__WEBPACK_IMPORT_KEY__));
+ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_style_loader_index_js_node_modules_css_loader_index_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_7_2_node_modules_sass_loader_dist_cjs_js_ref_7_3_node_modules_vue_loader_lib_index_js_vue_loader_options_RouteCities_vue_vue_type_style_index_0_id_593d431d_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_0___default.a); 
+
+/***/ }),
+
+/***/ "./resources/js/views/route/RouteCities.vue?vue&type=template&id=593d431d&scoped=true&":
+/*!*********************************************************************************************!*\
+  !*** ./resources/js/views/route/RouteCities.vue?vue&type=template&id=593d431d&scoped=true& ***!
+  \*********************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_RouteCities_vue_vue_type_template_id_593d431d_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./RouteCities.vue?vue&type=template&id=593d431d&scoped=true& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/route/RouteCities.vue?vue&type=template&id=593d431d&scoped=true&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_RouteCities_vue_vue_type_template_id_593d431d_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_RouteCities_vue_vue_type_template_id_593d431d_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 

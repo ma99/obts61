@@ -259,7 +259,7 @@
                 },
                 computed: {                   
                     ...mapState('bus', [
-                      'availableBusList',                   
+                      'availableBusList',   
                       'types'
                     ]),
 
@@ -306,7 +306,7 @@
                       });
                   },                    
                   save() {
-                      var vm = this;
+                      //var vm = this;
                       this.addBus({
                         busInfo: this.bus, 
                         numberOfSeat: this.numberOfSeat

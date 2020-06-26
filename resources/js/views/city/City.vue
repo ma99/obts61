@@ -67,7 +67,7 @@
       
         <div class="row justify-content-center">
           <div class="card card-info w-100">
-            <div class="card-header">Service Available City Info<span> {{ busAvailableToCityList.length }} </span></div>
+            <div class="card-header">Service Available City Info<span> {{ cityList.length }} </span></div>
             <div class="card-body">
                 <div id="scrollbar">
                   <table class="table table-striped table-hover">
@@ -89,7 +89,7 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <tr  v-for="(city, index) in busAvailableToCityList">
+                      <tr  v-for="(city, index) in cityList">
                         <td>{{ index+1 }}</td>                              
                         <td>
                           <span data-toggle="tooltip" data-placement="top" :title="district.name" @mouseover="getNameOf(city)">
@@ -125,7 +125,7 @@
     import Districts from '../../components/city/Districts'; 
     import Upazilas from '../../components/city/Upazilas'; 
 
-    import { mapGetters } from 'vuex';
+    import { mapState, mapGetters, mapActions } from 'vuex';
 
     export default {
         components: {
@@ -141,7 +141,7 @@
             //upazilaListByDistrict: [],
             cityName: '',
             district: '',
-            busAvailableToCityList: [], //bus service availble to the cities
+            //cityList: [], //bus service availble to the cities
             //divisionList: [],
             //districtList: [],
             //upazilaList: [],            
@@ -151,6 +151,7 @@
             response: '',
             //selectedCityId: '',
             selectedCity: {
+              divisionId: '',
               districtId: '',
               name: ''
             },            
@@ -185,9 +186,15 @@
             }
         },
         computed: {
+            ...mapState('city', [
+                'cityList'
+            ]),
+
             ...mapGetters('city', [
+                'cityBy',
                 'districtBy'
             ]),
+
           isValid() {
             return this.selectedCity != '' &&
               this.selectedDistrict != '' &&
@@ -195,7 +202,16 @@
           },
         },
         methods: {
+            ...mapActions('city', [
+                'addCity',
+                'deleteCity',
+                'getBusAvailableToCities',
+                'sortCitiesByName',
+                'sortCitiesByDistrict'
+            ]),
+
           cityToBeAdded() {
+            this.selectedCity.divisionId = this.selectedDivision;
             this.selectedCity.districtId = this.selectedDistrict;
             if (this.selectedUpazila != '') {
               this.selectedCity.name = this.selectedUpazila;
@@ -261,25 +277,28 @@
           // },
           fetchBusAvailableToCities() {
             this.loading = true;
-            this.busAvailableToCityList= [];            
-            var vm = this;                
-            axios.get('/api/cities')  
-                .then(function (response) {                  
-                   response.data.error ? vm.error = response.data.error : vm.busAvailableToCityList = response.data;
-                   vm.loading = false;
-                   vm.sortByCityNameBusAvailableToCityList(vm.busAvailableToCityList);
-            });
+            this.getBusAvailableToCities();
+            // this.cityList= [];            
+            // var vm = this;                
+            // axios.get('/api/cities')  
+            //     .then(function (response) {                  
+            //        response.data.error ? vm.error = response.data.error : vm.cityList = response.data;
+            //        vm.loading = false;
+            //        vm.sortByCityNamecityList(vm.cityList);
+            // });
+            this.loading = false;
           },
           getNameOf(city) {
-            this.district = this.districtList.find(element => element.id == city.district_id);            
+            this.district = this.cityBy(city.district_id);            
           },
           isSortingAvailableBy(val) {
             if (val== 'name') {
-                this.sortByCityNameBusAvailableToCityList(this.busAvailableToCityList);
+                this.sortCitiesByName();
                 this.disableSorting = true;
                 return;
             }
-            this.sortByDistrictBusAvailableToCityList(this.busAvailableToCityList);
+            //this.sortByDistrictcityList(this.cityList);
+            this.sortCitiesByDistrict();
             this.disableSorting = false;
           },
           remove(city) {  
@@ -300,60 +319,70 @@
             })
             .then((value) => {
               if (value) {
-
                 vm.loading = true;
                 vm.response = '';
                 vm.showAlert = false;
-                axios.delete('/cities/'+city.id)          
-                .then(function (response) { 
-                    response.data.error ? vm.error = response.data.error : vm.response = response.data;
+                vm.deleteCity(city.id);
+                // axios.delete('/cities/'+city.id)          
+                // .then(function (response) { 
+                //     response.data.error ? vm.error = response.data.error : vm.response = response.data;
 
-                    if (vm.response) {               
-                        vm.removeCityFromBusAvailableToCityList(city.id); // update the array after removing
-                        vm.loading = false;
-                        vm.actionStatus = 'Removed';
-                        vm.alertType = 'danger';
-                        vm.showAlert= true;
-                        return;                    
-                    }                            
-                    vm.loading = false;
-                });                       
+                //     if (vm.response) {               
+                //         vm.removeCityFromcityList(city.id); // update the array after removing
+                //         vm.loading = false;
+                //         vm.actionStatus = 'Removed';
+                //         vm.alertType = 'danger';
+                //         vm.showAlert= true;
+                //         return;                    
+                //     }                            
+                //     vm.loading = false;
+                // });                       
+                vm.loading = false;
+                vm.actionStatus = 'Removed';
+                vm.alertType = 'danger';
+                vm.showAlert= true;
               }               
             }); 
           },         
-          removeCityFromBusAvailableToCityList(cityid) {
-            var indx = this.busAvailableToCityList.findIndex(function(city){ 
-                // here 'city' is array object 
-                 return city.id == cityid;
-            });        
-            this.busAvailableToCityList.splice(indx, 1);
-            //return;
-          },
+          // removeCityFromcityList(cityid) {
+          //   var indx = this.cityList.findIndex(function(city){ 
+          //       // here 'city' is array object 
+          //        return city.id == cityid;
+          //   });        
+          //   this.cityList.splice(indx, 1);
+          //   //return;
+          // },
           save() {
-            var vm = this;
-            //this.loading = true;            
-            axios.post('/cities', {
-                district_id: this.selectedCity.districtId,
-                name: this.selectedCity.name,                
-            })          
-            .then(function (response) {
-                //console.log(response.data);
-                response.data.error ? vm.error = response.data.error : vm.response = response.data;
-                if (vm.response) {
-                   //console.log(vm.response);
-                   //vm.fetchBusAvailableToCities();
-                   vm.busAvailableToCityList.push(vm.response);
-                   vm.sortByCityNameBusAvailableToCityList(vm.busAvailableToCityList);
-                   vm.loading = false;
-                   vm.actionAlert(vm.selectedCity.name);
-                   vm.reset();
-                   return;                   
-                }
-                vm.loading = false;                
-            });
+            this.loading = true;
+            this.addCity(this.selectedCity);
+            
+            // var vm = this;
+            // //this.loading = true;            
+            // axios.post('/cities', {
+            //     district_id: this.selectedCity.districtId,
+            //     name: this.selectedCity.name,                
+            // })          
+            // .then(function (response) {
+            //     //console.log(response.data);
+            //     response.data.error ? vm.error = response.data.error : vm.response = response.data;
+            //     if (vm.response) {
+            //        //console.log(vm.response);
+            //        //vm.fetchBusAvailableToCities();
+            //        vm.cityList.push(vm.response);
+            //        vm.sortByCityNamecityList(vm.cityList);
+            //        vm.loading = false;
+            //        vm.actionAlert(vm.selectedCity.name);
+            //        vm.reset();
+            //        return;                   
+            //     }                
+            // });
+            this.loading = false;                
+            this.actionAlert(this.selectedCity.name);
+            this.reset();
           },
           reset() {
             this.selectedCity = {
+              divisionId: '',
               districtId: '',
               name:  ''
             };
@@ -361,7 +390,7 @@
             this.selectedUpazila = '';
             this.selectedDivision = '';
           },
-          sortByCityNameBusAvailableToCityList(arr) {
+          sortByCityNamecityList(arr) {
             // sort by name            
                 arr.sort(function(a, b) {
                   var nameA = a.name.toUpperCase(); // ignore upper and lowercase
@@ -377,7 +406,7 @@
                   return 0;
                 });
           },
-          sortByDistrictBusAvailableToCityList(arr) {
+          sortByDistrictcityList(arr) {
             arr.sort((a, b) => {
               return a.district_id - b.district_id;
             });                            
