@@ -28,9 +28,15 @@ class Booking extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function schedule()
+    // public function schedule()
+    // {
+    //     return $this->belongsTo(Schedule::class);
+    // }
+    public function getBookingsByBusScheduleIdOnDate($id, $date)
     {
-        return $this->belongsTo(Schedule::class);
+        return $this->where('bus_schedule_id', $id)
+            ->where('date', $date)
+            ->get();
     }
 
     public function setSession()

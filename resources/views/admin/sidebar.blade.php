@@ -79,7 +79,14 @@
                   <router-link to="/bus" class="nav-link">
                       <i class="nav-icon fas fa-bus" aria-hidden="true"></i>Bus
                   </router-link> 
-                </li>          
+                </li>
+
+                <li class="nav-item">
+                  <router-link to="/route" class="nav-link">
+                    <i class="nav-icon fas fa-route" aria-hidden="true"></i>Route
+                  </router-link> 
+                </li>
+
                 <li class="nav-item">
                   <router-link to="/fare" class="nav-link">                    
                       <i class="nav-icon fas fa-money-bill" aria-hidden="true"></i>Fare 
@@ -94,12 +101,7 @@
                   <router-link to="/city" class="nav-link">
                     <i class="nav-icon fas fa-map-marker" aria-hidden="true"></i>City
                   </router-link> 
-                </li>
-                <li class="nav-item">
-                  <router-link to="/route" class="nav-link">
-                    <i class="nav-icon fas fa-exchange" aria-hidden="true"></i>Route
-                  </router-link> 
-                </li>
+                </li>                
                 <li class="nav-item">
                   <router-link to="/seat-plan" class="nav-link">
                     <i class="nav-icon fas fa-list-alt" aria-hidden="true"></i>Seat Plan
@@ -120,23 +122,23 @@
             {{-- Route --}}
              <li class="nav-item has-treeview">
               <a href="#" class="nav-link">
-                <i class="nav-icon fas fa-bus" aria-hidden="true"></i>
-                <p>ROUTE <i class="fas fa-angle-left right"></i></p>
+                <i class="nav-icon fas fa-cogs" aria-hidden="true"></i>
+                <p>MANAGEMENT<i class="fas fa-angle-left right"></i></p>
               </a>
               <ul class="nav nav-treeview">
-                <li class="nav-item">
+                {{-- <li class="nav-item">
                   <router-link to="/route" class="nav-link">
-                    <i class="nav-icon fas fa-exchange" aria-hidden="true"></i>Route
+                    <i class="nav-icon fas fa-route" aria-hidden="true"></i>Route
                   </router-link> 
-                </li>
+                </li> --}}
                 {{-- <li class="nav-item">
                   <router-link to="/route-buses" class="nav-link">
                       <i class="nav-icon fas fa-bus" aria-hidden="true"></i>Add Buses to Route  
                   </router-link> 
                 </li>           --}}
                 <li class="nav-item">
-                  <router-link to="/route-cities" class="nav-link">                    
-                      <i class="nav-icon fas fa-money-bill" aria-hidden="true"></i>Add Cities to Route 
+                  <router-link to="/route-cities" class="nav-link">
+                      <i class="nav-icon fas fa-map-signs" aria-hidden="true"></i>Route Cities
                   </router-link> 
                 </li>                          
               </ul>

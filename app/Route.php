@@ -8,21 +8,34 @@ class Route extends Model
 {
  
     protected $guarded = [];
+    // protected $casts = [
+    //     'id' => 'integer',
+    //     'cities.pivot.first_city_id' => 'integer',        
+    //     'cities.pivot.second_city_id' => 'integer',        
+    //     'cities.pivot.distance' => 'integer'
+    // ];
 
     // public function fare()
     // {
     // 	return $this->hasOne(Fare::class); 
     // }
 
+    // public function buses()
+    // {
+    // 	return $this->belongsToMany(Bus::class); 
+    // }
+
     public function buses()
     {
-    	return $this->belongsToMany(Bus::class); 
+        return $this->hasMany(Bus::class); 
     }
 
     public function cities()
     {
+        //return $this->belongsToMany(City::class, 'city_route', 'route_id', 'first_city_id')
         return $this->belongsToMany(City::class)
-                    ->withPivot('distance'); 
+                    ->using(CityRoute::class)
+                    ->withPivot('second_city_id', 'distance'); 
     }
 
     public function schedules()
@@ -57,6 +70,10 @@ class Route extends Model
                 return 'N/A';
         }
         return $fare;
-    }    
-    
+    } 
+
+    public function getRouteBy($id)
+    {
+     return Route::find($id);
+    }
 }

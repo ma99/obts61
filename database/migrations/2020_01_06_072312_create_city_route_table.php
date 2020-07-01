@@ -15,12 +15,13 @@ class CreateCityRouteTable extends Migration
     {
         Schema::create('city_route', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('city_id');
             $table->unsignedBigInteger('route_id');
+            $table->unsignedBigInteger('first_city_id');
+            $table->unsignedBigInteger('second_city_id');
             $table->smallInteger('distance')->unsigned();
             $table->timestamps();
 
-            $table->foreign('city_id')
+            $table->foreign('first_city_id')
                   ->references('id')->on('cities')
                   ->onDelete('cascade');            
             $table->foreign('route_id')

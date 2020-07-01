@@ -23,6 +23,16 @@ class Fare extends Model
         return $this->belongsTo(Route::class);
     }
 
+    public function city_route()
+    {
+        return $this->belongsTo(CityRoute::class);
+    }
+
+    public function getFareBy($cityRouteId)
+    {
+        return $this->where('city_route_id', $cityRouteId)->first();
+    }
+
     public function getFareByBus($type)
     {
         //$fare = json_decode($this->details, true); 

@@ -8,23 +8,29 @@ class Bus extends Model
 {
     protected $guarded = [];
 
-    public function routes()
+    // public function routes()
+    // {
+    // 	return $this->belongsToMany(Route::class);
+    // }
+
+    public function route()
     {
-    	return $this->belongsToMany(Route::class);
+        return $this->belongsTo(Route::class);
     }
 
     public function schedules()
     {
     	return $this->belongsToMany(Schedule::class)
-                    ->withPivot('route_id');
+                    ->withPivot('id')
+                    ->withPivot('departure_city_id');
     }
 
-    public function schedulesBy($routeId)
-    {
-        //return $this->belongsToMany(Schedule::class)
-        return $this->schedules()
-                    ->wherePivot('route_id', $routeId);
-    }
+    // public function schedulesBy($routeId)
+    // {
+    //     //return $this->belongsToMany(Schedule::class)
+    //     return $this->schedules()
+    //                 ->wherePivot('route_id', $routeId);
+    // }
 
     public function seat_plan()
     {

@@ -15,8 +15,8 @@ class CreateFaresTable extends Migration
     {
         Schema::create('fares', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('city_id');
             $table->unsignedBigInteger('route_id');
+            $table->unsignedBigInteger('city_id');
             $table->text('details');
             $table->timestamps();
 
