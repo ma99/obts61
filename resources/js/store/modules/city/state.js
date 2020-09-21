@@ -3,7 +3,7 @@ export default {
 	availableCityList: [], //list by route dep/arr cities  division id;
  	divisionList: [],
  	districtList: [],
- 	districtListByDivision: [],
+ 	//districtListByDivision: [],
  	upazilaList: [],
- 	upazilaListByDistrict: []
+ 	//upazilaListByDistrict: []
 }

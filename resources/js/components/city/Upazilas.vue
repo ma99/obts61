@@ -1,13 +1,13 @@
 <template>    
     <div class="form-group">
-        <label for="upazilaName">Upazila</label>
+        <label :for="id">Upazila</label>
         <select 
             v-bind:value="value"
             v-on:input="$emit('input', $event.target.value)"
-            class="form-control" id="upazilaName"
+            class="form-control custom-select" :id="id"
         >
           <option value="" :disabled="disable">Please select one</option>                          
-          <option v-for="upazila in upazilaListByDistrict" v-bind:value="upazila.name">
+          <option v-for="upazila in upazilasByDistrict(district)" v-bind:value="upazila.name">
             {{ upazila.name }}
           </option> 
         </select>
@@ -15,12 +15,13 @@
 </template>
 
 <script>
-    import { mapState, mapActions } from 'vuex';
+    import { mapGetters, mapActions } from 'vuex';
     
     export default {
         props: [
             'value',
-            'district'
+            'district',
+            'id'
         ],        
         data() {
             return {
@@ -28,40 +29,22 @@
             }
         },
         mounted() {
-            //console.log('Component mounted.')
             this.fetchUpazilas();
             this.disable = true;
         },
-        watch: {
-            district() {                
-                this.getUpazilasByDistrict(this.district);
-            }
-        },
         computed: {                   
-            ...mapState('city', [
-              'upazilaListByDistrict',
-            ]),
-            // ...mapGetters('city', [
-            //     'districtsByDivision'
-            // ])            
+            ...mapGetters('city', [
+                'upazilasByDistrict'
+            ])            
         },
-
         methods: { 
             ...mapActions('city', [
                 'getUpazilas',
-                'getUpazilasByDistrict'
             ]),
 
             fetchUpazilas() {
-                //this.loading = true;
-                //this.divisionList= [];            
-                //var vm = this;                                  
                 this.getUpazilas();           
             },
-
-            // fetchDistrictsByDivision(id) {
-            //     this.getDistrictsByDivision(id);
-            // },
         },
     }
 </script>

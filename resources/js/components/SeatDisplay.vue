@@ -7,6 +7,7 @@
               alertType: '',
               bookedSeatInfo: { },
               busId:'',
+              busScheduleId:'',
               busError: false,
               buses:[],
               cityList:[],
@@ -31,6 +32,7 @@
               scheduleId:'',
               selection: '',
               startDate: '11-04-2020',               
+              selectedBus: '',
               selectedCityFrom: 'Dhaka',
               selectedTo: 'Sylhet',
               selectedPickupPoint: '',
@@ -71,6 +73,7 @@
                 bus_id: '',
                 date: '',
                 schedule_id: '',
+                bus_schedule_id: '',
                 selected_seats: '',
                 total_seats: '',
                 amount: '',
@@ -90,7 +93,7 @@
            this.showDate();                      
             // Echo.channel('mychannel.1')
             //   .listen('SeatStatusUpdatedEvent', this.updateSeatStatus); 
-            this.eventListenThroughBroadcastChannel();
+          this.eventListenThroughBroadcastChannel();
       },
       watch: {
        'form.phone'(val, oldVal) {
@@ -212,6 +215,9 @@
           Echo.channel('mychannel.1')
               .listen('SeatStatusUpdated', this.updateSeatStatus); 
         },
+        getIdOfCity(name) {
+          return this.availableCityList.find(city => city.name == name).id;
+        },
         getUserInfoIfExist(phone) {
           if (phone.length < 11) {
             this.userInfo.error = 'Phone number not given or Invalid number';
@@ -332,8 +338,7 @@
           var seatNo = evnt.seat.seat_no;
           console.log('seaaatno=', seatNo);
           //var vm = this;
-          if ( this.scheduleId == evnt.scheduleId &&
-              this.busId == evnt.busId &&
+          if ( this.busScheduleId == evnt.busScheduleId &&
               this.startDate == evnt.date) {
             
               var indx = this.seatList.findIndex(function(seat){ 
@@ -347,7 +352,7 @@
             this.seatStatus = evnt.seat.status;         
             this.showAlert = true;
           }
-          console.log(evnt.seat.seat_no, evnt.scheduleId, evnt.date);
+          console.log(evnt.seat.seat_no, evnt.busScheduleId, evnt.date);
         },
         
         searchBus() {         
@@ -360,8 +365,10 @@
           this.buses ='';
           axios.get('/search', {
               params: {                
-                from: this.selectedCityFrom,
-                to: this.selectedTo,
+                // from: this.selectedCityFrom,
+                // to: this.selectedTo,
+                from: this.getIdOfCity(this.selectedCityFrom),
+                to: this.getIdOfCity(this.selectedTo),
                 date: this.startDate,              
               }  
             })          
@@ -376,14 +383,15 @@
                }
             });
         },
-        viewSeats(scheduleId, busId, busFare) {
-          console.log('schId=', scheduleId);
-          console.log('busId=', busId);
-          
+        //viewSeatsOf(busScheduleId, busId, busFare) {
+        viewSeatsOf(bus) {
+          // console.log('busSchId=', scheduleId);
+          // console.log('busId=', busId);
+          this.selectedBus = bus;
           this.seatError = false;
           this.selectedSeat = [];
-          this.scheduleId = scheduleId;
-          this.busId = busId;
+          this.busScheduleId = bus.bus_schedule_id;
+          this.busId = bus.bus_id;
           this.selectedPickupPoint = '';
           this.selectedDroppingPoint = '';
          
@@ -391,14 +399,14 @@
           this.pickupStopsBy(this.selectedCityFrom);
           this.droppingStopsBy(this.selectedTo);
           var vm = this;
-          axios.get('/viewseats/buses/'+busId, {
+          axios.get('/viewseats/buses/'+bus.bus_id, {
               params: {
                 // from: this.selectedCityFrom,
                 // to: this.selectedTo,
                 // date: this.startDate,
-                schedule_id: scheduleId,
-                bus_id: busId,
-                bus_fare: busFare,
+                bus_schedule_id: bus.bus_schedule_id,
+                bus_id: bus.bus_id,
+                bus_fare: bus.fare,
                 date: vm.startDate,
               }  
             })          
@@ -466,7 +474,8 @@
               // // non form data  
               vm.form.bus_id = vm.busId;
               vm.form.date = vm.startDate;
-              vm.form.schedule_id = vm.scheduleId;
+              //vm.form.schedule_id = vm.scheduleId;
+              vm.form.bus_schedule_id = vm.busScheduleId;
               vm.form.selected_seats = vm.selectedSeat;
               vm.form.total_seats = vm.totalSeats;
               vm.form.amount = vm.totalFare; 
@@ -516,9 +525,10 @@
               vm.changeStatusOfSelectedSeat(vm.selectedSeat);               
 
               axios.post(vm.url, {
-                bus_id: vm.busId,
+                //bus_id: vm.busId,
                 date: vm.startDate,
-                schedule_id: vm.scheduleId,
+                //schedule_id: vm.scheduleId,
+                bus_schedule_id: vm.busScheduleId,
                 selected_seats:vm.selectedSeat,
                 total_seats: vm.totalSeats,
                 amount: vm.totalFare,
@@ -573,14 +583,14 @@
                  vm.loading = false;
           });
         },        
-        getCityIdBy(cityName) {
-          let city = this.availableCityList.find(city => city.name == cityName);
-          return city.id;
-        },
+        // getCityIdBy(cityName) {
+        //   let city = this.availableCityList.find(city => city.name == cityName);
+        //   return city.id;
+        // },
         pickupStopsBy(city) {          
           this.error.pickupPoint = false;
           this.loading = true;
-          let cityId = this.getCityIdBy(city);      
+          let cityId = this.getIdOfCity(city);      
       
           this.pickupStops = [];          
           this.pickupStops =  this.availableStopList.filter(stop => stop.city_id == cityId);
@@ -590,7 +600,7 @@
         droppingStopsBy(city) {          
           this.error.droppingPoint = false;
           this.loading = true;
-          let cityId = this.getCityIdBy(city);
+          let cityId = this.getIdOfCity(city);
           
           this.droppingStops = [];          
           this.droppingStops =  this.availableStopList.filter(stop => stop.city_id == cityId);

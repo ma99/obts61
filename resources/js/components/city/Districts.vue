@@ -1,14 +1,14 @@
 <template>
     <div class="form-group">
-        <label for="districtName">District</label>                       
+        <label :for="id">District</label>                       
         <select 
             v-bind:value="value"
             v-on:input="$emit('input', $event.target.value)"
-            class="form-control" id="districtName"
+            class="form-control custom-select" :id="id"
         >
             <!-- <option disabled value="">Please select one</option>                           -->
             <option value="" :disabled="disable">Please select one</option>                          
-            <option v-for="district in districtListByDivision" v-bind:value="
+            <option v-for="district in districtsByDivision(division, list)" v-bind:value="
             district.id">
             {{ district.name }}
             </option> 
@@ -17,53 +17,46 @@
 </template>
 
 <script>
-    import { mapState, mapActions } from 'vuex';
+    import { mapGetters, mapActions } from 'vuex';
     
     export default {
         props: [
             'value',
-            'division'
+            'division',
+            'id',
+            'list'  // 'all' will show districts( frombdistrictList[]) by division. any other text will show cities( from cityList[]) by division
         ],        
+        
         data() {
             return {
                 disable: false 
             }
         },
+
         mounted() {
-            //console.log('Component mounted.')
             this.fetchDistricts();
+            this.fetchCities();
             this.disable = true;
         },
-        watch: {
-            division() {                
-                this.getDistrictsByDivision(this.division); //
-            }
-        },
+
         computed: {                   
-            ...mapState('city', [
-              'districtListByDivision',
-            ]),
-            // ...mapGetters('city', [
-            //     'districtsByDivision'
-            // ])            
+            ...mapGetters('city', [
+                'districtsByDivision'
+            ])            
         },
 
         methods: { 
             ...mapActions('city', [
                 'getDistricts',
-                'getDistrictsByDivision'
+                'getBusAvailableToCities'
             ]),
 
-            fetchDistricts() {
-                //this.loading = true;
-                //this.divisionList= [];            
-                //var vm = this;                                  
+            fetchDistricts() {                  
                 this.getDistricts();           
             },
-
-            // fetchDistrictsByDivision(id) {
-            //     this.getDistrictsByDivision(id);
-            // },
+            fetchCities() {
+                this.getBusAvailableToCities();
+            },
         },
     }
 </script>

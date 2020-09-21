@@ -1,3 +1,9 @@
+  .dodgerblue {
+    color: $dodger-blue;
+  }
+  .mayablue {
+    color: $maya-blue;
+  }
   .bg-lightpurple {
     background-color: #E7E8FF;
   }
@@ -6,4 +12,29 @@
   }
   .bg-lightyellow {
     background-color: #FFFEE7
+  }
+  .bg-lightlemonyellow {
+  	background-color: #fff9c4;
+  }
+  .bg-mediumlemonyellow {
+  	background-color: #fff59d;
+  }
+  .bg-mediumyellow {
+    background-color: #ffe066;
+  }
+
+  .bg-aliceblue {
+    background-color: #e7f5ff;
+  }
+
+  .bg-mayablue {
+    background-color: $maya-blue; 
+  }
+
+  .bg-lightgreen {
+    background-color: #F1F8E9;
+  }
+
+  .bg-darkgreen {
+    background-color: #FFFDE7;
   }

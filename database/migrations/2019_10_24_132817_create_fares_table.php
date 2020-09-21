@@ -15,19 +15,13 @@ class CreateFaresTable extends Migration
     {
         Schema::create('fares', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('route_id');
-            $table->unsignedBigInteger('city_id');
+            $table->unsignedBigInteger('city_route_id');
             $table->text('details');
             $table->timestamps();
 
-            $table->foreign('city_id')
-                  ->references('id')->on('cities')
+            $table->foreign('city_route_id')
+                  ->references('id')->on('city_route')
                   ->onDelete('cascade');
-
-            $table->foreign('route_id')
-                  ->references('id')->on('routes')
-                  ->onDelete('cascade');
-
         });
     }
 

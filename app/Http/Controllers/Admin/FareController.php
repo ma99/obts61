@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 use App\Fare;
 
@@ -12,19 +13,17 @@ class FareController extends Controller
     public function store()
     {
     	$attributes = $this->validateRequest();
-        Fare::create($attributes);  
 
-        return 'success';
-
+        return Fare::create($attributes);  
     }
 
     public function update(Fare $fare)
     {
-    	$attributes = $this->validateRequest();
+    	$attributes = $this->validateRequest($fare);
 
         $fare->update($attributes);
 
-        return 'success';
+        return $fare->updated_at;
     }
 
     public function destroy(Fare $fare)
@@ -39,12 +38,17 @@ class FareController extends Controller
         return $error;
     }
 
-    protected function validateRequest()
+    protected function validateRequest(Fare $fare = NULL)
     {
         return request()->validate([
-           'city_id' => 'required',
-           'route_id' => 'required',
+           // 'city_route_id' => 'required|unique:fares',
+           'city_route_id' => [
+                'required',
+                Rule::unique('fares')->ignore($fare ? $fare->id : null),
+            ],
            'details' => 'required'
+        ], [
+            'city_route_id.unique' => 'Fare for this cities already exists!'
         ]);
     }
 }

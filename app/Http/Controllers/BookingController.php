@@ -16,15 +16,26 @@ class BookingController extends Controller
 {
     public function store(Request $request)
     {   
-        // $booking = $this->createBooking($attributes);
-        $attributes = $this->validateRequest();             
-        $user = auth()->user();
+        
+         $attributes = $this->validateRequest();             
+         $user = auth()->user();
 
         // $booking = $this->createBooking($user, $attributes);     
         // $attributes['booking_ref'] = $booking->id;
         // $attributes= $this->createSeatsFor($booking, $attributes);
         // return $this->bookedSeatInfo($attributes);        
-        return $bookedSeatInfo = $this->seatBooking($user, $attributes);
+        // return tap($attributes, function($attributes){
+        //    $this->seatBooking($user, $attributes); 
+        // });
+
+        return $this->seatBooking($user, $attributes);
+
+        // return tap($this->validateRequest(), function($attributes) {
+
+        //     $user = auth()->user();
+        //     $this->seatBooking($user, $attributes);
+
+        // });
     }   
 
     public function createByStaff(Request $request, User $user=null)
@@ -45,7 +56,12 @@ class BookingController extends Controller
         // $attributes['booking_ref'] = $booking->id;
         // $attributes= $this->createSeatsFor($booking, $attributes);
         // return $this->bookedSeatInfo($attributes);
-           return $bookedSeatInfo = $this->seatBooking($user, $attributes);
+           return $this->seatBooking($user, $attributes);
+
+          // return tap($this->validateRequest(), function($attributes) use ($user) {
+          //   $this->seatBooking($user, $attributes);
+
+          // }); 
     }
 
     public function getUserInfoFrom(Request $request)
@@ -61,8 +77,8 @@ class BookingController extends Controller
     {
         $booking = $this->createBooking($user, $attributes);     
         $attributes['booking_ref'] = $booking->id;
-        $attributes= $this->createSeatsFor($booking, $attributes);
-        return $this->bookedSeatInfo($attributes);        
+        return $attributes= $this->createSeatsFor($booking, $attributes);
+        //return $this->bookedSeatInfo($attributes);        
     }
 
     public function createBooking(User $user, array $attributes)
@@ -89,7 +105,7 @@ class BookingController extends Controller
             ]);
             
             //broadcast(new SeatStatusUpdatedEvent($seat, $scheduleId, $travelDate))->toOthers();
-            broadcast(new SeatStatusUpdated($seat, $schedule_id, $bus_id, $date))->toOthers();
+            broadcast(new SeatStatusUpdated($seat, $bus_schedule_id, $date))->toOthers();
         }
 
         $seats = trim($seatNo);
@@ -114,8 +130,9 @@ class BookingController extends Controller
     protected function validateRequest()
     {        
         return request()->validate([
-            'bus_id' => 'required',          
-            'schedule_id' => 'required',          
+            //'bus_id' => 'required',          
+            'bus_schedule_id' => 'required',          
+            //'schedule_id' => 'required',          
             'total_seats' => 'required',
             'date' => 'required',
             'pickup_point' =>'required',

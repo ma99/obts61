@@ -4,10 +4,19 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use App\Stop;
+
 
 class StopController extends Controller
 {
+    protected $request;
+
+    public function __construct(Request $request)
+    {
+        $this->request = $request;
+    }
+    
     public function store()
     {
     	
@@ -21,11 +30,9 @@ class StopController extends Controller
         // $stopList = $request->input('stop_list');    	
         //$cityCode = $request->input('city_id');
         $attributes = $this->validateRequest();
-        
-        $stopList = $attributes['stop_list'];
-        
+
         Stop::insert($attributes['stop_list']);
-    	return 'successfully added';
+    	return $attributes;
     }
 
     public function destroy(Stop $stop)
@@ -41,8 +48,23 @@ class StopController extends Controller
 
     protected function validateRequest()
     {
-        return request()->validate([
-           'stop_list.*.*' => 'required',       // array validation                
-        ]);
+        return $this->request->validate([           
+           'stop_list.*.city_id' => 'required',
+           'stop_list.*.address' => 'required',
+           'stop_list.*.phone' => 'required',
+           'stop_list.*.latitude' => 'required',
+           'stop_list.*.longitude' => 'required',
+           'stop_list.*.name' => [
+                'required',
+                Rule::unique('stops')->where(function ($query) {
+                    return $query
+                        ->where('city_id', $this->request->input('stop_list.*.city_id'));
+                        // ->where('name', $this->request->input('stop_list.*.name'));
+                    }),
+                ]    
+        ],
+        [
+            'stop_list.*.name.unique' => 'The stop name :input already exists!'
+        ]); 
     }
 }

@@ -11,3 +11,11 @@ export const SORT_SEATPLANS_BY_ID = (state) => {
         
     state.availableSeatPlanList = seatplans;
 }
+
+export const ADD_SEATPLAN = (state, seatplan) => {          
+    state.availableSeatPlanList.push(seatplan);
+}
+
+export const DELETE_SEATPLAN = (state, index) => {
+    state.availableSeatPlanList.splice(index, 1);
+}

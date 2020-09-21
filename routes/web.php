@@ -48,16 +48,19 @@ Route::group(['middleware' => ['auth', 'role:super_admin']], function () {
 
 	//schedule 
 	Route::post('/schedules', 'Admin\ScheduleController@store')->name('schedule');
+	Route::delete('/schedules/{schedule}', 'Admin\ScheduleController@destroy');
 
-	//bus route
+	//bus route NOT USING ***** <======
 	Route::post('/bus-route/{bus}', 'Admin\BusRouteController@store');
 	Route::delete('/bus-route/{bus}/{route}', 'Admin\BusRouteController@destroy');
 	//Route::post('/routes/{route}', 'Admin\RouteController@addBusesForRoute');
-
+//=================>
 	//bus schedule
-	Route::post('/bus-schedule/{bus}', 'Admin\BusScheduleController@store');
+	Route::post('/{bus}/schedules', 'Admin\BusSchedulesController@store');
+	Route::delete('/bus-schedules/{bus}/{schedule}', 'Admin\BusSchedulesController@destroy');
+	
 	//route cities
-	Route::post('/route-cities/{route}', 'Admin\RouteCitiesController@store');
+	Route::post('/{route}/cities', 'Admin\RouteCitiesController@store');
 	Route::delete('/route-cities/{route}/{city}', 'Admin\RouteCitiesController@destroy');
 //});	
 
@@ -82,6 +85,8 @@ Route::get('/viewseats/buses/{bus}', 'SearchTicketController@viewSeats');
 Route::get('phone/verify', 'PhoneVerificationController@show')->name('phoneverification.notice');
 Route::post('phone/verify', 'PhoneVerificationController@verify')->name('phoneverification.verify');
 Route::post('phone/resend', 'PhoneVerificationController@resend')->name('phoneverification.resend');
+
+
 
 /** Reset Password by phone */
 /*
@@ -163,3 +168,7 @@ $options = [
 	'title' => 'Oops!'
 ];
 Route::view('/pay101', 'payment.status', $options);
+
+Route::get('/map', function() {
+	return view('map-stops');
+});

@@ -32,10 +32,10 @@ class Route extends Model
 
     public function cities()
     {
-        //return $this->belongsToMany(City::class, 'city_route', 'route_id', 'first_city_id')
-        return $this->belongsToMany(City::class)
+        return $this->belongsToMany(City::class, 'city_route', 'route_id', 'first_city_id')
                     ->using(CityRoute::class)
-                    ->withPivot('second_city_id', 'distance'); 
+                    ->withPivot('id', 'second_city_id', 'distance')
+                    ->withTimestamps(); 
     }
 
     public function schedules()

@@ -1,154 +1,94 @@
 <template>
   <div>    
-     <section class="content-header">
-      <h1>
-       Add new stop
-        <!-- <small>Optional description</small> -->
-      </h1>
-      <ol class="breadcrumb">
-        <li>
-          <router-link to="/dashboard" exact>
-            <i class="fa fa-dashboard"></i>Dashboard
-          </router-link>
-        </li>
-        <li class="active">stop</li>
-      </ol>
-    </section>
+    <div class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1 class="m-0 text-dark">Bus Stops</h1>
+          </div><!-- /.col -->
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item">
+                <router-link to="/dashboard">
+                  <i class="fa fa-tachometer nav-icon"></i> Dashboard
+                </router-link>
+              </li>
+              <li class="breadcrumb-item active">Bus Stops</li>
+            </ol>
+          </div><!-- /.col -->
+        </div><!-- /.row -->
+      </div><!-- /.container-fluid -->
+    </div>
 
     <section class="content">      
-      <div class="row">
-          <div class="panel panel-default">
-              <div class="panel-heading">
-                <!-- Add New City -->
-                <span class="input-group-btn">
-                    <button class="btn btn-success" type="button" @click="expandAddCityPanel" v-show="!show">
-                        <i class="fa fa-plus" aria-hidden="true"></i>
-                    </button>
-                    <button class="btn btn-warning" type="button" @click="expandAddCityPanel" v-show="show">
-                        <i class="fa fa-minus" aria-hidden="true"></i>
-                    </button>
-                </span>
-                
-              </div>
-              <div class="panel-body" v-show="show">
-                <form>
-                    <div class="col-sm-3">
-                      <div class="form-group">
-                        <label for="divisionName">Division Name</label>
-                        <select v-model="selectedDivision" class="form-control" id="divisionName">
-                            <option disabled value="">Please select one</option>
-                            <option v-for="division in divisionList" v-bind:value="{ id: division.id, name: division.name }">
-                              {{ division.name }}
-                            </option>                             
-                        </select>
-                      </div>
-                    </div>
-
-                    <div class="col-sm-3">
-                      <div class="form-group">
-                        <label for="cityName">City Name </label>                       
-                        <select v-model="selectedCity" class="form-control" id="cityName">
-                            <option disabled value="">Please select one</option>                          
-                            <option v-for="city in cityList" v-bind:value="{ id: city.id, name: city.name }">
-                              {{ city.name }}
-                            </option> 
-                        </select>
-                      </div>
-                    </div>
-
-                    <div class="col-sm-2">
-                      <div class="form-group">
-                        <label for="cityCode">City Code</label>
-                        <input v-model="selectedCity.id" type="text" class="form-control" name="code" id="cityCode" placeholder="City Code" disabled>
-                      </div>
-                    </div>
-
-                    <div class="col-sm-3">
-                      <div class="form-group">
-                        <label for="routeDistance">Stop Name</label>
-                        <input v-model="stopName" type="text" class="form-control" name="route_distance" id="routeDistance" placeholder="Stop Name">
-                      </div>                      
-                    </div>
-
-                    <div class="col-sm-1">
-                      <button v-on:click.prevent="addStop()" class="btn btn-primary" :disabled="isButtonDisable('add')">
-                        <i class="fa fa-plus" aria-hidden="true"></i>
-                      </button>                   
-                    </div>                    
-
-                  </form>
-
-                  <div v-show="stopList.length > 0" class="col-sm-12">
-                     <!-- stops list -->
-                      <div class="panel panel-primary">
-                      <div class="panel-heading">Stop's List</div>
-                      <div class="panel-body">
-                          <div id="scroll-stops">
-                            <table class="table table-striped table-hover">
-                                <thead>
-                                  <tr>
-                                    <th>Sl. No.</th>
-                                    <th>Name
-                                         <span type="button" @click="isSortingAvailableBy('name')" :disabled="disableSorting">
-                                            <i class="fa fa-sort-amount-asc" aria-hidden="true"></i>
-                                        </span>
-                                    </th>
-                                    <th>City Id
-                                      <span type="button" @click="isSortingAvailableBy('city_id')" :disabled="!disableSorting">
-                                            <i class="fa fa-sort-amount-asc" aria-hidden="true"></i>
-                                        </span>
-                                    </th>                        
-                                    <th>Action</th>                                                         
-                                    <!-- <th>&nbsp;</th> -->
-                                  </tr>
-                                </thead>
-                                <tbody>
-                                  <tr  v-for="(stop, index) in stopList" >                              
-                                    <td>{{ index+1 }}</td>                              
-                                    <td>{{ stop.name }}</td>                              
-                                    <td>{{ stop.city_id }}</td>                              
-                                    <!-- <td>{{ city.division }}</td> -->
-                                    <td> 
-                                        <button v-on:click.prevent="removeStopFromStopLis(index)" class="btn btn-danger">
-                                          <i class="fa fa-times fa-fw"></i>
-                                        </button>  
-                                    </td>                        
-                                  </tr>                            
-                                </tbody>
-                            </table>      
-                          </div>
-                      </div>                     
-                    </div>
-                  </div>  
-                  <div class="col-sm-4">
-                    <div class="button-group">
-                      <button v-on:click.prevent="saveStops()" class="btn btn-primary" :disabled="isButtonDisable('save')">Save</button>
-                      <button v-on:click.prevent="reset()" class="btn btn-primary" :disabled="isButtonDisable('reset')">Reset</button>
-                    </div>
-                  </div>                                      
-              </div>
-          </div>         
-      </div> <!-- row -->
-      
+      <show-alert :show.sync="showAlert" :type="alertType">               
+       <strong> City </strong> has been <strong>{{ actionStatus }} </strong>
+      </show-alert>        
       <loader :show="loading"></loader>
+      
+      <div class="d-md-flex">
+        <div class="p-3 bg-lightyellow flex-fill">
+          <form>
+            <divisions v-model="selectedDivision" /> 
 
-      <div class="row view-available-info">
-        <div class="panel panel-info">
-          <div class="panel-heading">Available Stops <span> {{ availableStopList.length }} </span></div>
-          <div class="panel-body">
-              <div id="scroll-cities">
-                <table class="table table-striped table-hover">
+            <div class="form-group">
+                <label for="city">City</label>
+                  <select v-model="selectedCity" class="form-control custom-select"> 
+                      <option value="" disabled>Please select one</option>
+                      <option v-for="city in citiesByDivisionList" v-bind:value="{ 
+                        id: city.id, 
+                        name: city.name, 
+                        // latitude: city.latitude,
+                        // longitude: city.longitude
+                      }">
+                              {{ city.name }}
+                       </option>                       
+                  </select>
+            </div>
+            <div class="bg-lightgreen rounded">              
+            
+              <div class="form-group px-3 pt-3">
+                <label for="stopName">Name</label>
+                <input v-model="stop.name" type="text" class="form-control" id="stopName" placeholder="Stop Name" :disabled="!selectedCity.id">
+              </div>
+
+              <div class="form-group px-3">
+                <label for="stopAddress">Address</label>
+                <input v-model="stop.address" type="text" class="form-control" id="stopAddress" placeholder="Address" :disabled="!selectedCity.id">
+              </div>
+
+              <div class="form-group px-3">
+                <label for="stopPhone">Phone</label>
+                <input v-model="stop.phone" type="text" class="form-control" id="stopPhone" placeholder="Phone" :disabled="!selectedCity.id">
+              </div>
+
+              <div class="form-group px-3">
+                <label for="stopLat">Latitude</label>
+                <input v-model="stop.latitude" type="text" class="form-control" id="stopLat" placeholder="Latitude" :disabled="!selectedCity.id">
+              </div>
+
+              <div class="form-group px-3 pb-3">
+                <label for="stopLng">Longitude</label>
+                <input v-model="stop.longitude" type="text" class="form-control" id="stopLng" placeholder="Longitude" :disabled="!selectedCity.id">
+              </div>
+
+            </div>
+
+            <div class="mt-3 mb-2" v-show="stopList.length > 0">
+            <!-- stops list -->            
+              <div class="card shadow bg-white">
+              <!-- <div class="card-header">Stops to be added</div> -->
+              <div class="card-body p-0">
+                <div class="scrollbar-small">
+                  <table class="table table-striped table-hover table-sm">
                     <thead>
                       <tr>
                         <th>Sl. No.</th>
-                        <th>Name
-                             <span type="button" @click="isSortingAvailableBy('name')" :disabled="disableSorting">
-                                <i class="fa fa-sort-amount-asc" aria-hidden="true"></i>
-                            </span>
+                        <th>Name                             
                         </th>
-                        <th>City Id
-                          <span type="button" @click="isSortingAvailableBy('city_id')" :disabled="!disableSorting">
-                                <i class="fa fa-sort-amount-asc" aria-hidden="true"></i>
+                        <th>City Name
+                          <span type="button" @click="isSortingAvailableBy('cityName')" >
+                                <i class="fas fa-sort-alpha-down" aria-hidden="true"></i>
                             </span>
                         </th>                        
                         <th>Action</th>                                                         
@@ -156,291 +96,523 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <tr  v-for="(stop, index) in availableStopList" >                              
+                      <tr  v-for="(stop, index) in stopList" >                              
                         <td>{{ index+1 }}</td>                              
                         <td>{{ stop.name }}</td>                              
-                        <td>{{ stop.city_id }}</td>                              
+                        <td>{{ getCityById(stop.city_id).name }}</td>                              
                         <!-- <td>{{ city.division }}</td> -->
                         <td> 
-                            <button v-on:click.prevent="removeStop(stop, index)" class="btn btn-danger">
-                              <i class="fa fa-trash fa-fw"></i>Remove
+                            <button v-on:click.prevent="removeStopFromStopLis(index)" type="button" class="btn btn-danger">
+                              <i class="fas fa-times fa-fw"></i>
                             </button>  
                         </td>                        
                       </tr>                            
                     </tbody>
-                </table>      
+                  </table>      
+                </div>
+              </div>                     
               </div>
-          </div>
-          <!-- {{-- panel-footer --}} -->
-          <div class="panel-footer">                                
-            <show-alert :show.sync="showAlert" :type="alertType">               
-              <strong>{{ deletedStopName }} </strong> has been 
-              <strong> {{ actionStatus }} </strong> successfully!
-            </show-alert>
-          </div>          
+            </div>   <!-- stops list end -->
+
+            <!-- errors  -->
+            <div v-show="show" class="alert alert-warning" role="alert">
+                <h4 class="alert-heading">
+                  <i class="fas fa-exclamation-triangle text-red"></i>
+                  <button type="button" class="close" aria-label="Close">
+                    <span aria-hidden="true" v-on:click.prevent="show = false">&times;</span>
+                  </button>
+                </h4>                
+                <span v-show="false"> {{ showError }}</span>
+                <ul>
+                  <li v-for="(error, index) in errors">
+                    {{ getIndex(index) }} - {{ error[0] }}
+                  </li>
+                </ul>
+              <!-- {{ get('bus_id') }} -->
+            </div>
+            <!-- errors end  -->
+
+
+            <div class="form-group mt-4">
+                <button v-on:click.prevent="addToStopList()" class="btn btn-info" :disabled="!stop.name">
+                  <i class="fas fa-plus" aria-hidden="true"></i>
+                </button>                   
+              
+                <button v-on:click.prevent="save()"  type="button" class="btn btn-primary" :disabled="!isValid">Save</button>
+                <button v-on:click.prevent="reset()"  type="button" class="btn btn-warning">Cancel</button>
+              
+            </div>               
+          </form>
         </div>
-      </div>
-    </section>        
+        <div class="p-3 bg-warning flex-fill">
+
+          <div class="d-flex flex-column bd-highlight">
+            
+            <add-section :show="true" :p-zero="true"> 
+              <template v-slot:heading> Stops:
+                <strong v-show="isStopsAvailable">
+                  For {{ selectedCity.name }} is <span style="color: #FFC107"> {{ stopsByCity.length }} </span>
+                </strong> 
+              </template>
+              <div class="p-2 bg-mediumyellow flex-fill">
+            
+                <div v-if="!isStopsAvailable" class="text-center mt-2">
+                  <span class="fa-stack">
+                    <i class="fas fa-circle fa-stack-2x" style="color: #FFC107"></i>
+                    <i class="fas fa-bezier-curve fa-stack-1x" style="color: #FFE066"></i>
+                  </span>         
+                  <div v-show="selectedCity.id">
+                    
+                    <h3 class="text-muted mt-3"> <i class="fas fa-info-circle mr-2"></i>Stop not available!</h3>
+                  </div>
+                </div>                            
+
+                <div v-show="isStopsAvailable" class="card w-100">
+                <!-- <div class="card mt-1 w-100"> -->
+                    <!-- <div class="card-header">
+                      Available Stops for {{ selectedCity.name }} is <span> {{ stopsByCity.length }} </span>
+                    </div> -->
+                    <div class="card-body p-0">
+                      <div class="scrollbar">
+                        <table class="table table-striped table-hover table-sm">
+                          <thead>
+                            <tr>
+                              <th>Sl. No.</th>
+                              <th>Name </th>
+                              <th>Address</th>
+                              <th>Phone</th>
+                              <th>Action</th>                 
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr  v-for="(stop, index) in stopsByCity" >                              
+                              <td>{{ index+1 }}</td>                              
+                              <td>{{ stop.name }}</td>                              
+                              <td>{{ stop.address }}</td>                              
+                              <td>{{ stop.phone }}</td>                              
+                              <!-- <td>{{ city.division }}</td> -->
+                              <td> 
+                                  <button v-on:click.prevent="removeStop(stop, index)" class="btn btn-danger">
+                                    <i class="fa fa-trash fa-fw"></i>Remove
+                                  </button>  
+                              </td>                        
+                            </tr>                            
+                          </tbody>
+                      </table>          
+                      </div>
+                    </div>            
+                </div>
+              </div> 
+            </add-section>  
+
+            <add-section :p-zero="true">
+              <template v-slot:heading>Map</template>
+              <div class="p-2 flex-fill">
+                <my-map 
+                  :mcenter="setMapCenter"
+                  :stops="stops" 
+                  @add-stop="addToStops" 
+                />                           
+              </div>
+            </add-section> 
+          </div>
+        </div>
+      </div>      
+    </section>
   </div>      
 </template>
 <script>
-    export default {
-        data() {
-          return {
-            actionStatus: '',
-            alertType: '',
-            availableStopList: [],
-            cityList: [],
-            cityName: '',            
-            deletedStopName: '',
-            divisionList: [],
-            disableSorting: true,
-            error: '',
-            loading: false,
-            response: '',            
-            selectedCity: '',            
-            selectedDivision: '',
-            show: false,
-            showAlert: false,
-            stopList: [],
-            stopName: '',
+import MyMap from '../../components/stops/Map'; 
+import Divisions from '../../components/city/Divisions'; 
+import { mapState, mapGetters, mapActions } from 'vuex';
+export default {
+    components: {
+            Divisions,
+            MyMap
+    },
+    data() {
+      return {
+        actionStatus: '',
+        alertType: '',
+        //availableStopList: [],
+        //cityList: [],
+        cityName: '',            
+        deletedStopName: '',
+        //divisionList: [],
+        disableSorting: true,
+        error: '',
+        loading: false,
+        response: '',            
+        selectedCity: {
+          id: '',
+          name: ''
+        },            
+        selectedDivision: '',
+        show: false,
+        showAlert: false,
+        citiesByDivisionList: [],
+        stopList: [],
+        stopsByCity: [],
+        stops: [],
+        //stopName: '',
+        stop: {
+          name: '',
+          address: '',
+          phone: '',
+          latitude: '',
+          longitude: ''
+        },
+        scrollbarInstanceOne: '',
+        scrollbarInstanceTwo: ''
+      }
+    },
+    async mounted() {           
+       //this.fetchDivisions();   
+      this.loading = true;
+      this.selectedCity = '';
+      await this.getDistrictList();
+      await this.getAvailableCities();              
+      await this.getStops();
+
+      this.loading = false;           
+       this.enableScroll();
+    },
+    // beforeDestroy() {
+    //   this.scrollbarInstanceOne.destroy();
+    //   this.scrollbarInstanceTwo.destroy();    
+    // },
+    watch: {
+      selectedDivision(value, oldValue) {
+        if (value == '' || value == null) return;
+        this.stopsByCity = [];
+        this.selectedCity = '';
+        this.citiesByDivisionList = this.citiesByDivision(value);
+      },
+      'selectedCity.id'(value, oldValue) {
+        // if (value !== '' || value !== null)
+          if (value == '' || value == null) return;
+          this.stopsByCity = this.availableStopsBy(value);
+      },
+      success() {
+          if (this.success) {
+              this.actionAlert();
+              this.stopsByCity = this.availableStopsBy(this.selectedCity.id);
+              this.reset();
+              this.resetErrors();
+              this.setSuccess({ status: false });
+              this.actionStatus = 'Added';
+              this.alertType = 'success';
+              this.showAlert = true; 
           }
-        },
-        mounted() {           
-           this.fetchDivisions();                 
-           this.fetchAvailableStopList();           
-           this.enableSlimScroll();
-        },
-        watch: {
-            selectedDivision() {
-                this.fetchCitiesByDivision(this.selectedDivision.id); // this.selectedDivisionId
-            },
-            cityList() {                
-                this.disableSaveButton = (this.cityList.length < 1) ? true : false; 
-            },           
-        },
-        methods: {
-          addStop() {
-            var vm = this;
-            this.stopList.push({
-              city_id: vm.selectedCity.id,
-              name: vm.stopName
-            });
-            this.stopName = '';           
-          },
-          enableSlimScroll() {
-                $('#scroll-cities',).slimScroll({
-                  color: '#00f',
-                  size: '8px',
-                  height: '500px',
-                  //height: auto,
-                  wheelStep: 10                  
-                });
+      }
+        
+    },
+    computed: {
+      ...mapState([
+          'errors',
+          'success'
+      ]),      
+      // ...mapGetters([
+      //     'get',
+      //     'has',
+      //     'any'
+      // ]),
+      ...mapGetters('stop', [
+        'availableStopsBy',
+        // 'stopsByCityCount'
+      ]),
+      ...mapGetters('city', [
+        'cityBy',
+        'citiesByDivision',
+        'getCityById'
+      ]),
+      setMapCenter() {
 
-                $('#scroll-stops',).slimScroll({
-                  color: '#00f',
-                  size: '8px',
-                  height: '200px',
-                  //height: auto,
-                  wheelStep: 10                  
-                });
-          },
-          expandAddCityPanel() {
-            this.show = !this.show;
-          },
-          fetchCitiesByDivision(divisionId) {
-            this.loading = true;                     
-            var vm = this;                      
-            //axios.get('api/bus?q=' + busId) //--> admin/api/bus?q=xyz  (wrong)
-            axios.get('/api/districts?q=' + divisionId)  //--> api/bus?q=xyz        (right)
-                .then(function (response) {                  
-                   response.data.error ? vm.error = response.data.error : vm.cityList = response.data;
-                   vm.loading = false;                  
-            });
-          },
-          fetchDivisions() {
-            this.loading = true;
-            this.divisionList= [];            
-            var vm = this;               
-            axios.get('/api/divisions')  
-                .then(function (response) {                  
-                   response.data.error ? vm.error = response.data.error : vm.divisionList = response.data;
-                   vm.loading = false;                  
-            });
-          },
-          fetchAvailableStopList() {
-            this.loading = true;
-            this.availableStopList= [];            
-            var vm = this;                
-            axios.get('/api/stops') 
-                .then(function (response) {                  
-                   response.data.error ? vm.error = response.data.error : vm.availableStopList = response.data;
-                   vm.loading = false;
-                   vm.SortByStopNameAvailableStopList(vm.availableStopList);                  
-            });
-          },
-          isButtonDisable(btnType) { 
-            switch (btnType) {
-                case 'add':
-                    return ( this.stopName == '' || this.selectedCity == '' || this.selectedDivision == '') ? true : false;           
-                    break;
-                case 'reset':
-                    return ( this.stopName == '' && this.selectedCity == '' && this.selectedDivision == '') ? true : false; 
-                    break;          
-                case 'save':
-                    return (this.stopList.length < 1) ? true : false;         
-                    break;                  
-                default:
-                    return true;
-            }
-          },
-          isSortingAvailableBy(val) {
-            if (val== 'name') {
-                this.SortByStopNameAvailableStopList(this.availableStopList);
-                this.disableSorting = true;
-                return;
-            }
-            this.SortByCityCodeAvailableStopList(this.availableStopList);
-            this.disableSorting = false;
-          },
-
-          removeStop(stop, index) {  // role id of user/staff in roles table
-            var vm = this;
-            this.deletedStopName = stop.name; 
-            swal({
-              title: "Are you sure?",
-              text: "This STOP will be Removed!",
-              icon: "error",                 
-              dangerMode: true,
-              buttons: {
-                  cancel: "cancel",
-                  confirm: {
-                    text: "Remove It!",
-                    value: true,
-                  },                                
-              },
-            })
-            .then((value) => {
-              if (value) {
-
-                vm.loading = true;
-                vm.response = '';
-                vm.showAlert = false;
-                axios.post('/delete/stop', {                            
-                    stop_id: stop.id, 
-                })          
-                .then(function (response) {                           
-                    response.data.error ? vm.error = response.data.error : vm.response = response.data;
-
-                    if (vm.response) {                                
-                        vm.removeStopFromAvailableStopList(index); // update the array after removing                                
-                        vm.loading = false;
-                        vm.actionStatus = 'Removed';
-                        vm.alertType = 'danger';
-                        vm.showAlert= true;
-                        return;                                                      
-                    }                            
-                    vm.loading = false;
-
-                });  
-              } 
-            }); 
-          },
-         
-          removeStopFromAvailableStopList(index) {
-            // var indx = this.busAvailableToCityList.findIndex(function(city){ 
-            //     // here 'city' is array object 
-            //      return city.code == cityCode;
-            // });        
-            this.availableStopList.splice(index, 1);            
-            //return;
-          },
+        if (this.selectedCity.id == '' || this.selectedCity.id == null) {
           
-          removeStopFromStopLis(index) {
-            this.stopList.splice(index, 1);
-          },
-
-          saveStops() {
-            var vm = this;
-            //this.loading = true;            
-            axios.post('/stops', {
-                city_id: this.selectedCity.id,                
-                stop_list: this.stopList
-            })          
-            .then(function (response) {                
-                response.data.error ? vm.error = response.data.error : vm.response = response.data;
-                if (vm.response) {                   
-                   vm.fetchAvailableStopList();
-                   vm.SortByStopNameAvailableStopList(vm.availableStopList);
-                   vm.stopList = [],
-                   vm.loading = false;
-                   vm.disableSaveButton = true;
-                   vm.cityAddedAlert(vm.selectedCity.name);
-                   vm.reset();
-                   return;                   
-                }
-                vm.loading = false;
-                vm.disableSaveButton = true;
-            });
-          },
-          reset() {
-            this.selectedCity = '';
-            this.selectedDivision = '';
-            this.stopName = '';
-          },
-          SortByStopNameAvailableStopList(arr) {
-            // sort by name            
-                arr.sort(function(a, b) {
-                  var nameA = a.name.toUpperCase(); // ignore upper and lowercase
-                  var nameB = b.name.toUpperCase(); // ignore upper and lowercase
-                  if (nameA < nameB) {
-                    return -1;
-                  }
-                  if (nameA > nameB) {
-                    return 1;
-                  }
-                  // names must be equal
-                  return 0;
-                });
-          },
-          SortByCityCodeAvailableStopList(arr) {
-            arr.sort(function(a, b) {
-                  return a.city_id - b.city_id;
-                });
-          },
-          cityAddedAlert(cityName) {
-              swal({
-                //title: "Sorry! Not Available",
-                title: 'Bus Stops for '+cityName+' ',
-                text: "Added successfully!",
-                //text: '<span style="color:#F8BB86"> <strong>'+val+'</strong></span> Not Available.',
-                //html: true,
-                //type: "info",
-                icon: "success",
-                timer: 2000,
-                closeOnClickOutside: true,
-              });
+          //console.log('City NA')
+          return {
+            latitude: 24.183969,
+            longitude: 89.945963
           }
-        }
-    }
-</script>
 
-<style lang="scss" scoped>
-     .view-available-info .panel-heading span {
-      background-color: yellow;
-      font-weight: 600;
-      float: right;
-      padding: 2px 6px;
-      color: royalblue;
+         } 
+
+          const city = this.cityBy(this.selectedCity.id)
+          // console.log('city=', city);
+           // console.log('lat/lng=', city.lat, city.lon);
+
+            return {
+              latitude: city.lat,
+              longitude: city.lon
+            }
+      },
+      
+      showError() {
+        if (Object.keys(this.errors).length > 0)
+          return this.show = true;
+        return this.show = false;
+      },
+      isValid() {
+        return ( 
+          this.stop.name != '' &&
+          this.stop.address != '' &&
+          this.stop.phone != '' &&
+          this.stop.latitude != '' &&
+          this.stop.longitude != '' &&
+          Object.keys(this.stopList).length != 0
+        )
+        // return  Object.keys(this.stopList).length != 0;  
+      },
+      isStopsAvailable() {
+         if (this.stopsByCity.length > 0) {
+           return true;
+         }
+         return false;
+      },
+    },
+    methods: {
+      ...mapActions([
+          'setSuccess',
+          'resetErrors'
+      ]),
+      ...mapActions('stop', [
+        'getStops',
+        'addStop',
+      ]),
+      ...mapActions('city', {
+            getAvailableCities: 'getBusAvailableToCities',
+            getDistrictList: 'getDistricts'
+      }),
+      actionAlert() {
+          swal({           
+            title: 'Stops By City',
+            text: 'Added successfully!',
+            icon: "success",
+            timer: 2000,
+            closeOnClickOutside: false,
+          });
+      },
+      getIndex(index) {
+        let str = `${index}`;
+        return parseInt(str.replace(/\D/g, ""), 10) + 1;
+        parseInt("010", 10)
+      },
+      addToStops(e) {
+        const lat = parseFloat(e.latLng.lat());
+        const lng = parseFloat(e.latLng.lng());
+        
+        this.stop.latitude = lat;
+        this.stop.longitude = lng;
+
+        this.stops.push({
+          name: 'Name',
+          address: 'Address',
+          phone: 88888,
+          latitude: lat,
+          longitude: lng
+        });
+
+      },      
+      addToStopList() {
+        //var vm = this;
+        this.stopList.push({
+          city_id: this.selectedCity.id,
+          name: this.stop.name,
+          address:this.stop.address,
+          phone: this.stop.phone,
+          latitude: this.stop.latitude,
+          longitude: this.stop.longitude,
+        });
+        this.stop= {};           
+      },
+      enableScroll() {      
+      this.scrollbarInstanceOne = $('.scrollbar').overlayScrollbars({ /* your options */ 
+        sizeAutoCapable: true,
+        overflowBehavior : {
+          x : "scroll",
+          y : "scroll"
+        },
+        scrollbars: {
+          autoHide: "never",
+          clickScrolling: true
+        }
+      }).overlayScrollbars(); 
+
+      this.scrollbarInstanceTwo = $('.scrollbar-small').overlayScrollbars({ /* your options */ 
+        sizeAutoCapable: true,
+        overflowBehavior : {
+          x : "scroll",
+          y : "scroll"
+        },
+        scrollbars: {
+          autoHide: "never",
+          clickScrolling: true
+        }
+      }).overlayScrollbars(); 
+
+      //console.log(instances);
+
+      //var instances = $("div").overlayScrollbars({ }).overlayScrollbars(); 
+      //instances.destroy();
+
+    },      
+      
+      isSortingAvailableBy(val) {
+        if (val== 'cityName') {
+            this.sortByCityName(this.stopList);
+            this.disableSorting = true;
+            return;
+        }
+        this.SortByCityCodeAvailableStopList(this.availableStopList);
+        this.disableSorting = false;
+      },
+
+      removeStop(stop, index) {  // role id of user/staff in roles table
+        var vm = this;
+        this.deletedStopName = stop.name; 
+        swal({
+          title: "Are you sure?",
+          text: "This STOP will be Removed!",
+          icon: "error",                 
+          dangerMode: true,
+          buttons: {
+              cancel: "Cancel",
+              confirm: {
+                text: "Remove It!",
+                value: true,
+              },                                
+          },
+        })
+        .then((value) => {
+          if (value) {
+
+            vm.remove(stop, index);
+
+            vm.loading = true;
+            vm.response = '';
+            vm.showAlert = false;
+            axios.post('/delete/stop', {                            
+                stop_id: stop.id, 
+            })          
+            .then(function (response) {                           
+                response.data.error ? vm.error = response.data.error : vm.response = response.data;
+
+                if (vm.response) {                                
+                    vm.removeStopFromAvailableStopList(index); // update the array after removing                                
+                    vm.loading = false;
+                    vm.actionStatus = 'Removed';
+                    vm.alertType = 'danger';
+                    vm.showAlert= true;
+                    return;                                                      
+                }                            
+                vm.loading = false;
+
+            });  
+          } 
+        }); 
+      },
+     async remove(stop, index) {
+        this.loading = true;
+        await this.deleteStop({
+            id: stop.id,
+            index: index
+        });
+        this.removeFromAvailableStopsByCity(index);
+        this.loading = false;
+     },
+      removeFromAvailableStopsByCity(index) {      
+        this.availableStopsBy.splice(index, 1);            
+        //return;
+      },
+      
+      removeStopFromStopLis(index) {
+        this.stopList.splice(index, 1);
+      },
+
+      async save() {
+
+        this.loading = true;
+        //const stops = {stop_list: this.stopList};
+
+        //console.log('sD=', stops)
+        //this.stops =  stops.stop_list;
+        await this.addStop({stop_list: this.stopList});        
+       this.loading = false;
+        // this.stopList = [];        
+        // //this.reset();
+        // //this.loading = true;            
+        // axios.post('/stops', {
+        //     city_id: this.selectedCity.id,                
+        //     stop_list: this.stopList
+        // })          
+        // .then(function (response) {                
+        //     response.data.error ? vm.error = response.data.error : vm.response = response.data;
+        //     if (vm.response) {                   
+        //        vm.fetchAvailableStopList();
+        //        vm.SortByStopNameAvailableStopList(vm.availableStopList);
+        //        vm.stopList = [],
+        //        vm.loading = false;
+        //        vm.disableSaveButton = true;
+        //        vm.cityAddedAlert(vm.selectedCity.name);
+        //        vm.reset();
+        //        return;                   
+        //     }
+        //     vm.loading = false;
+        //     vm.disableSaveButton = true;
+        // });
+      },
+      // addStopsTo(stopsByCity, stops) {
+      //   stops.forEach(stop => {
+      //     stopsByCity.push(stop)
+      //   });
+      // },
+      reset(all) {
+        if(all){          
+          this.selectedCity = '';
+          this.selectedDivision = '';
+          this.stop= {};        
+          this.stopList = [];
+          return;
+        }
+        this.stopList = [];
+        this.stop = {};
+      },
+      sortByCityName(arr) {
+        arr.sort((a, b) => {
+              return a.city_id - b.city_id;
+        });
+      },
+      SortByCityCodeAvailableStopList(arr) {
+        arr.sort(function(a, b) {
+              return a.city_id - b.city_id;
+            });
+      },
+      cityAddedAlert(cityName) {
+          swal({
+            //title: "Sorry! Not Available",
+            title: 'Bus Stops for '+cityName+' ',
+            text: "Added successfully!",
+            //text: '<span style="color:#F8BB86"> <strong>'+val+'</strong></span> Not Available.',
+            //html: true,
+            //type: "info",
+            icon: "success",
+            timer: 2000,
+            closeOnClickOutside: true,
+          });
+      }
     }
-    #scroll-cities {
-        span {
-            cursor: pointer;
-            margin-left: 5px;
-        }
-        span[disabled] {
-            cursor: not-allowed;
-            opacity: 0.65;
-        }
-    } 
+}
+</script>
+<style lang="scss" scoped>  
+  .heading {
+    font-size: 1rem;
+    margin-bottom: 0.75rem;
+    color: white;
+  }
+  .fa-stack { font-size: 4.5em; }
+  i { vertical-align: middle; }
+  .scrollbar-small {
+    height: 13rem;
+  }
 </style>

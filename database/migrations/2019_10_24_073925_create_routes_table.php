@@ -15,8 +15,8 @@ class CreateRoutesTable extends Migration
     {
         Schema::create('routes', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('departure_city');
-            $table->string('arrival_city');
+            $table->string('first_city');
+            $table->string('second_city');
             $table->smallInteger('distance')->unsigned();
             $table->timestamps();
         });

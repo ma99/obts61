@@ -69,7 +69,7 @@
                                   {{-- <div>  --}}
                                    {{--  <button v-on:click.prevent="viewSeats(bus.schedule_id, bus.bus_id, bus.fare)" class="btn btn-success">View</button>  --}}
                                   {{-- </div> --}}
-                                  <button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#staticBackdrop" v-on:click.prevent="viewSeats(bus.schedule_id, bus.bus_id, bus.fare)">    
+                                  <button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#staticBackdrop" v-on:click.prevent="viewSeatsOf(bus)">    
                                       <i class="button-icon fas fa-eye"></i>View
                                   </button>   
                                 </td>

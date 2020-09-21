@@ -29,25 +29,27 @@
       <div class="d-md-flex">
         <div class="p-3 bg-lightpurple flex-fill">
           <form>
+
+            <route-list id="route" v-model="routeId" />
+
             <div class="form-group">
-              <label for="route">Route</label>
-              
-                <select v-model="route" class="form-control custom-select" id="route">
-                    <option value="" disabled>Please select one</option>
-                    <option v-for="route in availableRouteList" v-bind:value="{
-                        id: route.id,
-                        departure_city: route.departure_city,
-                        arrival_city: route.arrival_city,
-                      }
-                    ">
-                      {{ route.id }}  {{ route.departure_city }} --> {{ route.arrival_city }} 
-                    </option>                           
-                </select>                      
+                <label for="city">First City</label>
+                  <select v-model="firstCity" class="form-control custom-select"> 
+                      <option value="" disabled>Please select one</option>
+                      <option v-for="city in availableCityList"
+                           v-bind:value="{
+                                id: city.id,
+                                name: city.name
+                            }"
+                        >
+                          {{ city.name }}
+                      </option>                                             
+                  </select>
             </div>
 
             <div class="form-group">
-                <label for="city">City</label>
-                  <select v-model="city" class="form-control custom-select"> 
+                <label for="city">Second City</label>
+                  <select v-model="secondCity" class="form-control custom-select"> 
                       <option value="" disabled>Please select one</option>
                       <option v-for="city in availableCityList"
                            v-bind:value="{
@@ -62,22 +64,25 @@
 
             <div class="form-group">
               <label for="cityDistance">Distance: </label>              
-              <small v-show="city.name" class="text-muted font-italic"> {{ route.departure_city }} to {{ city.name }}
+              <small v-show="secondCity.name" class="text-muted font-italic"> {{ firstCity.name }} to {{ secondCity.name }}
               </small> 
-              <input v-model="distance" type="number" class="form-control" name="city_distance" id="cityDistance" placeholder="Enter distance in Km here">              
+
+              <input v-model="distance" type="number" class="form-control" v-bind:class="{ 'is-invalid': has('distance') }" name="city_distance" id="cityDistance" placeholder="Enter distance in Km here">
+              <span class="invalid-feedback" v-if="has('distance')" v-text="get('distance')">
+              </span>              
             </div>
 
             <div class="form-group mt-4">
               
                 <button v-on:click.prevent="save()"  type="button" class="btn btn-primary" :disabled="!isValid">Add City</button>
-                <button v-on:click.prevent="reset()"  type="button" class="btn btn-warning">Cancel</button>
+                <button v-on:click.prevent="reset('all')"  type="button" class="btn btn-warning">Cancel</button>
               
             </div>               
           </form>
           
         </div>
         <div class="p-3 bg-app-purple flex-fill">
-            <span v-show="route" class="heading"> Available Cities for {{ route.departure_city }} to {{ route.arrival_city }} </span>
+            <span v-show="route" class="heading"> Available Cities for {{ route.first_city }} <i class="fas fa-exchange-alt"></i> {{ route.second_city }} </span>
             <div class="card mt-1">
             <div class="card-body">
                 <div id="scrollbar">
@@ -85,6 +90,8 @@
                       <thead>
                         <tr>
                           <th>SL.# </th>
+                          <th>CITY</th>
+                          <th></th>
                           <th>CITY</th>
                           <th>DISTANCE (km)</th>
                           <th>Action</th>                
@@ -94,7 +101,9 @@
                       <tbody>
                         <tr v-for="(city, index) in citiesByRoute" >                              
                           <td>{{ index+1 }}</td>                      
-                          <td>{{ city.name }}</td>
+                          <td>{{ getCityById(city.pivot.first_city_id).name }}</td>
+                          <td> <i class="fas fa-exchange-alt"></i> </td>
+                          <td>{{ getCityById(city.pivot.second_city_id).name }}</td>
                           <td>{{ city.pivot.distance }}</td>
                           <td>                              
                               <button v-on:click.prevent="remove(city)" class="btn btn-outline-danger">
@@ -113,9 +122,14 @@
   </div>      
 </template>
 <script>
+        import Route from '../../components/route/Route'; 
+
     import { mapState, mapGetters, mapActions } from 'vuex';
 
     export default {        
+        components: {
+            'route-list': Route,
+        },
         data() {
                 return {                    
                     actionStatus: '',
@@ -124,40 +138,76 @@
                     showAlert: false,
                     show: false,                    
                     modal: false,               
-                    city: {
+                    firstCity: {
+                      id: '',
+                      name: '',
+                    },
+                    secondCity: {
                       id: '',
                       name: '',
                     },
                     distance: '',
+                    routeId: '',
                     route: {
-                      id: '',
-                      departure_city: '',
-                      arrival_city: '',
+                      // id: '',
+                      // first_city: '',
+                      // second_city: '',
+                    },
+                    citiesToBeAdded: {
+                        first_city: '',
+                        second_city: '',
                     },                                        
                 }
                 },
                 watch: {
-                    'route.id'(val, oldVal) {
-                      if (this.route.id) {
-                        this.city = '';
-                        this.fetchCitiesByDivisionOfDepartureArrival(this.route);
+                    'routeId'(val, oldVal) {
+                      if (this.routeId) {
+                        this.firstCity = '';
+                        this.secondCity = '';
+                        this.route = this.getRouteBy(this.routeId);
+                        this.fetchCitiesByDivisionOfFirstAndSecondCity(this.route);
                       }
                     },
-                    'city.name'(val, oldVal) {
+                    'firstCity.name'(val, oldVal) {
                       this.distance = '';
+                    },
+                    success() {
+                        if (this.success) {
+                            this.actionAlert(this.citiesToBeAdded);
+                            this.reset();
+                            this.resetErrors();
+                            this.setSuccess({ status: false });
+                            this.actionStatus = 'Added';
+                            this.alertType = 'success';
+                            this.showAlert = true; 
+                        }
                     }
                 },      
-                mounted() {                    
-                    this.fetchCities();
-                    this.fetchRoutes();                    
+                async mounted() {                    
+                    //this.fetchCities();
+                    //this.fetchRoutes();
+                    this.loading = true;
+                    await this.getAvailableCities();
+                    this.loading = false;                    
                     this.enableScroll();
                     this.objectToEmptyString();                    
                 },  
                 computed: {
+                    ...mapState([
+                        'errors',
+                        'success'
+                    ]),
+                    ...mapGetters([
+                        'get',
+                        'has',
+                    ]),
+                  
                   ...mapState('route', [
-                      'availableRouteList',
                       'citiesByRoute'
                   ]),
+                    ...mapGetters('route', [
+                        'getRouteBy',
+                    ]),
 
                   ...mapState('city', [
                       'availableCityList'
@@ -165,46 +215,68 @@
 
                   ...mapGetters('city', [
                       'getCityBy',
+                      'getCityById',
                       'availableCitiesCount'  
                   ]),
 
                   isValid() {
-                        return this.city.id != '' && 
-                                this.city.name != '' &&
+                        return this.firstCity.id != '' && 
+                                this.firstCity.name != '' &&
+                                this.secondCity.id != '' &&
+                                this.secondCity.name != '' &&
                                 this.distance != '' 
                      }
                 },
                 methods: {  
+                    ...mapActions([
+                        'setSuccess',
+                        'resetErrors'
+                    ]),
                   ...mapActions('route', [
-                    'getRoutes',
+                    //'getRoutes',
                     'getCitiesFromRoutesBy',
-                    'addCity',
+                    'addRouteCity',
                     'deleteCityFromRoute',
                     'emptyCitiesByRoute'
                   ]),
 
                   ...mapActions('city', {
                     getAvailableCities: 'getBusAvailableToCities',
-                    getCitiesByDivisionOf: 'getCitiesByDivisionOfDepartureArrival'
+                    getCitiesByDivisionOf: 'getCitiesByDivisionOfFirstAndSecondCity'
                   }),
+
+                  actionAlert(city) {
+                      swal({           
+                        title: `${city.first_city} <> ${city.second_city}`,
+                        text: 'Added successfully!',
+                        icon: "success",
+                        timer: 2000,
+                        closeOnClickOutside: false,
+                      });
+                  },
 
                   objectToEmptyString() {
                     // To display ('Please select one') first disabled option in SELECT box
-                    this.city = '';
+                    this.firstCity = '';
+                    this.secondCity = '';
                     this.route = '';
                   },                                    
                   save() {
                     this.loading = true;
-                    this.addCity({
-                        city: this.city,            
-                        distance: this.distance,
+                    this.citiesToBeAdded = {
+                        first_city: this.firstCity.name, 
+                        second_city: this.secondCity.name, 
+                    };
+                    let data = {
+                      first_city_id: this.firstCity.id,
+                      second_city_id: this.secondCity.id,
+                      distance: this.distance,
+                    };
+                    this.addRouteCity({
+                        data: data,                        
                         id: this.route.id
                     });
-                    this.city = '';
                     this.loading = false;
-                    this.actionStatus = 'Added';
-                    this.alertType = 'success';
-                    this.showAlert = true; 
                   },
                   
                   enableScroll() {
@@ -222,24 +294,24 @@
                     }); 
                   },       
                   
-                  fetchCities() {
+                  // fetchCities() {
+                  //   this.loading = true;
+                  //   this.getAvailableCities();
+                  //   this.loading = false;
+                  // },
+                  // fetchRoutes() {
+                  //   this.loading = true;
+                  //   this.getRoutes();                    
+                  //   this.loading = false;
+                  // },
+                  fetchCitiesByDivisionOfFirstAndSecondCity(route) {
                     this.loading = true;
-                    this.getAvailableCities();
-                    this.loading = false;
-                  },
-                  fetchRoutes() {
-                    this.loading = true;
-                    this.getRoutes();                    
-                    this.loading = false;
-                  },
-                  fetchCitiesByDivisionOfDepartureArrival(route) {
-                    this.loading = true;
-                    let departureCity = this.getCityBy(route.departure_city);
-                    let arrivalCity = this.getCityBy(route.arrival_city);
+                    let firstCity = this.getCityBy(route.first_city);
+                    let secondCity = this.getCityBy(route.second_city);
                     
                     this.getCitiesByDivisionOf({
-                      departureCityDivId: departureCity.division_id ,
-                      arrivalCityDivId: arrivalCity.division_id 
+                      firstCityDivId: firstCity.division_id ,
+                      secondCityDivId: secondCity.division_id 
                     });                    
                     
                     this.fetchCitiesBy(route.id)
@@ -283,10 +355,17 @@
                       }); 
                   },
                   
-                  reset() {                       
-                      this.city = '';
+                  reset(all) { 
+                    if(all) {                        
+                      this.firstCity = '';
+                      this.secondCity = '';
                       this.route = '';
                       this.emptyCitiesByRoute();
+                      return;
+                    }                 
+                    this.firstCity = '';
+                    this.secondCity = '';     
+                    this.distance = '';
                   },
                   swAlert(text, icon) {
                     swal({

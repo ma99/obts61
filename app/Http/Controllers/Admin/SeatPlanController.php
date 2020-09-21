@@ -14,10 +14,11 @@ class SeatPlanController extends Controller
         $attributes = $this->validateRequest();
         //dd($attributes);//['seat_list']);
         //SeatPlan::create($attributes['seat_list']);
-        $sp = SeatPlan::create($attributes);
+        
+        return SeatPlan::create($attributes);
 
         //return 'successfully added';
-        return $sp; 
+        //return $sp; 
     }
 
     public function destroy(SeatPlan $seatplan)

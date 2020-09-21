@@ -22,9 +22,20 @@
 
     <section class="content">      
       <div class="container-fluid">
-        <add-section :show.sync="show">
+        <add-section :show.sync="show" :show-footer="true">
           <template v-slot:heading>Add Bus</template>
-          <form> 
+          <form>
+                <border color="navy-blue" pattern="dashed" width="1" 
+                  heading-background="#e3f2fd" heading-width="150" heading-show="true"
+                >
+                    <template v-slot:heading>Route Info</template> 
+                    <div class="form-row justify-content-center">     
+                        <div class="col-sm-5">
+                            <route-list id="route" v-model="bus.routeId" />
+                        </div>
+                    </div>
+
+                </border> 
                 <border color="navy-blue" pattern="dashed" width="1" 
                   heading-background="#F2B705" heading-width="150" heading-show="true"
                 >
@@ -33,7 +44,7 @@
                     <div class="col-sm-4">
                       <div class="form-group">
                         <label for="seatPlan">Seat Plan#</label>
-                          <select v-model="bus.seatPlanId" class="form-control" id="seatPlan" :disabled="editMode">
+                          <select v-model="bus.seatPlanId" class="form-control custom-select" id="seatPlan" :disabled="editMode">
                               <option disabled value="">Please select one</option>
                               <option v-for="seat in availableSeatPlanList" v-bind:value="seat.id">
                                   {{ seat.id }}
@@ -81,7 +92,7 @@
                     <div class="col-sm-3">
                       <div class="form-group">
                         <label for="busType">Bus Type #</label>
-                          <select v-model="bus.typeId" v-bind:style="formControl" class="form-control" id="busType">
+                          <select v-model="bus.typeId" v-bind:style="formControl" class="form-control custom-select" id="busType">
                               <option disabled value="">Please select one</option>
                               <option v-for="type in types" v-bind:value="type.id">
                                   {{ type.name }}
@@ -100,8 +111,8 @@
                     <div class="col-sm-4">
                       <div class="button-group">
                         <button v-on:click.prevent="save()"  type="button" class="btn btn-primary" :disabled="!isValid" v-show="!editMode">Save</button>
-                        <button v-on:click.prevent="update()"  type="button" class="btn btn-success" :disabled="!isValid" v-show="editMode">Update</button>
-                        <button v-on:click.prevent="reset()"  type="button" class="btn btn-primary">Cancel</button>
+                        <button v-on:click.prevent="update()"  type="button" class="btn btn-info" :disabled="!isValid" v-show="editMode">Update</button>
+                        <button v-on:click.prevent="reset()"  type="button" class="btn btn-warning">Cancel</button>
                       </div>
                     </div>
                   </div>
@@ -120,23 +131,26 @@
         <div class="row justify-content-center">
           <div class="card card-info w-100">
             <div class="card-header">Bus Info <span> {{ availableBusList.length }} </span></div>
-            <div class="card-body">
+            <div class="card-body p-0">
                 <div id="scrollbar">
-                  <table class="table table-striped table-hover">
+                  <table class="table table-striped table-hover table-sm">
                       <thead>
                         <tr>
                           <th>Sl. No.</th>
                           <th>Bus ID
                               <span type="button" @click="sortByIdOf('bus')" :disabled="disableSorting">
-                                  <i class="fa fa-sort-amount-asc" aria-hidden="true"></i>
-                              </span>
-                          </th>                           
-                          <th>Reg. Number
-                              <span type="button" @click="sortByIdOf('registration')" :disabled="!disableSorting">
-                                  <i class="fa fa-sort-amount-asc" aria-hidden="true"></i>
+                                  <i class="fas fa-sort-amount-asc" aria-hidden="true"></i>
                               </span>
                           </th>
-                          <th>Number Plate</th>
+                          <th>
+                              Route
+                          </th>                           
+                          <th>Number
+                              <span type="button" @click="sortByIdOf('registration')" :disabled="!disableSorting">
+                                  <i class="fas fa-sort-amount-asc" aria-hidden="true"></i>
+                              </span>
+                          </th>
+                          <!-- <th>Number Plate</th> -->
                           <th>Type</th>                                
                           <th>Total Seats</th>     
                           <th>Seat Plan ID</th>     
@@ -149,20 +163,35 @@
                         <tr  v-for="(bus, index) in availableBusList" >                              
                           <td>{{ index+1 }}</td>                              
                           <td>{{ bus.bus.id }}</td>
-                          <td>{{ bus.bus.reg_no }}</td>
-                          <td>{{ bus.bus.number_plate }}</td>
-                          <!-- <td>{{ ucwords(bus.bus.type) }}</td>                          -->
+                          <td> {{ getRouteBy(bus.bus.route_id).first_city}} <br />
+                            <i class="fas fa-exchange-alt"></i> <br />
+                            {{ getRouteBy(bus.bus.route_id).second_city}} 
+                          </td>
+                          
+                          <td>
+                            <div class="border-bottom border-info pb-1 mb-1">Registration #:  <br />
+                            {{ bus.bus.reg_no }}
+                            </div>
+                            <!-- <hr /> -->
+                            Number Plate: <br />
+                            {{ bus.bus.number_plate }}
+                          </td>
+                          
                           <td>{{ typeBy(bus.bus.type_id) }}</td>                         
                           <td><strong>{{ bus.total_seats }}</strong></td>
                           <td><strong>{{ bus.bus.seat_plan_id }}</strong></td>
                           <td>{{ bus.bus.description }}</td>
                           <td> 
-                              <button v-on:click.prevent="edit(bus)" class="btn btn-primary">
+                            <div class="mb-2">                                
+                              <button v-on:click.prevent="edit(bus)" class="btn btn-outline-info">
                                 <i class="fa fa-edit fa-fw"></i>Edit
                               </button>  
-                              <button v-on:click.prevent="remove(bus.bus)" class="btn btn-danger">
+                            </div>
+                            <div>                                
+                              <button v-on:click.prevent="remove(bus.bus)" class="btn btn-outline-danger">
                                 <i class="fa fa-trash fa-fw"></i>Remove
                               </button> 
+                            </div>
                           </td>                        
                         </tr>                            
                       </tbody>
@@ -188,21 +217,22 @@
   </div>      
 </template>
 <script>
+    import Route from '../../components/route/Route'; 
     import { mapState, mapGetters, mapActions } from 'vuex';
 
     export default {        
+        components: {
+            'route-list': Route,
+        },
         data() {
                 return {                    
                     actionStatus: '',
                     alertType: '',
-                    //availableBusList: [],
-                    //availableSeatPlanList: [],
                     busToEdit: {
                       id: '',
                       index: '',
                     },
                     disableShowButton: false,
-                    //disableSaveButton: true,
                     disableSorting: true,
                     editMode: false,
                     error: '',        
@@ -214,6 +244,7 @@
                     loading: false,
                     //bus
                     bus: {
+                      routeId: '',  
                       regNumber: '',
                       numberPlate: '',
                       description: '',
@@ -224,13 +255,12 @@
                     selectedSeatPlan: '',                    
                     showAlert: false,
                     show: false,                    
-                    modal: false,               
-                    //types: [],                    
+                    modal: false,
                 }
                 },
                 watch: {
                     'bus.regNumber'(val, oldVal) {
-                        var aa = this.isRegNumberAvailableInBusList(this.availableBusList, this.bus.regNumber);
+                        var aa = this.isRegNumberAvailable(this.bus.regNumber);
                         if (aa) {
                             if(this.editMode) {
                               this.swAlert('Edit Mode Started..', 'warning');                              
@@ -240,21 +270,28 @@
                         }
                     },
                     'bus.seatPlanId'(val, oldVal) {
-                      if(this.bus.seatPlanId) {                        
-                        this.selectedSeatPlan = this.availableSeatPlanList.find(element => element.id == this.bus.seatPlanId);
+                      if(this.bus.seatPlanId) {
+                        this.selectedSeatPlan = this.getSeatPlanBy(this.bus.seatPlanId);
+                        
                         this.numberOfSeat = this.selectedSeatPlan.total_seats;
                         return;
                       }
                       this.numberOfSeat= '';
                     },
-                    // 'type.id'(val, oldVal) {
-                    //   this.bus.typeId = this.type.id;
-                    // },                   
                 },      
-                mounted() {                    
-                    this.fetchBusTypes();
-                    this.fetchAvailableBuses();
-                    this.fetchAvailableSeatPlans();
+                async mounted() {                    
+                    // this.fetchBusTypes();
+                    // this.fetchAvailableBuses();
+                    // this.fetchAvailableSeatPlans();
+                    
+                    this.loading = true;
+                    
+                    await this.getBusTypes();
+                    await this.getBuses();
+                    await this.getSeatPlans();
+
+                    this.loading = false;
+
                     this.enableScroll();                
                 },
                 computed: {                   
@@ -266,17 +303,27 @@
                     ...mapState('seatplan', [
                       'availableSeatPlanList',
                     ]),
+                    ...mapGetters('seatplan', [
+                        'getSeatPlanBy'
+                    ]),
 
                     ...mapGetters('bus', [
                       'typeBy',
                       'busBy',
-                      'getIndexOf'
+                      'getIndexOf',
+                      'isRegNumberAvailable'
                     ]),
+
+                    ...mapGetters('route', [
+                        'getRouteBy'
+                    ]),
+
                     isValid() {
                         return this.bus.regNumber != '' && 
                                 this.bus.numberPlate != '' &&
                                 this.bus.typeId != '' &&
-                                this.bus.description != '' 
+                                this.bus.description != '' && 
+                                this.bus.routeId != '' 
                      }
                 }, 
                 methods: {
@@ -293,13 +340,16 @@
                   ...mapActions('seatplan', [
                     'getSeatPlans'
                   ]),  
-                  // typeBy(id) {
-                  //   let type = this.types.find(type => type.id == id);
-                  //   if(type) {                      
-                  //     return type.name;
-                  //   }
-                  //   // this.ucwords(type.name);                   
-                  // },
+                  actionAlert(name) {
+                      swal({           
+                        title: name,
+                        text: 'Added successfully!',
+                        icon: "success",
+                        timer: 2000,
+                        closeOnClickOutside: false,
+                      });
+                  },
+                  
                   ucwords (str) {
                       return (str + '').replace(/^([a-z])|\s+([a-z])/g, function ($1) {
                           return $1.toUpperCase();
@@ -308,31 +358,11 @@
                   save() {
                       //var vm = this;
                       this.addBus({
-                        busInfo: this.bus, 
+                        bus: this.bus, 
                         numberOfSeat: this.numberOfSeat
                       });
-                      // axios.post('/buses', {
-                      //     seat_plan_id: this.bus.seatPlanId,
-                      //     reg_no: this.bus.regNumber,
-                      //     number_plate: this.bus.numberPlate,
-                      //     type_id: this.bus.typeId,                
-                      //     //total_seats: this.bus.numberOfSeat,
-                      //     description: this.bus.description
-                      // })          
-                      // .then(function (response) {
-                      //     //console.log(response.data);
-                      //     response.data.error ? vm.error = response.data.error : vm.response = response.data;
-                      //     vm.availableBusList.push({
-                      //       bus: vm.response,
-                      //       total_seats: vm.numberOfSeat
-                      //     });
-                      //     vm.loading = false;
-                      //     vm.actionStatus = 'Added';
-                      //     vm.reset();
-                      //     vm.alertType = 'success';
-                      //     vm.showAlert = true;
-                      // });
                       this.loading = false;
+                      this.actionAlert('Bus');
                       this.actionStatus = 'Added';
                       this.reset();
                       this.alertType = 'success';
@@ -340,11 +370,10 @@
                   },
                   edit(bus) {
                     this.busToEdit.id = bus.bus.id;
-                    // let busToEdit = this.availableBusList.find(element => element.bus.id == bus.bus.id);
+
                     let busToEdit = this.busBy(bus.bus.id);
                      this.busToEdit.index = this.getIndexOf(busToEdit);
-                   // this.busToEdit.index = this.availableBusList.indexOf(busToEdit);
-                    //console.log(this.availableBusList.indexOf(busToEdit));
+                    this.bus.routeId = busToEdit.bus.route_id;
                     this.bus.seatPlanId = busToEdit.bus.seat_plan_id;
                     this.bus.regNumber = busToEdit.bus.reg_no;
                     this.bus.numberPlate = busToEdit.bus.number_plate;
@@ -358,42 +387,17 @@
                     //this.type.name = this.typeBy(this.bus.typeId);
                   },
                   update() {
-                    //var vm = this;
                     this.updateBus({
-                      busInfo: this.bus,
+                      bus: this.bus,
                       busToEdit: this.busToEdit
                     });
-                      // axios.patch('/buses/'+ this.busToEdit.id, {
-                      //     seat_plan_id: this.bus.seatPlanId,
-                      //     reg_no: this.bus.regNumber,
-                      //     number_plate: this.bus.numberPlate,
-                      //     type_id: this.bus.typeId,                
-                      //     //total_seats: this.bus.numberOfSeat,
-                      //     description: this.bus.description
-                      // })          
-                      // .then(function (response) {
-                      //     //console.log(response.data);
-                      //     response.data.error ? vm.error = response.data.error : vm.response = response.data;
-                      //    // vm.updateAvailableBusList();                         
-                      //     //console.log(response.status);                            
-                      // });
                       this.loading = false;
                       this.actionStatus = 'Updated';
                       this.reset();
                       this.alertType = 'success';
                       this.showAlert = true;
                   },
-                  // updateAvailableBusList() {
-                  //   let index = this.busToEdit.index;
 
-                  //   this.availableBusList[index].bus = {
-                  //     reg_no: this.bus.regNumber,
-                  //     number_plate: this.bus.numberPlate,
-                  //     type_id: this.bus.typeId,
-                  //     seat_plan_id: this.bus.seatPlanId,
-                  //     description: this.bus.description,
-                  //   };
-                  // },            
                   enableScroll() {
                     //initializes the plugin with empty options
                     $('#scrollbar').overlayScrollbars({ /* your options */ 
@@ -405,53 +409,23 @@
                     }); 
                   },       
 
-                  fetchAvailableBuses() {
-                      this.loading = true;
-                      this.getBuses();
-                      //this.availableBusList= [];            
-                      // var vm = this;                
-                      // axios.get('/api/buses')
-                      //     .then(function (response) {                  
-                      //        response.data.error ? vm.error = response.data.error : vm.availableBusList = response.data;
-                      //        vm.sortByBusId(vm.availableBusList);                       
-                      //        vm.loading = false;
-                      // });
-                      this.loading = false;
-                  },
+                  // fetchAvailableBuses() {
+                  //     this.loading = true;
+                  //     this.getBuses();
+                  //     this.loading = false;
+                  // },
 
-                  fetchAvailableSeatPlans() {
-                    this.loading = true;
-                    this.getSeatPlans();
-                    // this.availableSeatPlanList= [];            
-                    // var vm = this;                
-                    // axios.get('/api/seatplans')
-                    //     .then(function (response) {                  
-                    //        response.data.error ? vm.error = response.data.error : vm.availableSeatPlanList = response.data;
-                    //        vm.sortBySeatPlanId(vm.availableSeatPlanList);                       
-                    //        vm.loading = false;
-                    // });
-                    this.loading = false;
-                  },
-                  fetchBusTypes() {
-                    this.loading = true;
-                    // this.types= [];            
-                    // var vm = this;                
-                    // axios.get('/api/types')  
-                    //     .then(function (response) {                  
-                    //        response.data.error ? vm.error = response.data.error : vm.types = response.data;
-                    //        //vm.sortBySeatPlanId(vm.availableSeatPlanList);                       
-                    //        vm.loading = false;
-                    //});
-                    this.getBusTypes(); 
-                    this.loading = false;
-                  },
+                  // fetchAvailableSeatPlans() {
+                  //   this.loading = true;
+                  //   this.getSeatPlans();
+                  //   this.loading = false;
+                  // },
+                  // fetchBusTypes() {
+                  //   this.loading = true;
+                  //   this.getBusTypes(); 
+                  //   this.loading = false;
+                  // },
                   
-                  isRegNumberAvailableInBusList(arr, val){
-                      //var vm = this;
-                       return arr.some(function(bus) {
-                          return val === bus.bus.reg_no;
-                      });
-                  },
                   sortByIdOf(val) {
                       if (val== 'bus') { 
                           //this.sortByBusId(this.availableBusList);
@@ -463,33 +437,7 @@
                       this.sortByRegNumber();
                       this.disableSorting = false;
                   },
-
-                  // sortByBusId(arr) {
-                  //     arr.sort(function(a, b) {
-                  //           return a.bus.id - b.bus.id;
-                  //         });
-                  // },
-
-                  // sortByRegNumber(arr) {
-                  //     arr.sort(function(a, b) {
-                  //         var nameA = a.bus.reg_no; 
-                  //         var nameB = b.bus.reg_no; 
-                  //         if (nameA < nameB) {
-                  //           return -1;
-                  //         }
-                  //         if (nameA > nameB) {
-                  //           return 1;
-                  //         }
-                  //         // names must be equal
-                  //         return 0;
-                  //     });
-                  // },
-                  // sortBySeatPlanId(arr) {
-                  //     arr.sort(function(a, b) {
-                  //           return a.id - b.id;
-                  //     });
-                  // },                    
-
+                  
                   remove(bus) { 
                       var vm = this;
                       swal({
@@ -544,6 +492,7 @@
                       this.isDisabled = false;
                       this.editMode = false;                                              
                       this.bus = {
+                        routeId:  '' , 
                         regNumber:  '' , 
                         numberPlate:  '',
                         seatPlanId: '',

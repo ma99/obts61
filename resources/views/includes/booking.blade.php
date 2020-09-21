@@ -48,7 +48,7 @@
             Date: <strong>@{{ bookedSeatInfo.date }}</strong>
           </div>
           <div class="col-6 mb-2">
-            Time: <strong>@{{ bookedSeatInfo.departure_time }}</strong>
+            Time: <strong>@{{ selectedBus.departure_time }}</strong>
           </div>
           <div class="col-6 mb-2">
             Pickup Point: @{{ bookedSeatInfo.pickup_point }} 
@@ -57,7 +57,7 @@
             Dropping Point: @{{ bookedSeatInfo.dropping_point }} 
           </div>
           <div class="col-6 mb-2">
-            Coach: @{{ bookedSeatInfo.bus_no }} 
+            Coach: @{{ selectedBus.bus_number_plate }} 
           </div>         
           <div class="col-12 mt-2">
             @auth

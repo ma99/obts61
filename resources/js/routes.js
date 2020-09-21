@@ -65,6 +65,10 @@ export const routes = [
         component: require('./views/bus/Schedule').default
     },
     {
+        path: '/bus-schedules',
+        component: require('./views/bus/BusSchedules').default
+    },
+    {
         path: '/city',
         component: require('./views/city/City').default
     },

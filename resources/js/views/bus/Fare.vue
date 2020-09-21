@@ -40,39 +40,69 @@
             </span> 
           </template>
           <form> 
-                <border color="eastern-blue" pattern="dashed" width="1"                
-                >
+                <!-- <border color="eastern-blue" pattern="dashed" width="1"                
+                > -->
                   <!-- <template v-slot:heading>Set Fare</template>  -->
-                  <div class="form-row justify-content-center">
-                     <div class="col-sm-4">
-                      <div class="form-group">
-                        <label for="route">Route</label>
-                          <select v-model="route.id" class="form-control custom-select" id="route" :disabled="editMode">
-                              <option disabled value="">Please select one</option>
-                              <option v-for="route in availableRouteList" v-bind:value="route.id">
-                                  <strong>{{ route.id }}</strong> <small> {{ route.departure_city }} -> {{ route.arrival_city }}</small>
-                              </option>                                             
-                          </select>                      
-                      </div>
+                  <div class="row">
+                    <div class="col-sm-12">                        
+                    
+                        <div class="form-row justify-content-center p-3 mt-3 mb-4 bg-lightgreen">
+                        
+                          <div class="col-sm-4 mr-4">
+                              <div class="form-group">
+                                  <label for="route">Route</label>
+                                    <select v-model="routeId" class="form-control custom-select" id="route" :disabled="editMode">
+                                        <option disabled value="">Please select one</option>
+                                        <option v-for="route in cityRouteList" v-bind:value="route.id">
+                                            {{ route.id }}: {{ route.name }}
+                                        </option>                                             
+                                    </select>                      
+                              </div>                              
+                          </div>
+                    
+                          <div class="col-sm-5" v-if="!editMode">
+                            <div class="form-group">
+                                <label for="city">City</label>
+                                <select v-model="city" class="form-control custom-select" v-bind:class="{ 'is-invalid': has('city_route_id') }" id="city" :disabled="editMode">
+                                    <option disabled value="">Please select one</option>
+                                    <option v-for="city in citiesByRoute" v-bind:value="{
+                                        id:city.id,
+                                        name:getNameOfRoute(city),
+                                        distance: `${city.distance} km`
+                                    }"
+                                    >
+                                    {{ getNameOfRoute(city) }} : {{city.distance}} km
+                                    </option>                                             
+                                </select>
+                                <span class="invalid-feedback" v-if="has('city_route_id')" v-text="get('city_route_id')">
+                                </span>                      
+                            </div>
+                          </div>
+
+                          <div class="col-sm-5" v-if="editMode">
+                            <div class="form-group">
+                                <label for="city">City</label>
+                                <select class="form-control custom-select" id="city1" :disabled="editMode">
+                                    <option>{{ cityName }} : {{cityDistance}} km</option>
+                                                                
+                                </select>
+                                <span class="invalid-feedback" v-if="has('city_route_id')" v-text="get('city_route_id')">
+                                </span>                      
+                            </div>
+                          </div>
+
+                        </div>
                     </div>
 
-                    <div class="col-sm-4">
-                      <div class="form-group">
-                        <label for="city">City</label>
-                          <select v-model="city.id" class="form-control custom-select" id="city" :disabled="editMode">
-                              <option disabled value="">Please select one</option>
-                              <option v-for="city in citiesByRoute" v-bind:value="city.id">
-                                  <strong>{{ city.name }}</strong> <small> {{city.pivot.distance}}</small>
-                              </option>                                             
-                          </select>                      
-                      </div>
-                    </div>
-
-                    <div class="col-sm-12">
-                      <table class="table table-striped table-hover">
+                    <div class="col-sm-12 table-fare">
+                       <h5>
+                          Fare
+                          <small class="text-muted">For Route Cities</small>
+                        </h5>
+                      <table class="mt-3 table table-striped table-hover">
                         <thead><tr></tr></thead>
                         <tbody>
-                              <tr>                                                               
+                              <tr>         
                                 <td v-for="(type, index) in types">
                                   <div class="form-group" v-show="isCombined(type)">
                                       <label>{{ type.name }}</label>
@@ -89,24 +119,24 @@
                       </table>      
                     </div>
 
-                    <div class="col-sm-4">
+                    <div class="col-sm-4 mt-3">
                       <div class="button-group">
-                        <button v-on:click.prevent="save()"  type="button" class="btn btn-primary" v-show="!editMode">Save</button>
+                        <button v-on:click.prevent="save()"  type="button" class="btn btn-primary" v-show="!editMode" :disabled="!isValid">Save</button>
                         <button v-on:click.prevent="update()"  type="button" class="btn btn-success" v-show="editMode">Update</button>
-                        <button v-on:click.prevent="reset()"  type="button" class="btn btn-primary">Cancel</button>
+                        <button v-on:click.prevent="reset()"  type="button" class="btn btn-warning" :disabled="!isValid">Cancel</button>
                       </div>
                     </div>
                   </div>
-                </border>            
+                <!-- </border>             -->
           </form>            
 
-          <template v-slot:footer>
-            <show-alert :show.sync="showAlert" :type="alertType"> 
+          <!-- <template v-slot:footer>            
+          </template> -->
+        </add-section>
+        <show-alert :show.sync="showAlert" :type="alertType"> 
               <!-- altert type can be success/info/warning/danger/dark -->
               <strong> Fare </strong> has been <strong>{{ actionStatus }} </strong>
-              </show-alert>
-          </template>
-        </add-section>
+        </show-alert>
         <loader :show="loading"></loader>
         <div class="row info-table">
           <div class="card w-100">
@@ -115,38 +145,43 @@
                   <table class="table table-striped table-hover">
                       <thead>
                         <tr>
-                          <th>SL.# </th>                                
-                          <th>ROUTE
-                            <span type="button" @click="sortByIdOf('totalSeats')" :disabled="!disableSorting">
-                              <i class="fa fa-sort-amount-asc" aria-hidden="true"></i>
-                            </span>
-                          </th>
+                          <th>SL.# </th>                  
+                          <th>ROUTE</th>            
                           <th>CITY</th>
+                          <th>DISTANCE</th>
                           <th>FARE</th>
                           <th>Action</th>                                                         
                           <!-- <th>&nbsp;</th> -->
                         </tr>
                       </thead>
                       <tbody>
-                        <tr v-for="(fare, index) in availableFareList" >                              
-                          <td>{{ index+1 }}</td>                                                              
-                          <td>{{ routeBy(fare.route_id) }}</td>
-                          <td>{{ cityBy(fare.city_id) }}</td>
-                          <!-- <td>{{ dateCreated(seatplan.created_at) }}</td> -->                          
+                        <tr v-for="(availableFare, index) in availableFareListByRoute" >                              
+                          <td>{{ index+1 }}</td>    
+
+                          <td>{{ availableFare.route }}</td>
+
+                          <td>{{ availableFare.city }}</td>
+
+                          <td>{{ availableFare.distance }}</td>
+
                           <td>                            
                             <ol class="fare"> 
                               <li v-for="(type, index) in types"> 
-                                {{type.name}}: {{fare.details[type.key]}} 
+                                {{type.name}}: {{availableFare.details[type.key]}} 
                               </li>
                             </ol>
                           </td>
-                          <td>                              
-                              <button type="button" class="btn btn-outline-info" v-on:click.prevent="edit(fare)">    
+                          <td>
+                            <div class="mb-2">           
+                              <button type="button" class="btn btn-outline-info" v-on:click.prevent="edit(availableFare)">    
                                 <i class="button-icon fas fa-pen"></i>Edit
-                              </button>                                 
-                              <button v-on:click.prevent="remove(fare)" class="btn btn-outline-danger">
+                              </button>
+                            </div>
+                            <div>                                 
+                              <button v-on:click.prevent="remove(availableFare)" class="btn btn-outline-danger">
                                 <i class="button-icon fas fa-trash"></i>Remove
                               </button> 
+                            </div>
                           </td>                        
                         </tr>                            
                       </tbody>
@@ -160,95 +195,164 @@
   </div>      
 </template>
 <script>
+  import Route from '../../components/route/Route'; 
+  import { mapState, mapGetters, mapActions } from 'vuex';
+
     export default {        
+        components: {
+            'route-list': Route,
+        },
+
         data() {
                 return {                    
                     actionStatus: '',
                     alertType: '',                    
-                    availableCityList: [],                    
-                    availableFareList: [],                                        
-                    disableShowButton: false,
-                    //disableSaveButton: true,
-                    disableSorting: true,
                     editMode: false,
                     error: '',        
                     formControl: {
                       backgroundColor: '#fff',
                     },                                    
-                    response: '',                         
                     isDisabled: false,                    
-                    loading: false,                                        
+                    loading: false,                                       
                     showAlert: false,
                     show: false,                    
-                    modal: false,               
-                    types: [],                    
+                    // modal: false,               
                     fare: {},
-                    fareToedit: {
+                    fareToEdit: {
                       id: '',
-                      index: ''
+                      index: '',
+                      route: '',
                     },
-                    availableRouteList: [],
-                    citiesByRoute: [],
                     city: {
                       id: '',
                       name: '',
                       distance: ''
                     },
-                    route: {
-                      id: '',
-                      departure_city: '',
-                      arrival_city: '',
-                      //distance: ''
-                    },                    
+                    routeId: '',                          
                 }
-                },
+            },
                 watch: {
-                    'route.id'(val, oldVal) {
-                      if (this.route.id) {                        
-                        this.fetchCitiesBy(this.route.id);                        
+                    success() {
+                        if (this.success) {
+                          this.actionAlert('Fare For', `${this.city.name} Added successfully!`, 'success');
+                          this.reset();
+                          this.resetErrors();
+                          this.setSuccess({ status: false });
+                        }
+                    },
+                    'routeId'(value, oldValue) {
+                      if (this.editMode) return;
+                      if (value) {
+                        this.city = '';
+                        this.getCitiesByRoute(value);
                       }
                     },
-                },      
-                mounted() {                    
-                    this.fetchBusTypes();
-                    this.fetchCities();
-                    this.fetchRoutes();                    
-                    this.fetchAvailableFares();
+                },                
+               async mounted() {          
+                    this.loading = true;
+
+                    await this.getRoutes();
+
+                    await this.getBusAvailableToCities();
+                    
+                    await this.getRoutesCities();
+
+                    await this.getBusTypes();
+
+                    await this.getFares();
+                    this.city = '';
+                    this.loading = false;
                     this.enableScroll();                
                 },  
-                methods: {                  
+                computed: {
+                  ...mapState([
+                    'errors',
+                    'success'
+                ]),
+                ...mapGetters([
+                    'get',
+                    'has',
+                ]),
+                ...mapState('bus', [
+                  'types'
+                ]),
+                ...mapState('fare', [
+                    'availableFareListByRoute'
+                ]),
+                ...mapGetters('fare', [
+                    'getFareBy',
+                    'getIndexOf'
+                ]),
+                ...mapGetters('route', [
+                    // 'getRouteBy',
+                    'cityRouteBy',                    
+                ]),
+                ...mapGetters('city', [
+                    'getCityById'
+                ]),
+                ...mapState('route', [
+                    'citiesByRoute',
+                    'cityRouteList'
+                ]),
+                isValid() {
+                  return this.city.id != '' &&
+                    Object.keys(this.fare).length != 0  
+                },
+                cityName() {
+                    return this.city.name;
+                },
+                cityDistance() {
+                    return this.city.distance;
+                },
+              },
+                methods: {
+                    ...mapActions([
+                    'setSuccess',
+                    'resetErrors'
+                    ]),
+                    ...mapActions('bus', [
+                        'getBusTypes',
+                    ]),
+                    ...mapActions('fare', [
+                        'getFares',
+                        'addFare',
+                        'deleteFare',
+                        'updateFare'
+                    ]),
+                    ...mapActions('route', [
+                        'getCitiesByRoute',
+                        'getRoutes',
+                        'getRoutesCities',
+                        'emptyCitiesByRoute'
+                    ]),                  
+                    ...mapActions('city', [
+                        'getBusAvailableToCities'
+                    ]),
+
+                  actionAlert(routeCity, text, icon) {
+                      swal({           
+                        title: routeCity,
+                        //text: 'Added successfully!',
+                        text: text ,
+                        //icon: "success",
+                        icon: icon,
+                        timer: 2000,
+                        closeOnClickOutside: false,
+                      });
+                  },  
+
                   isCombined(type) {
-                    // if (type.key.includes('|')) {
-                    //   let types = type.key.split('|');
-                    //   let t1, t2;
-                    //   t1= types[0];
-                    //   t2= types[1];
-                    //   this.combineType[type.key] = {                       
-                    //     [t1]: types[0],
-                    //     [t2]: types[1],
-                    //   };                      
-                    //   return true; 
-                    // }
+                  
                     return type.key.includes('|') ? true : false;
                   },                  
-                  cityBy(id) {
-                    let city = this.availableCityList.find(city => city.id == id);
-                    if(city) {                      
-                      return `${city.name}`;
-                    }                                  
-                  },
-                  routeBy(id) {
-                    let route = this.availableRouteList.find(route => route.id == id);
-                    if(route) {                      
-                      return `${route.departure_city} to ${route.arrival_city}`;
-                    }                                  
+                  getNameOfRoute(city) {
+                    return `${this.getCityById(city.first_city_id).name}  - ${this.getCityById(city.second_city_id).name}`
                   },
                   typeBy(id) {
                     let type = this.types.find(type => type.id == id);
                     if(type) {                      
                       return type.name;
                     }
-                    // this.ucwords(type.name);                   
                   },
                   ucwords (str) {
                       return (str + '').replace(/^([a-z])|\s+([a-z])/g, function ($1) {
@@ -256,68 +360,55 @@
                       });                  
                   },                                      
                   save() {
-                      var vm = this;
-                      axios.post('/fares', {                          
-                          city_id: this.city.id,
-                          route_id: this.route.id,
+                        this.loading = true;
+                        this.addFare({
+                          city_route_id: this.city.id,
                           details: this.fare
-                      })          
-                      .then(function (response) {
-                          //console.log(response.data);
-                          response.data.error ? vm.error = response.data.error : vm.response = response.data;
-                          vm.availableFareList.push({
-                            city_id: vm.city.id,
-                            route_id: vm.route.id,
-                            details: vm.fare
-                          });
-                          vm.loading = false;
-                          vm.actionStatus = 'Added';
-                          vm.reset();
-                          vm.alertType = 'success';
-                          vm.showAlert = true;
-                      });
+                        });                 
+                        this.loading = false;   
                   },
                   edit(fare) {
-                    this.fareToedit.id = fare.id;
-                    let fareToedit = this.availableFareList.find(element => element.id == fare.id);
-                    this.fareToedit.index = this.availableFareList.indexOf(fareToedit);                    
-                    this.fare = fareToedit.details;
-                    this.city.id = fareToedit.city_id;
-                    this.route.id =  fareToedit.route_id;
+                    let fareToEdit = this.getFareBy(fare.id);
+                  
+                    this.fareToEdit = {
+                        id: fare.id,
+                        index: this.getIndexOf(fareToEdit),
+                        route: fareToEdit.route,
+                    }
+                  
+                    this.fare = fareToEdit.details;
+                    
+                    this.city = {
+                        id: fareToEdit.city_route_id,
+                        name: fareToEdit.city,
+                        distance: fareToEdit.distance
+                    };
+
+                        // this.city.id = fareToEdit.city_route_id;
+                        // this.city.name = fareToEdit.4;
+                        // this.city.distance = fareToEdit.distance;
+                    this.routeId =  fareToEdit.route_id;
                     this.editMode = true;
                     this.show = true;                    
                     this.formControl.backgroundColor = 'lightyellow';
-                    //console.log(busToedit);
-                    //this.type.name = this.typeBy(this.bus.typeId);
                   },
-                  update() {
-                    var vm = this;
-                      axios.patch('/fares/'+ this.fareToedit.id, {                          
-                          city_id: this.city.id,
-                          route_id: this.route.id,
-                          details: this.fare
-                      })          
-                      .then(function (response) {
-                          //console.log(response.data);
-                          response.data.error ? vm.error = response.data.error : vm.response = response.data;
-                          vm.updateAvailableFareList();
-                          vm.loading = false;
-                          vm.actionStatus = 'Updated';
-                          vm.reset();
-                          vm.alertType = 'success';
-                          vm.showAlert = true;
-                          //console.log(response.status);                            
-                      });
-                  },
-                  updateAvailableFareList() {
-                    let index = this.fareToedit.index;
+                  async update() {
 
-                    this.availableFareList[index] = {                      
-                      city_id: this.city.id,
-                      route_id: this.route.id,
-                      details: this.fare
-                    };
-                  },            
+                    this.loading = true;
+                    await this.updateFare({
+                        id: this.fareToEdit.id,
+                        index: this.fareToEdit.index,
+                        city: this.city,
+                        details: this.fare,
+                        route: this.fareToEdit.route,
+                    });
+
+                    this.loading = false;
+                    this.actionStatus = 'Updated';
+                    this.reset();
+                    this.alertType = 'success';
+                    this.showAlert = true;
+                  },                  
                   enableScroll() {
                     //initializes the plugin with empty options
                     $('#scrollbar').overlayScrollbars({ /* your options */ 
@@ -331,117 +422,32 @@
                         clickScrolling: true
                       }
                     }); 
-                  },       
+                  },  
+                  fetchRoutesCities() {
+                    this.getRoutesCities();
+                  },    
                   fetchAvailableFares() {
-                      this.loading = true;
-                      this.availableFareList= [];            
-                      var vm = this;                
-                      axios.get('/api/fares')
-                          .then(function (response) {                  
-                             response.data.error ? vm.error = response.data.error : vm.availableFareList = response.data;
-                             //vm.sortByRouteId(vm.availableFareList);                       
-                             vm.loading = false;
-                      });
+                      this.getFares();
+                      this.loading = false;    
                   },                 
                   fetchBusTypes() {
                     this.loading = true;
-                    this.types= [];            
-                    var vm = this;                
-                    axios.get('/api/types')  
-                        .then(function (response) {                  
-                           response.data.error ? vm.error = response.data.error : vm.types = response.data;
-                           //vm.sortBySeatPlanId(vm.availableSeatPlanList);      
-                           //vm.createFareFor(vm.types);                 
-                           vm.loading = false;
-                    });
-                  },
-                  fetchRoutes() {
-                    this.loading = true;
-                    this.availableRouteList= [];            
-                    var vm = this;                
-                    axios.get('/api/routes')  
-                        .then(function (response) {
-                           response.data.error ? vm.error = response.data.error : vm.availableRouteList = response.data;
-                           vm.loading = false;
-                           //vm.sortByCityNameAvailableRouteList(vm.availableRouteList);                 
-                    });
+                    this.getBusTypes();
+                    this.loading = false;
                   },                  
-                  fetchCities() {
-                    this.loading = true;
-                    this.availableCityList= [];            
-                    var vm = this;                
-                    axios.get('/api/cities')  
-                        .then(function (response) {
-                           response.data.error ? vm.error = response.data.error : vm.availableCityList = response.data;
-                           vm.loading = false;
-                    });
-                  },
-                  fetchCitiesBy(routeId) {
-                    this.loading = true;
-                    this.citiesByRoute= [];     
-                    var vm = this;
-                    axios.get('/api/'+routeId+'/cities')  
-                        .then(function (response) {
-                           response.data.error ? vm.error = response.data.error : vm.citiesByRoute = response.data;
-                           vm.sortByDistance(vm.citiesByRoute);                 
-                           vm.loading = false;
-                    });
-                  },                  
-                  sortByDistance(arr) {
-                    arr.sort((a, b) => {
-                            return a.pivot.distance - b.pivot.distance;
-                    });
-                  },
-                  isRegNumberAvailableInBusList(arr, val){
-                       return arr.some(function(bus) {
-                          return val === bus.bus.reg_no;
-                      });
-                  },
-                  sortByIdOf(val) {
-                      if (val== 'bus') { 
-                          this.sortByBusId(this.availableBusList);
-                          this.disableSorting = true;
-                          return ;
-                      }
-                      this.sortByRegNumber(this.availableBusList);
-                      this.disableSorting = false;
-                  },
-
-                  sortByRouteId(arr) {
-                      arr.sort(function(a, b) {
-                            return a.bus.id - b.bus.id;
-                      });
-                  },
-
-                  sortByRegNumber(arr) {
-                      arr.sort(function(a, b) {
-                          var nameA = a.bus.reg_no; 
-                          var nameB = b.bus.reg_no; 
-                          if (nameA < nameB) {
-                            return -1;
-                          }
-                          if (nameA > nameB) {
-                            return 1;
-                          }
-                          // names must be equal
-                          return 0;
-                      });
-                  },
-                  sortBySeatPlanId(arr) {
-                      arr.sort(function(a, b) {
-                            return a.id - b.id;
-                      });
-                  },                    
-
-                  remove(fare) { 
+                  // fetchCitiesBy(routeId) {
+                  //   this.loading = true;
+                  //   this.getCitiesFromRoutesBy(routeId);
+                  // },                                    
+                  async remove(fare) { 
                       var vm = this;
-                      swal({
+                       swal({
                         title: "Are you sure?",
                         text: "This fare will be Removed!",
                         icon: "error",                 
                         dangerMode: true,
                         buttons: {
-                            cancel: "cancel",
+                            cancel: "Cancel",
                             confirm: {
                               text: "Remove It!",
                               value: true,
@@ -450,40 +456,28 @@
                       })
                       .then((value) => {
                         if (value) {
-
-                          vm.loading = true;
-                          vm.response = '';
+                          //vm.loading = true;
                           vm.showAlert = false;
-
-                          axios.delete('/fares/'+fare.id)
-                          .then(function (response) {               
-                              response.data.error ? vm.error = response.data.error : vm.response = response.data;
-                              if (vm.response) {               
-                                  vm.removeFareFromAvailableFareList(fare.id); // update the array after removing
-                                  vm.loading = false;
-                                  vm.actionStatus = 'Removed';
-                                  vm.alertType = 'danger';
-                                  vm.showAlert= true;
-                                  return;                      
-                              }                            
-                              vm.loading = false;
-                          });                     
+                          vm.removeFareBy(fare.id);
                         }                   
                       }); 
                   },
-                  removeFareFromAvailableFareList(fareId) {
-                      var indx = this.availableFareList.findIndex(function(fare){                 
-                           return fare.id == fareId;
-                      });        
-                      this.availableFareList.splice(indx, 1);
-                      //return;
-                  },
+                  async removeFareBy(id) {
+                    this.loading = true
+                    await this.deleteFare(id);
+                    this.loading = false;
+                    this.actionStatus = 'Removed';
+                    this.alertType = 'danger';
+                    this.showAlert= true;
+
+                  },                  
                   reset() {                       
-                      this.editMode = false;
-                      this.fare = '';
-                      this.city.id = '';
-                      this.route.id = '';
+                      this.emptyCitiesByRoute();
+                      this.routeId = '';
+                      this.city = '';
+                      this.fare = {};
                       this.formControl.backgroundColor = '#fff';
+                      this.editMode = false;
                   },
                   swAlert(text, icon) {
                     swal({
@@ -495,6 +489,10 @@
     }
 </script>
 <style lang="scss" scoped>  
+    
+    .table-fare .table-striped tbody tr:nth-of-type(odd) {
+        background-color: #DCEDC8;
+    }
   ol.fare {
     margin-left: -1.7rem;  
   }

@@ -15,3 +15,9 @@ export const busBy = (state) => (id) => {
 export const getIndexOf = (state) => (bus) => {
     return state.availableBusList.indexOf(bus);
 }
+
+export const isRegNumberAvailable = (state) => (number) => {
+	return state.availableBusList.some(bus => 
+		bus.bus.reg_no === number
+	); 
+}

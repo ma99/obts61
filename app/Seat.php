@@ -26,7 +26,7 @@ class Seat extends Model
                 $seat->update([
                         'status' => 'confirmed',
                     ]);
-                broadcast(new SeatStatusUpdated($seat, $schedule_id, $bus_id, $travel_date))->toOthers();
+                broadcast(new SeatStatusUpdated($seat, $bus_schedule_id, $travel_date))->toOthers();
             }
         return;
     }

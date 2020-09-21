@@ -17,6 +17,18 @@ section.content {
             opacity: 0.65;
         }
   }
+
+  .scrollbar {
+    height: 25rem; /*400px;*/
+    span {
+            cursor: pointer;
+            margin-left: 5px;
+        }
+        span[disabled] {
+            cursor: not-allowed;
+            opacity: 0.65;
+        }
+  }
   div.card-header em {
     background-color: #F2B705; //yellow;
     font-weight: 600;

@@ -23,7 +23,15 @@
     <section class="content">
       <div class="container-fluid">
         <add-section :show.sync="show">
-          <template v-slot:heading>Add Seat Plan</template>
+          <template v-slot:heading>
+            <span style="font-size: 1.1rem; color: #81c784;">
+                <span class="fa-stack fa-2x">
+                  <i class="fas fa-circle fa-stack-2x"></i>
+                  <i class="fas fa-couch fa-stack-1x fa-inverse"></i>
+                </span>  
+                  Add Seat Plan
+              </span>              
+          </template>
           <form> 
             <div class="form-row">                
               <div class="col-1"></div>
@@ -41,7 +49,7 @@
                 
                   <div class="button-group col-sm-6">                        
                     <button v-on:click.prevent="createList()" class="btn btn-primary" :disabled="!isValidForShow">Show</button>
-                    <button v-on:click.prevent="reset()" class="btn btn-primary">Reset</button>                    
+                    <button v-on:click.prevent="reset()" class="btn btn-warning">Reset</button>                    
                     <button v-on:click.prevent="saveSeatList()" class="btn btn-primary" :disabled="!showSeatPlan">Save</button>
                   </div>
                 </div>
@@ -49,14 +57,16 @@
             </div>
           </form>
 
-          <template v-slot:footer>
-            <show-alert :show.sync="showAlert" :type="alertType"> 
-              <!-- altert type can be success/info/warning/danger/dark -->
-              <strong> Seat Plan </strong> has been <strong>{{ actionStatus }} </strong>
-              </show-alert>
-          </template>
+          <!-- <template v-slot:footer>
+            
+          </template> -->
 
         </add-section>        
+        
+        <show-alert :show.sync="showAlert" :type="alertType"> 
+              <!-- altert type can be success/info/warning/danger/dark -->
+              <strong> Seat Plan </strong> has been <strong>{{ actionStatus }} </strong>
+        </show-alert>
         
         <loader :show="loading"></loader>
 
@@ -66,7 +76,7 @@
             <div class="card-body">                
               <div class="seat-layout-design">
                 <div class="row">
-                  <div class="combine">                    
+                  <div class="combine mt-3">                    
                     <div class="form-check">                      
                       <input class="form-check-input" type="checkbox" id="defaultCheck1" v-model="combineType">
                       <label class="form-check-label" for="defaultCheck1">
@@ -157,12 +167,12 @@
                     </div>
                 </div>
                 <!-- {{-- card-footer --}} -->
-                <div class="card-footer">                                
+                <!-- <div class="card-footer">                                
                   <show-alert :show.sync="showAlert" :type="alertType">             
                    Seat Plan
                     <strong> {{ actionStatus }} </strong> successfully!
                   </show-alert>
-                </div>
+                </div> -->
           </div>
         </div>
       </div>
@@ -198,13 +208,15 @@
   </div>      
 </template>
 <script>
+      import { mapState, mapGetters, mapActions } from 'vuex';
+
     export default {        
       data() {
                 return {                    
                     actionStatus: '',
                     disableSorting: true,
                     alertType: '',
-                    availableSeatPlanList: [],
+                    //availableSeatPlanList: [],
                     combineType: false,
                     disableSaveButton: true,
                     disableShowButton: false,
@@ -230,9 +242,12 @@
                 }
 
       },
-      mounted() {
+      async mounted() {
+          this.loading = true;
           this.createIndexList();
-          this.fetchAvailableSeatPlans();
+          await this.getSeatPlans();
+          this.loading = false;
+          //this.fetchAvailableSeatPlans();
           this.enableScroll();
       },
       watch: {
@@ -263,6 +278,13 @@
       },
 
       computed: {
+          ...mapState('seatplan', [
+            'availableSeatPlanList',
+          ]),
+          ...mapGetters('seatplan', [
+              'getSeatPlanBy'
+          ]),
+
           isValidForShow() {                        
               return  this.numberOfRow != '' &&
                       this.disableShowButton != true
@@ -277,7 +299,13 @@
           // },            
       },
 
-      methods: {
+      methods: {          
+          ...mapActions('seatplan', [
+            'getSeatPlans',
+            'addSeatplan',
+            'deleteSeatplan',
+            'updateSeatplan'
+          ]),  
           dateCreated(dateString) {
             var date = new Date(dateString);
             return date.toLocaleDateString('en-GB');
@@ -392,17 +420,7 @@
               this.seatListLength = this.seatList.length;
               this.showSeatPlan = true;                        
           },                  
-          fetchAvailableSeatPlans() {
-              this.loading = true;
-              this.availableSeatPlanList= [];            
-              var vm = this;                
-              axios.get('/api/seatplans')  //--> api/bus?q=xyz        (right)
-                  .then(function (response) {                  
-                     response.data.error ? vm.error = response.data.error : vm.availableSeatPlanList = response.data;
-                     //vm.sortByBusId(vm.availableSeatPlanList);                       
-                     vm.loading = false;
-              });
-          },
+          
           remove(seatplan) { 
             var vm = this;
             swal({
@@ -411,7 +429,7 @@
               icon: "error",                 
               dangerMode: true,
               buttons: {
-                  cancel: "cancel",
+                  cancel: "Cancel",
                   confirm: {
                     text: "Remove It!",
                     value: true,
@@ -420,34 +438,19 @@
             })
             .then((value) => {
               if (value) {
-
-                vm.loading = true;
-                vm.response = '';
                 vm.showAlert = false;
-
-                axios.delete('/seatplans/'+seatplan.id)          
-                .then(function (response) {               
-                    response.data.error ? vm.error = response.data.error : vm.response = response.data;
-                    if (vm.response) {                                
-                        vm.removeFromAvailableSeatPlanList(seatplan.id); // update the array after removing
-                        vm.loading = false;
-                        vm.actionStatus = 'Removed';
-                        vm.alertType = 'danger';
-                        vm.showAlert= true;
-                        return;
-                    }                            
-                    vm.loading = false;
-                });                 
+                vm.removeSeatplanBy(seatplan.id);
               }               
             }); 
           },
-          removeFromAvailableSeatPlanList(seatplanId) {
-              var indx = this.availableSeatPlanList.findIndex(function(seatplan){                 
-                   return seatplan.id == seatplanId;
-              });        
-              this.availableSeatPlanList.splice(indx, 1);
-              //return;
-          },
+          async removeSeatplanBy(id) {
+            this.loading = true
+            await this.deleteSeatplan(id);
+            this.loading = false;
+            this.actionStatus = 'Removed';
+            this.alertType = 'danger';
+            this.showAlert= true;
+          },                  
           reset() {
               this.seatList=[];
               this.numberOfRow = '';
@@ -457,24 +460,37 @@
               this.seatListLength = '';
               this.showSeatPlan = false;
           },
-          saveSeatList() {
-              var vm = this;
-              this.loading = true;                      
-              axios.post('/seatplans', {
-                  seat_list: this.seatList,
-                  total_seats: this.totalSeats
-              })          
-              .then(function (response) {
-                     console.log(response.data);
-                     response.data.error ? vm.error = response.data.error : vm.response = response.data;
-                     vm.availableSeatPlanList.push(vm.response);
-                     vm.loading = false;
-                     vm.actionStatus = 'Added';
-                     vm.reset();
-                     vm.alertType = 'success';
-                     vm.showAlert = true;
-                     console.log(response.status);
-              });
+          async saveSeatList() {
+            this.loading = true;
+
+            this.addSeatplan({
+                seat_list: this.seatList,
+                total_seats: this.totalSeats
+            });
+
+            this.reset();
+            this.loading = false;
+            this.actionStatus = 'Added';
+            this.alertType = 'success';
+            this.showAlert = true;
+
+              // var vm = this;
+              // this.loading = true;                      
+              // axios.post('/seatplans', {
+              //     seat_list: this.seatList,
+              //     total_seats: this.totalSeats
+              // })          
+              // .then(function (response) {
+              //        console.log(response.data);
+              //        response.data.error ? vm.error = response.data.error : vm.response = response.data;
+              //        vm.availableSeatPlanList.push(vm.response);
+              //        vm.loading = false;
+              //        vm.actionStatus = 'Added';
+              //        vm.reset();
+              //        vm.alertType = 'success';
+              //        vm.showAlert = true;
+              //        console.log(response.status);
+              // });
           },
           toggle(seat) {                     
               seat.checked = !seat.checked; 
@@ -623,8 +639,13 @@
       margin: 1.9rem auto; 
     }    
 
+    .seat-layout-design {
+        background-color: #E8F5E9;        
+        border: 1px solid;
+        color: #4DB6AC;
+    }
     .seat-layout-design, .seat-layout-display {      
-      padding: 0 0 0.6rem 11%;                     
+      padding: 0 0 2rem 11%;                     
       button {
         height: 50px;        
         margin: 10px 10px 0 0;          

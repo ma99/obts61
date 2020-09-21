@@ -20,11 +20,15 @@
         </p>                
       </div>            
       
-      <div class="card-body" v-show="expand">        
+      <div class="card-body" v-show="expand"
+        v-bind:class="{                        
+                'p-0': (pZero) ? true : false,                         
+             }"
+      >        
         <slot></slot>         
       </div>
       
-      <div class="card-footer">
+      <div class="card-footer" v-show="showFooter">
         <slot name="footer"></slot>        
       </div>                        
     </div>
@@ -33,7 +37,21 @@
 
 <script>
     export default {            
-      props: ['show'],      
+      // props: ['show', 'showFooter', 'pZero'],      
+      props: {
+        show: {
+          type: Boolean,
+          default: false
+        }, 
+        showFooter: {
+          type: Boolean,
+          default: false
+        }, 
+        pZero: {
+          type: Boolean,
+          default: false
+        }, 
+      },      
       data() {
         return {
           expand: '',

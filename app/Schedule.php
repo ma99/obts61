@@ -12,7 +12,8 @@ class Schedule extends Model
 
     public function setDepartureTimeAttribute($value)
 	{
-	    $this->attributes['departure_time'] = Carbon::createFromFormat('g:i A', $value)->format('H:i:s');
+	    //$this->attributes['departure_time'] = Carbon::createFromFormat('g:i A', $value)->format('H:i:s');
+        $this->attributes['departure_time'] = Carbon::createFromFormat('G:i', $value)->format('H:i:s');
 	}
 
 	public function getDepartureTimeAttribute($value)
@@ -23,7 +24,7 @@ class Schedule extends Model
 
     public function setArrivalTimeAttribute($value)
 	{
-		$this->attributes['arrival_time'] = Carbon::createFromFormat('g:i A', $value)->format('H:i:s');
+		$this->attributes['arrival_time'] = Carbon::createFromFormat('G:i', $value)->format('H:i:s');
 	}
 
 	public function getArrivalTimeAttribute($value)

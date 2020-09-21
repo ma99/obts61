@@ -30,14 +30,14 @@
           <form> 
             <div class="form-row justify-content-center">
               <div class="col-sm-3">               
-                <divisions v-model="selectedDivision"> 
-                </divisions>
+                <divisions v-model="selectedDivision" /> 
+                
               </div>
               <div class="col-sm-3">
-                  <districts v-model="selectedDistrict" :division="selectedDivision"></districts>
+                  <districts v-model="selectedDistrict" :division="selectedDivision" list="all" />
               </div>
               <div class="col-sm-3">
-                <upazilas v-model="selectedUpazila" :district="selectedDistrict"></upazilas>
+                <upazilas v-model="selectedUpazila" :district="selectedDistrict" />
               </div>              
             </div>
             <div class="form-row">
@@ -51,7 +51,7 @@
               <div class="col-sm-4 offset-sm-3">
                 <div class="button-group">
                   <button v-on:click.prevent="save()" class="btn btn-primary" :disabled="!isValid">Save</button>
-                  <button v-on:click.prevent="reset()" class="btn btn-primary" :disabled="!isValid">Cancel</button>
+                  <button v-on:click.prevent="reset()" class="btn btn-warning" :disabled="!isValid">Cancel</button>
                 </div>
               </div>
             </div>
@@ -162,11 +162,14 @@
             showAlert: false,  
           }
         },
-        mounted() {           
+        async mounted() {           
            //this.fetchDivisions();
            //this.fetchDistricts();
            //this.fetchUpazilas();
-           this.fetchBusAvailableToCities();          
+           //this.fetchBusAvailableToCities();
+           this.loading = true;
+           await this.getBusAvailableToCities();
+           this.loading = false;          
            this.enableScroll();
            
         },
@@ -192,7 +195,6 @@
 
             ...mapGetters('city', [
                 'cityBy',
-                'districtBy'
             ]),
 
           isValid() {
@@ -220,7 +222,7 @@
 
             if (this.selectedDistrict != '') {
 
-            let district = this.districtBy(this.selectedDistrict);            
+            let district = this.cityBy(this.selectedDistrict);            
             this.selectedCity.name = district.name; 
             }
           },
@@ -275,19 +277,19 @@
           //          vm.loading = false;                  
           //   });
           // },
-          fetchBusAvailableToCities() {
-            this.loading = true;
-            this.getBusAvailableToCities();
-            // this.cityList= [];            
-            // var vm = this;                
-            // axios.get('/api/cities')  
-            //     .then(function (response) {                  
-            //        response.data.error ? vm.error = response.data.error : vm.cityList = response.data;
-            //        vm.loading = false;
-            //        vm.sortByCityNamecityList(vm.cityList);
-            // });
-            this.loading = false;
-          },
+          // fetchBusAvailableToCities() {
+          //   this.loading = true;
+          //   this.getBusAvailableToCities();
+          //   // this.cityList= [];            
+          //   // var vm = this;                
+          //   // axios.get('/api/cities')  
+          //   //     .then(function (response) {                  
+          //   //        response.data.error ? vm.error = response.data.error : vm.cityList = response.data;
+          //   //        vm.loading = false;
+          //   //        vm.sortByCityNamecityList(vm.cityList);
+          //   // });
+          //   this.loading = false;
+          // },
           getNameOf(city) {
             this.district = this.cityBy(city.district_id);            
           },
@@ -310,7 +312,7 @@
               icon: "error",                 
               dangerMode: true,
               buttons: {
-                  cancel: "cancel",
+                  cancel: "Cancel",
                   confirm: {
                     text: "Remove It!",
                     value: true,
@@ -353,8 +355,15 @@
           //   //return;
           // },
           save() {
+            const city = {
+                division_id: this.selectedCity.divisionId,
+                district_id: this.selectedCity.districtId,
+                name: this.selectedCity.name
+            }
+
             this.loading = true;
-            this.addCity(this.selectedCity);
+            //this.addCity(this.selectedCity);
+            this.addCity({ city });
             
             // var vm = this;
             // //this.loading = true;            

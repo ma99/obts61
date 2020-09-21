@@ -15,16 +15,14 @@ class SeatStatusUpdated implements ShouldBroadcast
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     public $seat;
-    public $scheduleId;
-    public $busId;
+    public $busScheduleId;
     public $date;
 
 
-    public function __construct($seat, $scheduleId, $busId, $date)
+    public function __construct($seat, $busScheduleId, $date)
     {
         $this->seat = $seat;
-        $this->scheduleId = $scheduleId;
-        $this->busId = $busId;
+        $this->busScheduleId = $busScheduleId;
         $this->date = $date;
     }
 

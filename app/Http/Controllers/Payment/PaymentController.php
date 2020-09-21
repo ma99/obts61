@@ -15,20 +15,22 @@ class PaymentController extends Controller
     protected $payByCard;
     protected $payment;
     //protected $bookingInfo = [];
+    protected $booking;
     protected $seat;
 
-    function __construct(PaymentInterface $payByCard, Payment $payment, Seat $seat)
+    function __construct(PaymentInterface $payByCard, Payment $payment, Seat $seat, Booking $booking)
     {
     	$this->payByCard = $payByCard;  
         $this->payment = $payment;  
-        $this->seat = $seat;	
+        $this->booking = $booking;	
+        $this->seat = $seat;    
     }
 
     public function card(Request $request)
     {
     	$data = [];
         $bookingId = $request->input('booking_id');
-        $booking = $this->findBookingBy($bookingId);   
+        $booking = $this->booking->getBookingBy($bookingId);   
 
         if($booking == null) {return;}             
             	
@@ -67,7 +69,7 @@ class PaymentController extends Controller
     {
         //$data = [];
         $bookingId = $request->input('booking_id');
-        $booking = $this->findBookingBy($bookingId);   
+        $booking = $this->booking->getBookingBy($bookingId);   
 
         if($booking == null) {return;}             
                 
@@ -100,10 +102,10 @@ class PaymentController extends Controller
         return 'something went wrong';       
     }
 
-    public function findBookingBy($id)
-    {
-        return Booking::find($id);
-    }
+    // public function findBookingBy($id)
+    // {
+    //     return Booking::find($id);
+    // }
 
     /*public function setBookingInfo(Booking $booking)
     {
@@ -126,7 +128,7 @@ class PaymentController extends Controller
 
         $post_data['emi_option'] = 0;
         # CUSTOMER INFORMATION
-    	$customer = $this->getCustomerInfoBy($booking);
+    	$customer = $booking->customerInfo();
 
         $post_data['cus_name'] = $customer->name; //'Customer Name';
         $post_data['cus_email'] = $customer->email; //'customer@mail.com';
@@ -164,25 +166,25 @@ class PaymentController extends Controller
         return $post_data;
     }
 
-    public function getCustomerInfoBy(Booking $booking)
-    {
-    	return $booking->creator;
-    }
+    // public function getCustomerInfoBy(Booking $booking)
+    // {
+    // 	return $booking->creator;
+    // }
 
-    public function getSession()
-    {        
-        return [
-            'booking_id' => session('booking_id'),
-            'bus_id' => session('bus_id'),
-            'schedule_id' => session('schedule_id'),
-            'travel_date' => session('travel_date'),           
-            'amount' => session('amount')
-        ];
-    }
+    // public function getSession()
+    // {        
+    //     return [
+    //         'booking_id' => session('booking_id'),
+    //         'bus_id' => session('bus_id'),
+    //         'schedule_id' => session('schedule_id'),
+    //         'travel_date' => session('travel_date'),           
+    //         'amount' => session('amount')
+    //     ];
+    // }
 
     public function callToUpdateSeatStatusBy($bookingId)
     {
-        $booking = $this->findBookingBy($bookingId);
+        $booking = $this->booking->getBookingBy($bookingId);
         $bookingInfo = $booking->info(); //array
         
         $this->seat->updateSeatStatus($bookingInfo);

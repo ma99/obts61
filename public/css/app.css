@@ -11362,6 +11362,14 @@ a.text-dark:focus {
   background-color: #E1F5FE;
 }
 
+.dodgerblue {
+  color: #228BE6;
+}
+
+.mayablue {
+  color: #74C0FC;
+}
+
 .bg-lightpurple {
   background-color: #E7E8FF;
 }
@@ -11372,6 +11380,34 @@ a.text-dark:focus {
 
 .bg-lightyellow {
   background-color: #FFFEE7;
+}
+
+.bg-lightlemonyellow {
+  background-color: #fff9c4;
+}
+
+.bg-mediumlemonyellow {
+  background-color: #fff59d;
+}
+
+.bg-mediumyellow {
+  background-color: #ffe066;
+}
+
+.bg-aliceblue {
+  background-color: #e7f5ff;
+}
+
+.bg-mayablue {
+  background-color: #74C0FC;
+}
+
+.bg-lightgreen {
+  background-color: #F1F8E9;
+}
+
+.bg-darkgreen {
+  background-color: #FFFDE7;
 }
 
 body {
@@ -11394,6 +11430,21 @@ section.content {
 }
 
 #scrollbar span[disabled] {
+  cursor: not-allowed;
+  opacity: 0.65;
+}
+
+.scrollbar {
+  height: 25rem;
+  /*400px;*/
+}
+
+.scrollbar span {
+  cursor: pointer;
+  margin-left: 5px;
+}
+
+.scrollbar span[disabled] {
   cursor: not-allowed;
   opacity: 0.65;
 }

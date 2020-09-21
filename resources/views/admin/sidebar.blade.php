@@ -137,6 +137,12 @@
                   </router-link> 
                 </li>           --}}
                 <li class="nav-item">
+                  <router-link to="/bus-schedules" class="nav-link">
+                      <i class="nav-icon fas fa-clock" aria-hidden="true"></i>Bus Schedules
+                  </router-link> 
+                </li>                   
+
+                <li class="nav-item">
                   <router-link to="/route-cities" class="nav-link">
                       <i class="nav-icon fas fa-map-signs" aria-hidden="true"></i>Route Cities
                   </router-link> 

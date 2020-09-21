@@ -42,7 +42,8 @@ class BusController extends Controller
     protected function validateRequest()
     {
         return request()->validate([
-        	'seat_plan_id' => 'required',
+        	'route_id' => 'required',
+            'seat_plan_id' => 'required',
             'type_id' => 'required',
             'reg_no' => 'required|max:50',
             'number_plate' => 'required',

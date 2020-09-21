@@ -24,4 +24,16 @@ export default {
     delete(id) {
         return Api.delete(`buses/${id}`);
     },
+
+    schedules(id) {
+		return Api.get(`api/${id}/schedules`);
+	},
+	
+	attach(data, id) {
+		return Api.post(`/${id}/schedules`, data);
+	},
+
+	detach(schedule, bus) {
+		return Api.delete(`bus-schedules/${bus}/${schedule}`);
+	},
 }

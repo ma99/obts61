@@ -34,7 +34,7 @@ class SearchTicketController extends Controller
 
     public function searchTicket() 
     {
-		$error = ['error' => 'No results found'];
+		$error = ['error' => 'Schedules not fixed.'];
 		
 		$departure_city  = request()->input('from');
 		$arrival_city = request()->input('to');		
@@ -44,10 +44,13 @@ class SearchTicketController extends Controller
 		$cityRouteInfo = $this->cityRoute->getCityRouteBy($departure_city, $arrival_city);
 
 		//return $cityRouteInfo;
+		if ( is_null($cityRouteInfo) ) { 
+			return 
+				$error = ['error' => 'Service not available.'];
+		}
 
 		$route = $this->route->getRouteBy($cityRouteInfo->route_id);		
 		//return $route;
-		//dd($route);
 
 		$route = $route->load([
 			'buses' => function($query) use ($departure_city) {
@@ -100,6 +103,7 @@ class SearchTicketController extends Controller
 				        $buses[] = [
 				        	//'route_id'	=> $route->id,
 							'bus_id' => $bus->id,
+							'bus_number_plate' => $bus->number_plate,
 							'schedule_id' => $schedule->id,
 							'bus_schedule_id' => $busScheduleId,
 							'bus_type' => $type->name,
@@ -112,7 +116,7 @@ class SearchTicketController extends Controller
 		 		}
 		 	}
 		 	
-		 	$buses = json_decode(json_encode($buses));
+		 	//$buses = json_decode(json_encode($buses));
 		 	//dd($buses);		
 			return $buses; 
 	 	} 	

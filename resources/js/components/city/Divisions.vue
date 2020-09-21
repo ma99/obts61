@@ -1,13 +1,13 @@
 <template>
     <div class="form-group">
-      <label for="divisionName">Division</label>      
+      <label :for="id">Division</label>      
       <select 
-        class="form-control" id="divisionName"
+        class="form-control custom-select" :id="id"
         v-bind:value="value"
         v-on:input="$emit('input', $event.target.value)"
       >
           <option value="" :disabled="disable">Please select one</option>         
-          <option v-for="division in divisionList" v-bind:value="division.id">
+          <option v-for="division in divisionListByName" v-bind:value="division.id">
             {{ division.name }}
           </option>                             
       </select>
@@ -18,7 +18,7 @@
     import { mapState, mapGetters, mapActions } from 'vuex';
     
     export default {
-        props: ['value'],                
+        props: ['value', 'id'],                
         data() {
             return {
                 disable: false 
@@ -31,6 +31,9 @@
         computed: {                   
             ...mapState('city', [
               'divisionList',              
+            ]),
+            ...mapGetters('city', [
+              'divisionListByName'
             ]),
         },
 

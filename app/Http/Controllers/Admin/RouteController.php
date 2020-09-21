@@ -13,7 +13,7 @@ class RouteController extends Controller
     {        
     	$attributes = $this->validateRequest();
 
-        return $route = Route::create($attributes);
+        return Route::create($attributes);
     }
 
     public function update(Route $route)
@@ -39,11 +39,16 @@ class RouteController extends Controller
 
     protected function validateRequest()
     {
-        return request()->validate([
-           'arrival_city' => 'required|max:50',
-           'departure_city' => 'required|max:50',
-           'distance' => 'nullable' 
-        ]);
+        return request()->validate(
+            [
+               'first_city' => 'required|max:50',
+               'second_city' => 'required|max:50',
+                'distance' => 'required|numeric|gt:0'
+            ],
+            [
+                'distance.gt' => 'Distance must be a positive number.',
+            ]
+        );
     }
     
 }

@@ -39,6 +39,16 @@ class Booking extends Model
             ->get();
     }
 
+    public function getBookingBy($id)
+    {
+        return $this->find($id);
+    }
+
+    public function customerInfo()
+    {
+        return $this->creator;
+    }
+
     public function setSession()
     {
         session([
@@ -65,8 +75,8 @@ class Booking extends Model
     {        
         return [
             'booking_id' => $this->id,
-            'bus_id' => $this->bus_id,
-            'schedule_id' => $this->schedule_id,
+            //'bus_id' => $this->bus_id,
+            'bus_schedule_id' => $this->bus_schedule_id,
             'travel_date' => date("d-m-Y", strtotime($this->date)),
             'amount' => $this->amount
         ];

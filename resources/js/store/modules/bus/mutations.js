@@ -31,31 +31,12 @@ export const SET_BUSES = (state, buses) => {
     state.availableBusList = buses;
 }        
 
-export const SORT_BUSES_BY_ID = (state) => {
-    const buses = state.availableBusList;
-
-    buses.sort((a, b) => {
-        return a.bus.id - b.bus.id
-    });
-
+export const SORT_BUSES_BY_ID = (state, buses) => {
     state.availableBusList = buses;
 }
 
-export const SORT_BUSES_BY_REG_NUMBER = (state) => {
-    const buses = state.availableBusList;
-
-    buses.sort((a, b) => {
-        let nameA = a.bus.reg_no; 
-        let nameB = b.bus.reg_no; 
-        if (nameA < nameB) {
-            return -1;
-        }
-        if (nameA > nameB) {
-            return 1;
-        }            
-        return 0;
-    });
-
+export const SORT_BUSES_BY_REG_NUMBER = (state, buses) => {
+    
     state.availableBusList = buses;
 }
 
@@ -72,3 +53,27 @@ export const SORT_BUSES_BY_REG_NUMBER = (state) => {
     
 //     state.availableSeatPlanList = seatplans;
 // },
+
+export const SET_SCHEDULES_BY_BUS = (state, schedules) => {
+    state.schedulesByBus = schedules;
+}
+
+export const ADD_SCHEDULES_BY_BUS = (state, data) => {          
+    state.schedulesByBus = data;
+}
+
+export const DELETE_SCHEDULE_BY_BUS = (state, index) => {
+    state.schedulesByBus.splice(index, 1);
+}
+
+export const EMPTY_SCHEDULES_BY_BUS = (state, schedules) => {
+    state.schedulesByBus = [];
+}
+
+export const SORT_BUS_SCHEDULES_BY_CITY = (state, schedules) => {
+    state.schedulesByBus = schedules;
+}
+
+export const SORT_BUS_SCHEDULES_BY_TIME = (state, schedules) => {
+    state.schedulesByBus = schedules;
+}
